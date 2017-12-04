@@ -60,6 +60,7 @@ If you install [ansible-lint](https://github.com/willthames/ansible-lint) you ca
 * use `lowercase_underscore_style` for variables
 * always use `.yml` extension not `.yaml`
 * don't check in code that fails the `./scripts/lint` check
+* when running a playbook it should all be green/ok if nothing has actually changed
 
 ## usage with pass
 
