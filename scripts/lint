@@ -1,0 +1,7 @@
+#!/bin/bash
+
+set -eu
+
+root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+
+ansible-lint $root/playbooks/*/*.playbook.yml $root/roles/*/tasks/*.yml

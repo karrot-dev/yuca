@@ -1,0 +1,12 @@
+[Unit]
+Description=Django Worker
+After=network.target
+PartOf={{ site }}-worker.target
+
+[Service]
+Type=simple
+User={{ site }}
+Group={{ site }}
+WorkingDirectory=/var/www/{{ site }}/www
+ExecStart=/var/www/{{ site }}/www/env/bin/python manage.py runworker
+Restart=always

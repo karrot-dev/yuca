@@ -1,0 +1,62 @@
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': '{{ postgresql_database }}',
+        'USER': '{{ postgresql_user }}',
+        'PASSWORD': '{{ postgresql_password }}',
+        'HOST': '127.0.0.1',
+        'PORT': '5432',
+    }
+}
+DEBUG = False
+ALLOWED_HOSTS = ['{{ server_name }}']
+HOSTNAME = 'https://{{ server_name }}'
+STATIC_ROOT = '/var/www/{{ site }}/www/static/'
+
+DEFAULT_FROM_EMAIL = '{{ from_email_address }}'
+INFLUXDB_HOST = '127.0.0.1'
+INFLUXDB_PORT = '8086'
+INFLUXDB_USER = ''
+INFLUXDB_PASSWORD = ''
+INFLUXDB_DATABASE = '{{ influxdb_database }}'
+INFLUXDB_TAGS_HOST = 'yuca'
+INFLUXDB_TIMEOUT = 2
+INFLUXDB_USE_CELERY = False
+INFLUXDB_USE_THREADING = True
+
+import os
+import raven
+
+{% if raven_dsn is defined %}
+RAVEN_CONFIG = {
+    'dsn': '{{ raven_dsn }}',
+    'release': raven.fetch_git_sha(os.path.dirname(os.pardir)),
+}
+{% endif %}
+
+SECRET_KEY = '{{ secret_key }}'
+ANYMAIL_SPARKPOST_API_KEY = '{{ sparkpost_api_key }}'
+
+FCM_SERVER_KEY = '{{ fcm_server_key }}'
+
+REDIS_HOST = os.environ.get('REDIS_HOST', 'localhost')
+
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://{}:6379/{{ redis_cache_db }}".format(REDIS_HOST),
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        }
+    }
+}
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "asgi_redis.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": ["redis://{}:6379/{{ redis_channel_db }}".format(REDIS_HOST)],
+        },
+        "ROUTING": "foodsaving.subscriptions.routing.channel_routing",
+    },
+}

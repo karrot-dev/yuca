@@ -1,0 +1,9 @@
+[Unit]
+Description=Django Worker
+
+{% for n in range(workers) %}
+Wants={{ site }}-worker@{{ n+1 }}.service
+{% endfor %}
+
+[Install]
+WantedBy=multi-user.target

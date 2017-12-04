@@ -1,0 +1,30 @@
+---
+
+- name: group
+  group:
+    name: "{{ site }}"
+    state: present
+
+- name: user
+  user:
+    name: "{{ site }}"
+    state: present
+    group: "{{ site }}"
+    createhome: no
+    home: "/var/www/{{ site }}"
+    shell: /bin/false
+
+- name: www directory
+  file:
+    path: "/var/www/{{ site }}/www"
+    state: directory
+
+- name: log directory
+  file:
+    path: "/var/www/{{ site }}/log"
+    state: directory
+
+- name: cert directory
+  file:
+    path: "/var/www/{{ site }}/cert"
+    state: directory

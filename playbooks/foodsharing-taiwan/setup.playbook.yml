@@ -1,0 +1,40 @@
+---
+- name: Setup Foodsharing Taiwan
+  hosts: all
+  become: yes
+  vars_files:
+    - secrets.vars.yml
+  tasks:
+
+    - name: basic-site
+      include_role:
+        name: basic-site
+      vars:
+        site: foodsharing-taiwan
+
+    - name: letsencrypt
+      include_role:
+        name: letsencrypt
+      vars:
+        site: foodsharing-taiwan
+        dns:
+          - karrot.foodsharing.tw
+          - tw.foodsaving.world
+
+    - name: karrot
+      include_role:
+        name: karrot
+      vars:
+        site: foodsharing-taiwan
+        server_name: tw.foodsaving.world
+        redirects:
+          - app.foodsharing.tw
+          - karrot.foodsharing.tw
+        static_root: /home/deploy/karrot-frontend/release
+        from_email_address: karrot.world <noreply@karrot.world>
+        redis_cache_db: 3
+        redis_channel_db: 4
+        influxdb_database: fstaiwan
+        postgresql_database: fstaiwan
+        postgresql_user: fstaiwan
+        workers: 4

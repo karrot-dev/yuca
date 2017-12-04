@@ -1,0 +1,19 @@
+[Unit]
+Description=Daphne Web Server
+After=network.target
+
+[Service]
+Type=simple
+User={{ site }}
+Group={{ site }}
+WorkingDirectory=/var/www/{{ site }}/www
+ExecStart=/var/www/{{ site }}/www/env/bin/daphne \
+	-u /tmp/{{ site }}.sock \
+	--root-path=/var/www/{{ site }}/www \
+	--ws-protocol karrot.token \
+	--proxy-headers \
+	config.asgi:channel_layer
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
