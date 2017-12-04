@@ -1,5 +1,5 @@
 ---
-- name: Setup Foodsharing Taiwan
+- name: foodsharing Taiwan
   hosts: all
   become: yes
   vars_files:
