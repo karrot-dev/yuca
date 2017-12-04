@@ -25,6 +25,8 @@
   template:
     src: local_settings.py.j2
     dest: /var/www/{{ site }}/www/config/local_settings.py
+  notify:
+    - restart app
 
 #------------------------------------------------------------------
 # systemd servics

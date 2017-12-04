@@ -1,5 +1,17 @@
 ---
 
+- name: restart daphne
+  listen: restart app
+  service:
+    name: "{{ site }}-daphne.service"
+    state: restarted
+
+- name: restart workers
+  listen: restart app
+  service:
+    name: "{{ site }}-worker.target"
+    state: restarted
+
 - name: reload nginx
   service:
     name: nginx

@@ -18,6 +18,7 @@
       vars:
         site: foodsharing-taiwan
         dns:
+          - app.foodsharing.tw
           - karrot.foodsharing.tw
           - tw.foodsaving.world
 
@@ -26,9 +27,9 @@
         name: karrot
       vars:
         site: foodsharing-taiwan
-        server_name: tw.foodsaving.world
+        server_name: app.foodsharing.tw
         redirects:
-          - app.foodsharing.tw
+          - tw.foodsaving.world
           - karrot.foodsharing.tw
         static_root: /home/deploy/karrot-frontend/release
         from_email_address: karrot.world <noreply@karrot.world>
