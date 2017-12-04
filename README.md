@@ -49,12 +49,14 @@ If you install [ansible-lint](https://github.com/willthames/ansible-lint) you ca
 
 ## conventions
 
+* *don't add anything to master that you are not happy for other people to run at any time*
 * playbook files are named `*.playbook.yml`
 * var files are named `*.vars.yml`
 * playbooks are contained within a directory for that site, e.g. `playbooks/my-site/setup.playbook.yml`
 * name all tasks (in lowercase)
 * implement everything as a reusable 
 * use ansible-vault for storing sensitive data
+* store secret vars in `secrets.vars.yml`
 * use `lowercase_underscore_style` for variables
 * always use `.yml` extension not `.yaml`
 * don't check in code that fails the `./scripts/lint` check
