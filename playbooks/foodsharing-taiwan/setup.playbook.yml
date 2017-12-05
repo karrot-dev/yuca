@@ -6,6 +6,15 @@
     - secrets.vars.yml
   tasks:
 
+    - fail:
+        msg: You need to have at least ansible >= 2.4
+      when: |
+        not (
+          (ansible_version.major == 2 and ansible_version.minor >= 4)
+          or
+          ansible_version.major > 2
+        )
+
     - name: basic-site
       include_role:
         name: basic-site
