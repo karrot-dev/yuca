@@ -1,5 +1,5 @@
 ---
-- name: karrot dev
+- name: karrot dev | setup
   hosts: all
   become: yes
   vars_files:

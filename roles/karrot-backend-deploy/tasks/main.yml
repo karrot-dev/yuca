@@ -1,0 +1,12 @@
+---
+
+- name: update code
+  git:
+    repo: https://github.com/yunity/foodsaving-backend.git
+    dest: /var/www/{{ site }}/www
+    update: yes
+    version: "{{ branch }}"
+  become: yes
+  become_user: deploy
+  notify:
+    - deploy
