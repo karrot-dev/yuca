@@ -14,17 +14,11 @@
     home: "/var/www/{{ site }}"
     shell: /bin/false
 
-- name: www directory
+- name: directories
   file:
-    path: "/var/www/{{ site }}/www"
+    path: "/var/www/{{ site }}/{{ item }}"
     state: directory
-
-- name: log directory
-  file:
-    path: "/var/www/{{ site }}/log"
-    state: directory
-
-- name: cert directory
-  file:
-    path: "/var/www/{{ site }}/cert"
-    state: directory
+  with_items:
+    - www
+    - log
+    - cert
