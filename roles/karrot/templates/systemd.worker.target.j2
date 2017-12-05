@@ -1,5 +1,5 @@
 [Unit]
-Description=Django Worker
+Description={{ site }} | django workers
 
 {% for n in range(workers) %}
 Wants={{ site }}-worker@{{ n+1 }}.service
