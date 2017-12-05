@@ -8,14 +8,14 @@ The aim here is to slowly switch all configuration over to using ansible.
 
 Prerequisites:
 
-* a working installation of ansible such that you have `ansible-playbook` and `ansible-vault` commands available
-* an account on yuca.yunity.org with sudo powers
-* if required, access to a/the vault password
+* a working installation of ansible >= 2.4 such that you have `ansible-playbook` and `ansible-vault` commands available
+* an account on `yuca.yunity.org` with sudo powers
+* access to the vault password (ask nick)
 
 Clone this repo:
 
 ```
-git clone <path/to/repo>
+git clone git@github.com:yunity/yuca.git
 cd yuca
 ```
 
@@ -42,6 +42,19 @@ cp -r karrot-dev your-new-site
 Ensure `roles` is symlinked like so: `playbooks/your-new-site/roles -> roles`.
 
 **Note** copy the most simliar site to what you want to configure (at the moment there is only one anyway...)
+
+## editing encrypted files
+
+If you need to edit the secrets, you can do so like this:
+
+```
+ansible-vault edit playbooks/karrot-dev/secrets.vars.yml
+```
+
+Or with vault password file/script:
+```
+ansible-vault edit playbooks/karrot-dev/secrets.vars.yml --vault-password-file vault-password
+```
 
 ## linting
 
