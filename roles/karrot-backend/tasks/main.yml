@@ -36,7 +36,8 @@
     - reload nginx
 
 #------------------------------------------------------------------
-# initialize www directory
+# initialize basics
+# does not actually deploy site, but should be ready to after this
 
 - name: git repo
   git:
@@ -54,10 +55,22 @@
   args:
     creates: /var/www/{{ site }}/www/env
 
-- name: deploy ownership
+- name: deploy user group
+  user:
+    name: deploy
+    groups: "{{ site }}"
+    append: yes
+
+- name: allow deploy user to restart workers
+  copy:
+    dest: "/etc/sudoers.d/deploy_{{ site }}"
+    content: "%deploy ALL=(ALL) NOPASSWD: /bin/systemctl restart {{ site }}-worker.target\n"
+
+- name: www ownership
   file:
     dest: /var/www/{{ site }}/www
     state: directory
+    recurse: yes
     owner: deploy
     group: deploy
 
