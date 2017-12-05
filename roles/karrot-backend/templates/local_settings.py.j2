@@ -8,8 +8,25 @@ DATABASES = {
         'PORT': '5432',
     }
 }
+
 DEBUG = False
-ALLOWED_HOSTS = ['{{ server_name }}']
+ALLOWED_HOSTS = [
+    '{{ server_name }}'
+    {% if additional_allowed_hosts is defined %}
+    ,{% for entry in additional_allowed_hosts %}
+    '{{ entry }}'{% if not loop.last %},{% endif %}
+    {% endfor %}
+    {% endif %}
+]
+
+{% if csrf_trusted_origins is defined %}
+CSRF_TRUSTED_ORIGINS = [
+    {% for entry in csrf_trusted_origins %}
+    '{{ entry }}'{% if not loop.last %},{% endif %}
+    {% endfor %}
+]
+{% endif %}
+
 HOSTNAME = 'https://{{ server_name }}'
 STATIC_ROOT = '/var/www/{{ site }}/www/static/'
 
@@ -44,7 +61,7 @@ REDIS_HOST = os.environ.get('REDIS_HOST', 'localhost')
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://{}:6379/{{ redis_cache_db }}".format(REDIS_HOST),
+        "LOCATION": "redis://{}:6379/{{ redis_db }}".format(REDIS_HOST),
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
@@ -55,7 +72,7 @@ CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "asgi_redis.RedisChannelLayer",
         "CONFIG": {
-            "hosts": ["redis://{}:6379/{{ redis_channel_db }}".format(REDIS_HOST)],
+            "hosts": ["redis://{}:6379/{{ redis_db }}".format(REDIS_HOST)],
         },
         "ROUTING": "foodsaving.subscriptions.routing.channel_routing",
     },

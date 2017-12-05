@@ -6,14 +6,9 @@
     - secrets.vars.yml
   tasks:
 
-    - fail:
-        msg: You need to have at least ansible >= 2.4
-      when: |
-        not (
-          (ansible_version.major == 2 and ansible_version.minor >= 4)
-          or
-          ansible_version.major > 2
-        )
+    - name: check ansible version
+      include_role:
+        name: check-ansible-version
 
     - name: basic-site
       include_role:
@@ -31,9 +26,9 @@
           - karrot.foodsharing.tw
           - tw.foodsaving.world
 
-    - name: karrot
+    - name: karrot-backend
       include_role:
-        name: karrot
+        name: karrot-backend
       vars:
         site: foodsharing-taiwan
         server_name: app.foodsharing.tw
@@ -42,9 +37,10 @@
           - karrot.foodsharing.tw
         static_root: /home/deploy/karrot-frontend/release
         from_email_address: karrot.world <noreply@karrot.world>
-        redis_cache_db: 3
-        redis_channel_db: 4
+        redis_db: 3
         influxdb_database: fstaiwan
         postgresql_database: fstaiwan
         postgresql_user: fstaiwan
         workers: 4
+        csrf_trusted_origins:
+          - .foodsharing.tw
