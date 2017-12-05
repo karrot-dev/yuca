@@ -26,17 +26,17 @@ cp group_vars/all.yml.example group_vars/all.yml
 # edit contents of group_vars/all.yml
 ```
 
-Setup foodsharing taiwan (the only site configured for now):
+Setup karrot-dev (for example):
 
 ```
-./scripts/run playbooks/foodsharing-taiwan/setup.playbook.yml --ask-vault-pass
+./scripts/run playbooks/karrot-dev/setup.playbook.yml --ask-vault-pass
 ```
 
 ## adding another site
 
 ```
 cd playbooks
-cp -r foodsharing-taiwan your-new-site
+cp -r karrot-dev your-new-site
 ```
 
 Ensure `roles` is symlinked like so: `playbooks/your-new-site/roles -> roles`.
@@ -66,17 +66,17 @@ If you install [ansible-lint](https://github.com/willthames/ansible-lint) you ca
 
 I highly recommend using [pass](https://www.passwordstore.org/) as it works very nicely with the vault mechanism.
 
-For example, if you have the vault password store as `yuca.foodsharing-taiwan` you can create this file in `passwords/foodsharing-taiwan` (make sure to `chmod +x` it):
+For example, if you have the vault password store as `yuca.vault` you can create this file in `vault-password` (make sure to `chmod +x` it):
 
 ```
 #!/bin/sh
-pass yuca.foodsharing-taiwan
+pass yuca.vault
 ```
 
 Then use it with:
 
 ```
-./scripts/run playbooks/foodsharing-taiwan/setup.playbook.yml --vault-password-file passwords/foodsharing-taiwan
+./scripts/run playbooks/karrot-dev/setup.playbook.yml --vault-password-file vault-password
 ```
 
 Benefits:
