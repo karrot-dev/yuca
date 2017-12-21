@@ -1,0 +1,12 @@
+---
+
+- name: composer install
+  listen: deploy
+  become: true
+  become_user: {{ site }}
+  command: "composer {{ item }}"
+  args:
+    chdir: "/var/www/{{ site }}/www"
+
+  with_items:
+    - install

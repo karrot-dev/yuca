@@ -1,0 +1,34 @@
+---
+- name: kanthaus-online | setup
+  hosts: all
+  become: yes
+  vars_files:
+    - secrets.vars.yml
+  tasks:
+
+    - name: check ansible version
+      include_role:
+        name: check-ansible-version
+
+    - name: basic-site
+      include_role:
+        name: basic-site
+      vars:
+        site: kanthaus-online-grav
+
+    - name: letsencrypt
+      include_role:
+        name: letsencrypt
+      vars:
+        site: kanthaus-online-grav
+        dns:
+          - grav.kanthaus.online
+          - kanthaus.online
+          - www.kanthaus.online
+
+    - name: kanthaus-online
+      include_role:
+        name: grav
+      vars:
+        site: kanthaus-online-grav
+        server_name: grav.kanthaus.online

@@ -1,0 +1,18 @@
+---
+- name: kanthaus-online | deploy
+  hosts: all
+  become: yes
+  vars_files:
+    - secrets.vars.yml
+  tasks:
+
+    - name: check ansible version
+      include_role:
+        name: check-ansible-version
+
+    - name: deploy
+      include_role:
+        name: grav-deploy
+      vars:
+        site: kanthaus-online-grav
+        branch: grav
