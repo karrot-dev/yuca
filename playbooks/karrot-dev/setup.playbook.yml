@@ -24,7 +24,10 @@
         dns:
           - dev.karrot.world
           - dev.foodsaving.world
+          - devdev.foodsaving.world
           - karrot-dev.foodsaving.world
+          - dev.yunity.org
+          - mvp-proposal.yunity.org
 
     - name: karrot-backend
       include_role:
@@ -34,7 +37,10 @@
         server_name: dev.karrot.world
         redirects:
           - dev.foodsaving.world
+          - devdev.foodsaving.world
           - karrot-dev.foodsaving.world
+          - dev.yunity.org
+          - mvp-proposal.yunity.org
         static_root: /home/deploy/karrot-frontend/master
         from_email_address: karrot.world <noreply@karrot.world>
         redis_db: 4
