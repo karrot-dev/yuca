@@ -31,6 +31,7 @@
         name: karrot-backend
       vars:
         site: foodsharing-taiwan
+        site_name: Foodsharing Taiwan
         server_name: app.foodsharing.tw
         redirects:
           - tw.foodsaving.world

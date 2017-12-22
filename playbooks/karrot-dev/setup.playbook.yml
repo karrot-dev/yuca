@@ -34,6 +34,7 @@
         name: karrot-backend
       vars:
         site: karrot-dev
+        site_name: karrot.world beta
         server_name: dev.karrot.world
         redirects:
           - dev.foodsaving.world
