@@ -1,0 +1,17 @@
+{% if redirects is defined and redirects|length > 0 %}
+server {
+{% for entry in redirects %}
+    server_name {{ entry }};
+{% endfor %}
+
+    listen 443 ssl http2;
+    listen [::]:443 ssl http2;
+
+    ssl_certificate /var/www/{{ site }}/cert/fullchain.pem;
+    ssl_certificate_key /var/www/{{ site }}/cert/key.pem;
+
+    location / {
+        return 302 https://{{ server_name }}$request_uri;
+    }
+}
+{% endif %}

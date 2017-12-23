@@ -22,3 +22,50 @@
     - www
     - log
     - cert
+
+- name: generate list of DNS entries
+  set_fact:
+    dns: "{{ redirects }} + ['{{ server_name }}']"
+
+- name: cert/dns entries
+  copy:
+    dest: /var/www/{{ site }}/cert/dns
+    content: |
+      {% for entry in dns %}
+      {{ entry }}
+      {% endfor %}
+    backup: true
+  notify:
+    - generate cert
+
+- name: nginx config
+  when: setup_html_vhost is defined
+  template:
+    src: nginx.j2
+    dest: /etc/nginx/sites-available/{{ site }}
+  notify:
+    - reload nginx
+
+- name: nginx redirect config
+  template:
+    src: nginx-redirect.j2
+    dest: /etc/nginx/sites-available/{{ site }}-redirect
+  notify:
+    - reload nginx
+
+- name: nginx sites-enabled symlink
+  when: setup_html_vhost is defined
+  file:
+    src: /etc/nginx/sites-available/{{ site }}
+    dest: /etc/nginx/sites-enabled/{{ site }}
+    state: link
+  notify:
+    - reload nginx
+
+- name: nginx redirect sites-enabled symlink
+  file:
+    src: /etc/nginx/sites-available/{{ site }}-redirect
+    dest: /etc/nginx/sites-enabled/{{ site }}-redirect
+    state: link
+  notify:
+    - reload nginx
