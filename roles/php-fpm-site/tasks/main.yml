@@ -1,0 +1,17 @@
+---
+#---------------------------------------------------------
+# PHP pool
+
+- name: php fpm pool config
+  template:
+    src: php.j2
+    dest: /etc/php/7.0/fpm/pool.d/{{ site }}.conf
+  notify:
+    - reload php-fpm
+
+- name: nginx php upstream config
+  template:
+    src: nginx.j2
+    dest: /etc/nginx/sites-enabled/{{ site }}-php-upstream
+  notify:
+    - reload nginx

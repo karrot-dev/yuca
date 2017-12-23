@@ -2,8 +2,6 @@
 - name: kanthaus-online | deploy
   hosts: all
   become: yes
-  vars_files:
-    - secrets.vars.yml
   tasks:
 
     - name: check ansible version

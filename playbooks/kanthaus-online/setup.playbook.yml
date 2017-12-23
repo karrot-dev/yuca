@@ -2,8 +2,10 @@
 - name: kanthaus-online | setup
   hosts: all
   become: yes
-  vars_files:
-    - secrets.vars.yml
+  vars:
+    site: kanthaus-online-grav
+    server_name: grav.kanthaus.online
+    redirects: []
   tasks:
 
     - name: check ansible version
@@ -13,22 +15,13 @@
     - name: basic-site
       include_role:
         name: basic-site
-      vars:
-        site: kanthaus-online-grav
 
-    - name: letsencrypt
+    - name: php-fpm-site
       include_role:
-        name: letsencrypt
-      vars:
-        site: kanthaus-online-grav
-        dns:
-          - grav.kanthaus.online
-          - kanthaus.online
-          - www.kanthaus.online
+        name: php-fpm-site
 
     - name: kanthaus-online
       include_role:
-        name: grav
+        name: grav-php-site
       vars:
-        site: kanthaus-online-grav
         server_name: grav.kanthaus.online
