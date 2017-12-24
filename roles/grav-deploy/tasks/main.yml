@@ -1,0 +1,12 @@
+---
+
+- name: update code
+  git:
+    repo: https://github.com/kanthaus/kanthaus.online.git
+    dest: /var/www/{{ site }}/www
+    update: yes
+    version: "{{ branch }}"
+  become: yes
+  become_user: "{{ site }}"
+  notify:
+    - deploy

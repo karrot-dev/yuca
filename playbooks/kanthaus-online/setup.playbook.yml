@@ -1,0 +1,27 @@
+---
+- name: kanthaus-online | setup
+  hosts: all
+  become: yes
+  vars:
+    site: kanthaus-online-grav
+    server_name: grav.kanthaus.online
+    redirects: []
+  tasks:
+
+    - name: check ansible version
+      include_role:
+        name: check-ansible-version
+
+    - name: basic-site
+      include_role:
+        name: basic-site
+
+    - name: php-fpm-site
+      include_role:
+        name: php-fpm-site
+
+    - name: kanthaus-online
+      include_role:
+        name: grav-php-site
+      vars:
+        server_name: grav.kanthaus.online

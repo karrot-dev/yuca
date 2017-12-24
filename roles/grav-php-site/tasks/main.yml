@@ -1,0 +1,6 @@
+- name: nginx config
+  template:
+    src: nginx.j2
+    dest: /etc/nginx/sites-available/{{ site }}
+  notify:
+    - reload nginx

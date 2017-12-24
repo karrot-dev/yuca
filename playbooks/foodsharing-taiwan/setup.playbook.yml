@@ -4,6 +4,12 @@
   become: yes
   vars_files:
     - secrets.vars.yml
+  vars:
+    site: foodsharing-Taiwan
+    server_name: app.foodsharing.tw
+    redirects:
+      - tw.foodsaving.world
+      - karrot.foodsharing.tw
   tasks:
 
     - name: check ansible version
@@ -13,29 +19,12 @@
     - name: basic-site
       include_role:
         name: basic-site
-      vars:
-        site: foodsharing-taiwan
-
-    - name: letsencrypt
-      include_role:
-        name: letsencrypt
-      vars:
-        site: foodsharing-taiwan
-        dns:
-          - app.foodsharing.tw
-          - karrot.foodsharing.tw
-          - tw.foodsaving.world
 
     - name: karrot-backend
       include_role:
         name: karrot-backend
       vars:
-        site: foodsharing-taiwan
         site_name: Foodsharing Taiwan
-        server_name: app.foodsharing.tw
-        redirects:
-          - tw.foodsaving.world
-          - karrot.foodsharing.tw
         static_root: /home/deploy/karrot-frontend/release
         from_email_address: karrot.world <noreply@karrot.world>
         redis_db: 3

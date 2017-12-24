@@ -1,0 +1,17 @@
+---
+
+- name: composer install
+  listen: deploy
+  become: true
+  become_user: "{{ site }}"
+  composer:
+    command: install
+    working_dir: "/var/www/{{ site }}/www"
+
+- name: clear grav cache
+  listen: deploy
+  become: true
+  become_user: "{{ site }}"
+  command: "bin/grav clearcache"
+  args:
+    chdir: "/var/www/{{ site }}/www"
