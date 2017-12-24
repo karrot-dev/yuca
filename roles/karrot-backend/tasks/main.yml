@@ -85,6 +85,28 @@
     - restart app
 
 #------------------------------------------------------------------
+# cron jobs
+
+- name: update pickup dates cronjob
+  cron:
+    name: "{{ site }} | update pickup dates"
+    minute: "0"
+    job: "cd /var/www/{{ site }}/www/ && env/bin/python manage.py update_pickup_dates"
+    user: "{{ site }}"
+
+- name: process finished pickup dates cronjob
+  cron:
+    name: "{{ site }} | process finished pickup dates"
+    job: "cd /var/www/{{ site }}/www/ && env/bin/python manage.py process_finished_pickup_dates"
+    user: "{{ site }}"
+
+- name: send notifications cronjob
+  cron:
+    name: "{{ site }} | send notifications"
+    job: "cd /var/www/{{ site }}/www/ && env/bin/python manage.py send_notifications"
+    user: "{{ site }}"
+
+#------------------------------------------------------------------
 # systemd servics
 
 - name: systemd daphne service
