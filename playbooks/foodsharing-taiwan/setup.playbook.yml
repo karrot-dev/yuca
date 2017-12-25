@@ -5,7 +5,7 @@
   vars_files:
     - secrets.vars.yml
   vars:
-    site: foodsharing-Taiwan
+    site: foodsharing-taiwan
     server_name: app.foodsharing.tw
     redirects:
       - tw.foodsaving.world
