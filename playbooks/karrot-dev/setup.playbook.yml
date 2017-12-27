@@ -34,7 +34,6 @@
         static_root: /home/deploy/karrot-frontend/master
         from_email_address: karrot.world <noreply@karrot.world>
         redis_db: 4
-        influxdb_database: karrot-dev
         postgresql_database: fstool-dev
         postgresql_user: fstool-dev
         workers: 4

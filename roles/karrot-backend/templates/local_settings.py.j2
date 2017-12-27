@@ -32,11 +32,15 @@ STATIC_ROOT = '/var/www/{{ site }}/www/static/'
 SITE_NAME = '{{ site_name }}'
 
 DEFAULT_FROM_EMAIL = '{{ from_email_address }}'
+{% if influxdb_database is not defined %}
+INFLUXDB_DISABLED = True
+{% endif %}
 INFLUXDB_HOST = '127.0.0.1'
 INFLUXDB_PORT = '8086'
 INFLUXDB_USER = ''
 INFLUXDB_PASSWORD = ''
-INFLUXDB_DATABASE = '{{ influxdb_database }}'
+
+INFLUXDB_DATABASE = '{{ influxdb_database|default('') }}'
 INFLUXDB_TAGS_HOST = 'yuca'
 INFLUXDB_TIMEOUT = 2
 INFLUXDB_USE_CELERY = False

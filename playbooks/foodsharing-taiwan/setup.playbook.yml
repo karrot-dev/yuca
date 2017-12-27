@@ -28,7 +28,6 @@
         static_root: /home/deploy/karrot-frontend/release
         from_email_address: karrot.world <noreply@karrot.world>
         redis_db: 3
-        influxdb_database: fstaiwan
         postgresql_database: fstaiwan
         postgresql_user: fstaiwan
         workers: 4
