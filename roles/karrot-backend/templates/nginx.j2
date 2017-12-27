@@ -23,7 +23,11 @@ server {
       expires max;
     }
 
-    location ~* ^.+\.css$ {
+    location ~* ^app\..+\.css$ {
+      expires max;
+    }
+
+    location /fonts {
       expires max;
     }
 
