@@ -1,0 +1,36 @@
+---
+
+#------------------------------------------------------------------
+# database
+
+- postgresql_db:
+    name: "{{ postgresql_database }}"
+    encoding: UTF-8
+  become: true
+  become_user: postgres
+
+- postgresql_user:
+    db: "{{ postgresql_database }}"
+    name: "{{ postgresql_user }}"
+    password: "{{ postgresql_password }}"
+    priv: ALL
+  become: true
+  become_user: postgres
+
+
+- name: backup script
+  template:
+    src: backup.sh.j2
+    dest: /var/www/{{ site }}/backup/backup.sh
+
+
+#------------------------------------------------------------------
+# cron jobs
+
+- name: backup cronjob
+  cron:
+    name: "{{ site }} | backup"
+    minute: "0"
+    hour: "3"
+    job: "cd /var/www/{{ site }}/backup/ && ./backup.sh > /dev/null"
+    user: "{{ site }}"

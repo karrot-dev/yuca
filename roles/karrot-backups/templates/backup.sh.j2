@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+set -e
+set -o pipefail
+
+# settings
+filename=foodsaving-$(date -I).db.enc
+testdb={{ postgresql_database }}_test_backup_$(date -I)
+
+# dump database and encrypt
+pg_dump -Fc {{ postgresql_database }} | gpg --batch --no-tty --quiet -e -r {{ gpg_id }} > $filename && \
+echo dumped into $filename && \
+# check if it decrypts and imports into new database
+createdb $testdb && \
+gpg --batch --no-tty --quiet -d $filename | pg_restore -d $testdb && \
+dropdb $testdb && \
+echo checked decrypting and import into $testdb
+
+# copy to offsite
+rsync -avz $filename {{ offsite_server }} && \
+echo copied to offsite location
