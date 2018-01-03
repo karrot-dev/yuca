@@ -4,8 +4,8 @@
   become: yes
   vars:
     site: kanthaus-online-grav
-    server_name: grav.kanthaus.online
-    redirects: []
+    server_name: kanthaus.online
+    redirects: [www.kanthaus.online, grav.kanthaus.online]
   tasks:
 
     - name: check ansible version
@@ -23,5 +23,3 @@
     - name: kanthaus-online
       include_role:
         name: grav-php-site
-      vars:
-        server_name: grav.kanthaus.online

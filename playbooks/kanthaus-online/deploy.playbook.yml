@@ -13,4 +13,4 @@
         name: grav-deploy
       vars:
         site: kanthaus-online-grav
-        branch: grav
+        branch: master
