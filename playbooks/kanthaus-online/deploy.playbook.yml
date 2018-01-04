@@ -13,4 +13,5 @@
         name: grav-deploy
       vars:
         site: kanthaus-online-grav
+        repo: https://github.com/kanthaus/kanthaus.online.git
         branch: master
