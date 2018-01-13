@@ -1,3 +1,5 @@
+# This file is managed by ansible. It belongs to {{ role_path }}.
+# See https://github.com/yunity/yuca to change.
 {% if redirects is defined and redirects|length > 0 %}
 server {
 {% for entry in redirects %}

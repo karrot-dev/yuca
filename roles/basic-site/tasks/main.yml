@@ -31,6 +31,8 @@
   copy:
     dest: /var/www/{{ site }}/cert/dns
     content: |
+      # This file is managed by ansible. It belongs to {{ role_path }}.
+      # See https://github.com/yunity/yuca to change.
       {% for entry in dns %}
       {{ entry }}
       {% endfor %}

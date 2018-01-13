@@ -23,8 +23,6 @@
     - name: basic-site
       include_role:
         name: basic-site
-      vars:
-        site: karrot-dev
 
     - name: karrot-backend
       include_role:
