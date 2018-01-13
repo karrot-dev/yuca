@@ -64,4 +64,8 @@ server {
         root /var/www/{{ site }}/www/;
     }
 
+    location /media/ {
+        alias /var/www/{{ site }}/www/{{ uploads_directory }}/;
+    }
+
 }

@@ -7,6 +7,7 @@
   vars:
     site: karrot-dev
     server_name: dev.karrot.world
+    uploads_directory: uploads
     redirects:
       - dev.foodsaving.world
       - devdev.foodsaving.world
