@@ -17,6 +17,12 @@ server {
 
     root {{ static_root }};
 
+    {% if apk is defined %}
+    location =/app.apk {
+        alias {{ apk }};
+    }
+    {% endif %}
+
     location /js {
       expires max;
     }

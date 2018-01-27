@@ -31,6 +31,7 @@
       vars:
         site_name: karrot.world beta
         static_root: /home/deploy/karrot-frontend/master
+        apk: /home/deploy/karrot-app/master/app.apk
         from_email_address: karrot.world <noreply@karrot.world>
         redis_db: 4
         postgresql_database: fstool-dev
