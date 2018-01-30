@@ -5,6 +5,11 @@
     src: backup.sh.j2
     dest: /var/www/{{ site }}/backup/backup.sh
 
+- name: generate ssh key for site user
+  user:
+    name: "{{ site }}"
+    generate_ssh_key: True
+
 
 #------------------------------------------------------------------
 # cron jobs
