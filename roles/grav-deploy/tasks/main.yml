@@ -2,7 +2,7 @@
 
 - name: update code
   git:
-    repo: https://github.com/kanthaus/kanthaus.online.git
+    repo: "{{ repo }}"
     dest: /var/www/{{ site }}/www
     update: yes
     version: "{{ branch }}"

@@ -7,6 +7,7 @@
   vars:
     site: karrot-dev
     server_name: dev.karrot.world
+    uploads_directory: uploads
     redirects:
       - dev.foodsaving.world
       - devdev.foodsaving.world
@@ -23,8 +24,6 @@
     - name: basic-site
       include_role:
         name: basic-site
-      vars:
-        site: karrot-dev
 
     - name: karrot-backend
       include_role:
@@ -32,6 +31,7 @@
       vars:
         site_name: karrot.world beta
         static_root: /home/deploy/karrot-frontend/master
+        apk: /home/deploy/karrot-app/master/app.apk
         from_email_address: karrot.world <noreply@karrot.world>
         redis_db: 4
         postgresql_database: fstool-dev

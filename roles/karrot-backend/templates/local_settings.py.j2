@@ -1,3 +1,5 @@
+# This file is managed by ansible. It belongs to {{ role_path }}.
+# See https://github.com/yunity/yuca to change.
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -30,6 +32,8 @@ CSRF_TRUSTED_ORIGINS = [
 HOSTNAME = 'https://{{ server_name }}'
 STATIC_ROOT = '/var/www/{{ site }}/www/static/'
 SITE_NAME = '{{ site_name }}'
+MEDIA_ROOT = './{{ uploads_directory }}/'
+MEDIA_URL = '/media/'
 
 DEFAULT_FROM_EMAIL = '{{ from_email_address }}'
 {% if influxdb_database is not defined %}

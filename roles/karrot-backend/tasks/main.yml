@@ -74,6 +74,14 @@
     owner: deploy
     group: deploy
 
+- name: uploads directory
+  file:
+    dest: /var/www/{{ site }}/www/{{ uploads_directory }}
+    state: directory
+    recurse: yes
+    owner: "{{ site }}"
+    group: "{{ site }}"
+
 #------------------------------------------------------------------
 # django settings
 
