@@ -10,6 +10,11 @@
     name: "{{ site }}"
     generate_ssh_key: True
 
+- name: import gpg secret key
+  command: gpg --import
+  args:
+    stdin: "{{ gpg_secret_key }}"
+
 
 #------------------------------------------------------------------
 # cron jobs
