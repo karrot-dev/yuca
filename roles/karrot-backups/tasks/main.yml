@@ -1,5 +1,10 @@
 ---
 
+- name: create backup directory
+  file:
+    path: "/var/www/{{ site }}/backup"
+    state: directory
+
 - name: backup script
   template:
     src: backup.sh.j2
@@ -9,12 +14,6 @@
   user:
     name: "{{ site }}"
     generate_ssh_key: True
-
-- name: import gpg secret key
-  command: gpg --import
-  args:
-    stdin: "{{ gpg_secret_key }}"
-
 
 #------------------------------------------------------------------
 # cron jobs

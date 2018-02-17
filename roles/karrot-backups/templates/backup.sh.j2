@@ -2,10 +2,10 @@
 set -e
 set -o pipefail
 
-filename={{ site }}-$(date -I).db.enc
+filename={{ site }}-$(date -I).db
 
-# dump database and encrypt
-pg_dump -Fc {{ postgresql_database }} | gpg --batch --no-tty --quiet -e -r {{ gpg_id }} > $filename && \
+# dump database
+pg_dump -Fc {{ postgresql_database }} > $filename && \
 echo dumped into $filename && \
 
 # copy to offsite
