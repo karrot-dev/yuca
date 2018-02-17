@@ -8,6 +8,7 @@
     site: karrot-dev
     server_name: dev.karrot.world
     uploads_directory: uploads
+    branch: master
     redirects:
       - dev.foodsaving.world
       - devdev.foodsaving.world
@@ -20,6 +21,10 @@
     - name: check ansible version
       include_role:
         name: check-ansible-version
+
+    - name: server-base
+      include_role:
+        name: server-base
 
     - name: basic-site
       include_role:
@@ -42,3 +47,7 @@
         csrf_trusted_origins:
           - .karrot.world
           - .netlify.com
+
+    - name: karrot-backend-deploy
+      include_role:
+        name: karrot-backend-deploy

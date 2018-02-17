@@ -15,6 +15,9 @@ server {
     ssl_certificate /var/www/{{ site }}/cert/fullchain.pem;
     ssl_certificate_key /var/www/{{ site }}/cert/key.pem;
 
+    access_log /var/www/{{ site }}/log/access.log;
+    error_log /var/www/{{ site }}/log/error.log;
+
     root {{ static_root }};
 
     {% if apk is defined %}

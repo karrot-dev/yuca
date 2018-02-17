@@ -1,0 +1,27 @@
+---
+
+- name: create backup directory
+  file:
+    path: "/var/www/{{ site }}/backup"
+    state: directory
+
+- name: backup script
+  template:
+    src: backup.sh.j2
+    dest: /var/www/{{ site }}/backup/backup.sh
+
+- name: generate ssh key for site user
+  user:
+    name: "{{ site }}"
+    generate_ssh_key: True
+
+#------------------------------------------------------------------
+# cron jobs
+
+- name: backup cronjob
+  cron:
+    name: "{{ site }} | backup"
+    minute: "0"
+    hour: "3"
+    job: "cd /var/www/{{ site }}/backup/ && ./backup.sh > /dev/null"
+    user: "{{ site }}"

@@ -1,9 +1,0 @@
-#!/bin/bash
-
-set -eu
-
-root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-
-ansible-playbook \
-  -i $root/inventory \
-  "$@"

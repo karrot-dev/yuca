@@ -1,0 +1,53 @@
+---
+- name: karrot.world | setup
+  hosts: all
+  become: yes
+  vars_files:
+    - secrets.vars.yml
+  vars:
+    site: karrot-world
+    server_name: karrot.world
+    uploads_directory: uploads
+    branch: production
+    redirects:
+      - alpha.foodsaving.world
+      - app.foodsaving.world
+      - www.karrot.world
+      - fstool.yunity.org
+  tasks:
+
+    - name: check ansible version
+      include_role:
+        name: check-ansible-version
+
+    - name: server-base
+      include_role:
+        name: server-base
+
+    - name: basic-site
+      include_role:
+        name: basic-site
+
+    - name: karrot-backend
+      include_role:
+        name: karrot-backend
+      vars:
+        site_name: karrot.world
+        static_root: /home/deploy/karrot-frontend/release
+        from_email_address: karrot.world <noreply@karrot.world>
+        redis_db: 2
+        influxdb_database: fstool
+        postgresql_database: fstool
+        postgresql_user: fstool
+        workers: 4
+
+    - name: karrot-backend-deploy
+      include_role:
+        name: karrot-backend-deploy
+
+    - name: karrot-backups
+      include_role:
+        name: karrot-backups
+      vars:
+        postgresql_database: fstool
+        offsite_server: tiltec@81.30.158.213:backup/

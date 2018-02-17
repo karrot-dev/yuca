@@ -40,6 +40,15 @@
   notify:
     - generate cert
 
+- name: copy selfsigned cert
+  copy:
+    dest: /var/www/{{ site }}/cert/{{ item }}
+    src: "{{ item }}"
+  with_items:
+    - fullchain.pem
+    - key.pem
+  when: we_are_in_vagrant
+
 - name: nginx config
   when: setup_html_vhost is defined
   template:
