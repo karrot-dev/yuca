@@ -90,3 +90,9 @@
     state: link
   notify:
     - reload nginx
+
+- name: "Adding user 'www-data' to group '{{ site }}'"
+  user:
+    name: www-data
+    groups: "{{ site }}"
+    append: yes
