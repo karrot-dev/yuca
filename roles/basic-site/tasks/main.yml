@@ -14,10 +14,20 @@
     home: "/var/www/{{ site }}"
     shell: /bin/false
 
+- name: set home directory permissions
+  file:
+    path: "/var/www/{{ site }}"
+    owner: "{{ site }}"
+    group: "{{ site }}"
+    mode: "u=rwx,g=rx,o="
 - name: directories
   file:
     path: "/var/www/{{ site }}/{{ item }}"
     state: directory
+    owner: "{{ site }}"
+    group: "{{ site }}"
+    mode: "u=rwx,g=rx,o="
+
   with_items:
     - www
     - log
