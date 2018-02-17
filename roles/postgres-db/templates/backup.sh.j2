@@ -9,6 +9,9 @@ pg_dump -Fc {{ postgres_database }} | openssl enc -e -aes-256-cbc -kfile /var/ww
 echo dumped into $filename
 
 # copy to offsite
-rsync -avz $filename {{ backup_user }}@{{ backup_host }}:{{ backup_path }} && \
+rsync -avz $filename {{ backup_user }}@{{ backup_host }}:{{ backup_path }}
 echo copied to offsite location
+
+# delete backup locally
+rm $filename
 
