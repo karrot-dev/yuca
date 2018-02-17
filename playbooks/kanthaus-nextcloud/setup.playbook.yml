@@ -8,19 +8,17 @@
     site: kanthaus-nextcloud
     server_name: cloud.kanthaus.online
     redirects: []
-    postgres_user: kanthaus-nextcloud
-    postgres_database: kanthaus-nextcloud
-
+    postgresql_user: kanthaus-nextcloud
+    postgresql_database: kanthaus-nextcloud
 
   tasks:
-
     - name: check ansible version
       include_role:
         name: check-ansible-version
 
-    # - name: basic-site
-    #   include_role:
-    #     name: basic-site
+    - name: basic-site
+      include_role:
+        name: basic-site
 
     - name: php-fpm-site
       include_role:
@@ -29,7 +27,7 @@
     - name: postgres-db
       include_role:
         name: postgres-db
-      vars: 
+      vars:
         backup_host: tor-relay.chandi.it
         backup_user: tiltec
         backup_path: ~/backup/

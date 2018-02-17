@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+set -e
+set -o pipefail
+
+filename={{ site }}-$(date -I).db.enc
+
+# dump database and encrypt
+pg_dump -Fc {{ postgresql_database }} | openssl enc -e -aes-256-cbc -kfile /var/www/{{ site }}/backup.key -out archive/$filename
+echo dumped into $filename
+
+# copy to offsite
+rsync -avz archive/$filename {{ backup_user }}@{{ backup_host }}:{{ backup_path }}
+echo copied to offsite location

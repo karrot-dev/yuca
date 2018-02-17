@@ -1,13 +1,13 @@
 ---
 
 - name: Check Nextcloud installed
-  stat: 
+  stat:
     path: "{{ nextcloud_webroot }}/index.php"
   register: nc_nextcloud_installed
 
 - block:
   - name: system packages
-    package: 
+    package:
       name: "{{ item }}"
       state: present
     with_items:
@@ -30,9 +30,9 @@
 
   - name: "move files"
     shell: "cp -r /tmp/nextcloud/* {{ nextcloud_webroot }}/ && chown -R {{ site }}:{{ site }} {{ nextcloud_webroot }}"
-    
+
   - name: "Remove nextcloud archive files"
-    file: 
+    file:
       path: /tmp/nextcloud
       state: absent
 
@@ -45,9 +45,9 @@
       php occ maintenance:install
       --database=pgsql
       --database-host=localhost
-      --database-name={{ postgres_database }}
-      --database-user={{ postgres_user }}
-      --database-pass={{ postgres_password }}
+      --database-name={{ postgresql_database }}
+      --database-user={{ postgresql_user }}
+      --database-pass={{ postgresql_password }}
       --admin-user={{ nextcloud_admin_user }}
       --admin-pass={{ nextcloud_admin_password }}
       --data-dir={{ nextcloud_data_dir }}
@@ -60,7 +60,7 @@
   template:
     src: nginx.j2
     dest: /etc/nginx/sites-available/{{ site }}
-  notify: 
+  notify:
     - reload nginx
 
 
@@ -70,7 +70,7 @@
   args:
     chdir: "{{ nextcloud_webroot }}"
   with_indexed_items: "{{ nextcloud_trusted_domains }}"
-  
+
 
 - name: "cronjob"
   cron:

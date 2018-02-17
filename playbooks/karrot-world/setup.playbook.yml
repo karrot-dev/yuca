@@ -14,8 +14,10 @@
       - app.foodsaving.world
       - www.karrot.world
       - fstool.yunity.org
-  tasks:
+    postgresql_database: fstool
+    postgresql_user: fstool
 
+  tasks:
     - name: check ansible version
       include_role:
         name: check-ansible-version
@@ -28,6 +30,15 @@
       include_role:
         name: basic-site
 
+    - name: postgresql-db
+      include_role:
+        name: postgresql-db
+      vars:
+        backup_host: tor-relay.chandi.it
+        backup_user: tiltec
+        backup_path: ~/backup/
+        # backup_password set by secrets.vars.yml
+
     - name: karrot-backend
       include_role:
         name: karrot-backend
@@ -37,17 +48,8 @@
         from_email_address: karrot.world <noreply@karrot.world>
         redis_db: 2
         influxdb_database: fstool
-        postgresql_database: fstool
-        postgresql_user: fstool
         workers: 4
 
     - name: karrot-backend-deploy
       include_role:
         name: karrot-backend-deploy
-
-    - name: karrot-backups
-      include_role:
-        name: karrot-backups
-      vars:
-        postgresql_database: fstool
-        offsite_server: tiltec@81.30.158.213:backup/
