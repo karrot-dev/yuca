@@ -1,11 +1,38 @@
 ---
 
+- name: install dependencies
+  apt:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - postgresql
+    - python-psycopg2 # needed for ansible postgresql module
+    - git
+    - virtualenv
+    - build-essential # for pip to build some libraries
+    - python3
+    - python3-dev
+    - redis-server
+
 #------------------------------------------------------------------
 # database
+
+- name: Start Redis and enable at boot
+  service:
+    name: redis-server
+    enabled: yes
+    state: started
+
+- name: Start PostgreSQL and enable at boot
+  service:
+    name: postgresql
+    enabled: yes
+    state: started
 
 - postgresql_db:
     name: "{{ postgresql_database }}"
     encoding: UTF-8
+    template: template0
   become: true
   become_user: postgres
 
@@ -35,6 +62,18 @@
   notify:
     - reload nginx
 
+- name: create frontend directory
+  file:
+    path: "{{ static_root }}"
+    state: directory
+  when: we_are_in_vagrant
+
+- name: dummy frontend file
+  copy:
+    content: hello
+    dest: "{{ static_root }}/index.html"
+  when: we_are_in_vagrant
+
 #------------------------------------------------------------------
 # initialize basics
 # does not actually deploy site, but should be ready to after this
@@ -54,6 +93,19 @@
       /var/www/{{ site }}/www/env
   args:
     creates: /var/www/{{ site }}/www/env
+
+- name: install tools
+  pip:
+    name: "{{ item }}"
+    virtualenv: "/var/www/{{ site }}/www/env"
+  with_items:
+    - setuptools
+    - pip-tools
+
+- name: pip sync
+  command: env/bin/pip-sync
+  args:
+    chdir: "/var/www/{{ site }}/www"
 
 - name: deploy user group
   user:

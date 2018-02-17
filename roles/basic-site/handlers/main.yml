@@ -14,6 +14,7 @@
       --tos_sha256 cc88d8d9517f490191401e7b54e9ffd12a2b9082ec7a1d4cec6101f9f1647e7b
   args:
     chdir: /var/www/{{ site }}/cert
+  when: not (we_are_in_vagrant|default(False))
   notify:
     - reload nginx
 

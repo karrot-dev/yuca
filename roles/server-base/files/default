@@ -1,0 +1,19 @@
+# This file is managed by ansible. It belongs to {{ role_path }}.
+# See https://github.com/yunity/yuca to change.
+
+server {
+	listen 80 default_server;
+	listen [::]:80 default_server;
+	server_name _;
+
+	root /var/www/html;
+
+	location /.well-known/ {
+		allow all;
+		try_files $uri $uri/;
+	}
+
+	location / {
+		return 301 https://$host$request_uri;
+	}
+}
