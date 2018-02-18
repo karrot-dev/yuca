@@ -83,7 +83,8 @@
   git:
     repo: https://github.com/yunity/foodsaving-backend.git
     dest: /var/www/{{ site }}/www
-    update: no
+    update: yes
+    version: "{{ branch }}"
 
 - name: virtualenv
   command: >
@@ -108,32 +109,15 @@
   args:
     chdir: "/var/www/{{ site }}/www"
 
-- name: deploy user group
-  user:
-    name: deploy
-    groups: "{{ site }}"
-    append: yes
-
-- name: allow deploy user to restart workers
+- name: allow user to restart workers
   copy:
     dest: "/etc/sudoers.d/deploy_{{ site }}"
-    content: "%deploy ALL=(ALL) NOPASSWD: /bin/systemctl restart {{ site }}-worker.target\n"
+    content: "%{{ site }} ALL=(ALL) NOPASSWD: /bin/systemctl restart {{ site }}-worker.target\n"
 
-- name: www ownership
-  file:
-    dest: /var/www/{{ site }}/www
-    state: directory
-    recurse: yes
-    owner: deploy
-    group: deploy
-
-- name: uploads directory
+- name: make uploads directory
   file:
     dest: /var/www/{{ site }}/www/{{ uploads_directory }}
     state: directory
-    recurse: yes
-    owner: "{{ site }}"
-    group: "{{ site }}"
 
 #------------------------------------------------------------------
 # django settings

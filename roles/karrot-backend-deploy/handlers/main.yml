@@ -26,15 +26,6 @@
     - collectstatic --clear --no-input
     - compilemessages
 
-- name: www ownership
-  listen: deploy
-  file:
-    dest: /var/www/{{ site }}/www
-    state: directory
-    recurse: yes
-    owner: deploy
-    group: deploy
-
 - name: restart workers
   listen: restart app
   service:

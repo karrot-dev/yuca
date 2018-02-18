@@ -24,9 +24,9 @@
       include_role:
         name: php-fpm-site
 
-    - name: postgres-db
+    - name: postgresql-db
       include_role:
-        name: postgres-db
+        name: postgresql-db
       vars:
         backup_host: tor-relay.chandi.it
         backup_user: tiltec
