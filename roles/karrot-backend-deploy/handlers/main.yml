@@ -27,7 +27,7 @@
     - compilemessages
 
 - name: restart workers
-  listen: restart app
+  listen: deploy
   service:
     name: "{{ site }}-worker.target"
     state: restarted
