@@ -15,6 +15,8 @@
       - karrot-dev.foodsaving.world
       - dev.yunity.org
       - mvp-proposal.yunity.org
+    postgresql_database: fstool-dev
+    postgresql_user: fstool-dev
 
   tasks:
 
@@ -30,6 +32,10 @@
       include_role:
         name: basic-site
 
+    - name: postgresql-db
+      include_role:
+        name: postgresql-db
+
     - name: karrot-backend
       include_role:
         name: karrot-backend
@@ -39,14 +45,13 @@
         apk: /home/deploy/karrot-app/master/app.apk
         from_email_address: karrot.world <noreply@karrot.world>
         redis_db: 4
-        postgresql_database: fstool-dev
-        postgresql_user: fstool-dev
         workers: 4
         additional_allowed_hosts:
           - .netlify.com
         csrf_trusted_origins:
           - .karrot.world
           - .netlify.com
+        deploy_public_key: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDCFPeaQC8udTj1ydWTlKQ2H5qePbVR+9rlUizGn9R58Mjteiijp/oNldDRzR0AHQjTEbufKkKcGsoT+oNWzsfUE+YWZB/06woKwsjhQPNBN/cvbOnwnFBwQsn/8S/nU7sIb4+2CGPC8VWhkUAJUuYZkbN8nPPx6B9Aj48Hq5oBpZNw2K1fornBXntgRA+zTL5NYBiFucKdwnt+yw49tJYP3OuBD+TTNk5Rg7HEXqcMDoK9hdZIk7PIDLGyg0qGcbaaPziP3zwGBfCRH58xVJQ8DwRoQLnsjj6HzW+nx04P0bhbqSKIRUd8b1HyyOxBwsDUgl94yn3eaR5qB/OfN0Xs4lTDX3pskXQuW8z7/z5xni9Gf+lYI/MImGpddS64GxrfrMgIr9sgPgaPkuLQ8eNOUphkv+gOHvGSeHH9mWRlreIlp9I47vb1petUBv3ac9LEN416lfY8j/Zpl8S8BE2ld0UYT1pa2Dypb/lZ8NZqnE0tZjqJhEWXLH79wsPre3voQElX6/RAnhfu7/Gn0KbrHz7psUtLlRrQflyTCv00G7OaMIUbH3PPRMGGcxuW2RpfmxNIGJ3Iz8DxkaeE5jYNTMXGwUgeQ2HlM8Q5C3UA1xQM5+EhU7T63i3RHeGrPseFT1zQ/9xLG+IyT2t88FM3FcbZBFfxysAtuQ0fAD1OkQ== yunity circleci"
 
     - name: karrot-backend-deploy
       include_role:

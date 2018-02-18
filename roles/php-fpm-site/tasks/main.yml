@@ -1,6 +1,15 @@
 ---
 #---------------------------------------------------------
 # PHP pool
+- name: php packages
+  package: 
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - "php7.0"
+    - "php7.0-fpm"
+  notify:
+    - reload php-fpm
 
 - name: php fpm pool config
   template:

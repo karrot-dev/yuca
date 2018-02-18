@@ -1,0 +1,84 @@
+---
+- name: PostgreSQL packages are installed
+  package:
+    name: "{{ item }}"
+    state: installed
+  with_items:
+    - postgresql
+    - python-psycopg2
+
+- name: Start PostgreSQL and enable at boot
+  service:
+    name: postgresql
+    enabled: yes
+    state: started
+
+- name: role
+  postgresql_user:
+    db: "{{ postgresql_database }}"
+    name: "{{ postgresql_user }}"
+    password: "{{ postgresql_password }}"
+    encrypted: yes
+    state: present
+    role_attr_flags: CREATEDB
+  become: true
+  become_user: postgres
+
+- name: database
+  postgresql_db:
+    name: "{{ postgresql_database }}"
+    encoding: UTF-8
+    template: template0
+    state: present
+    owner: "{{ postgresql_user }}"
+  become: true
+  become_user: postgres
+
+- block:
+  - name: generate ssh key for site user
+    user:
+      name: "{{ site }}"
+      generate_ssh_key: True
+      ssh_key_type: ed25519
+    notify:
+      - print ssh key
+
+  - name: create backup directory
+    file:
+      path: "/var/www/{{ site }}/backup/archive"
+      state: directory
+
+  - name: install backup script
+    template:
+      src: backup.sh.j2
+      dest: /var/www/{{ site }}/backup/backup.postgres.sh
+      owner: "{{ site }}"
+      group: "{{ site }}"
+      mode: "770"
+
+  - name: "add backup server to known hosts"
+    lineinfile:
+      dest: "/var/www/{{ site }}/.ssh/known_hosts"
+      create: yes
+      state: present
+      line: "{{ lookup('pipe', 'ssh-keyscan {{ backup_host }}') }}"
+      regexp: "^{{ backup_host }}"
+      owner: "{{ site }}"
+      group: "{{ site }}"
+
+  - name: setup backup password file
+    copy:
+      dest: "/var/www/{{ site }}/backup/backup.key"
+      content: "{{ backup_password }}"
+      mode: "600"
+      owner: "{{ site }}"
+
+  - name: create backup cronjob
+    cron:
+      name: "{{ site }} | backup"
+      minute: "0"
+      hour: "3"
+      job: "cd /var/www/{{ site }}/backup/ && ./backup.postgres.sh > /dev/null"
+      user: "{{ site }}"
+
+  when: backup_host is defined

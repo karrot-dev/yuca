@@ -1,5 +1,5 @@
-# This file is managed by ansible. It belongs to {{ role_path }}.
-# See https://github.com/yunity/yuca to change.
+; This file is managed by ansible. It belongs to {{ role_path }}.
+; See https://github.com/yunity/yuca to change.
 [{{ site }}]
 prefix = /var/www/{{ site }}
 user = {{ site }}
@@ -22,3 +22,8 @@ php_admin_value[memory_limit] = 64M
 php_admin_value[mbstring.func_overload] = 0
 php_admin_value[default_charset] = UTF-8
 php_admin_value[output_buffering] = 0
+env[HOSTNAME] = $HOSTNAME
+env[PATH] = /usr/local/bin:/usr/bin:/bin
+env[TMP] = /tmp
+env[TMPDIR] = /tmp
+env[TEMP] = /tmp

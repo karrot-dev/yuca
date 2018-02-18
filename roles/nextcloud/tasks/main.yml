@@ -1,0 +1,88 @@
+---
+
+- name: Check Nextcloud installed
+  stat:
+    path: "{{ nextcloud_webroot }}/index.php"
+  register: nc_nextcloud_installed
+
+- block:
+  - name: system packages
+    package:
+      name: "{{ item }}"
+      state: present
+    with_items:
+      - "php7.0-gd"
+      - "php7.0-imap"
+      - "php7.0-json"
+      - "php7.0-curl"
+      - "php7.0-intl"
+      - "php7.0-mcrypt"
+      - "php7.0-pgsql"
+      - "unzip"
+    notify:
+      - reload php-fpm
+
+  - name: "Download"
+    unarchive:
+      copy: no
+      src: "https://download.nextcloud.com/server/releases/latest.zip"
+      dest: "/tmp/"
+
+  - name: "move files"
+    shell: "cp -r /tmp/nextcloud/* {{ nextcloud_webroot }}/ && chown -R {{ site }}:{{ site }} {{ nextcloud_webroot }}"
+
+  - name: "Remove nextcloud archive files"
+    file:
+      path: /tmp/nextcloud
+      state: absent
+
+  when: not nc_nextcloud_installed.stat.exists
+
+
+- name: "Run occ installation command"
+  become_user: "{{ site }}"
+  shell: >
+      php occ maintenance:install
+      --database=pgsql
+      --database-host=localhost
+      --database-name={{ postgresql_database }}
+      --database-user={{ postgresql_user }}
+      --database-pass={{ postgresql_password }}
+      --admin-user={{ nextcloud_admin_user }}
+      --admin-pass={{ nextcloud_admin_password }}
+      --data-dir={{ nextcloud_data_dir }}
+  args:
+    chdir: "{{ nextcloud_webroot }}"
+    creates: "{{ nextcloud_webroot }}/config/config.php"
+
+
+- name: nginx config
+  template:
+    src: nginx.j2
+    dest: /etc/nginx/sites-available/{{ site }}
+  notify:
+    - reload nginx
+
+
+- name: "Set Trusted Domains"
+  become_user: "{{ site }}"
+  command: php occ config:system:set trusted_domains {{ item.0 }} --value="{{ item.1 }}"
+  args:
+    chdir: "{{ nextcloud_webroot }}"
+  with_indexed_items: "{{ nextcloud_trusted_domains }}"
+
+
+- name: "cronjob"
+  cron:
+    name: "Nextcloud Cronjob"
+    minute: "*/15"
+    user: "{{ site }}"
+    job: "php {{ nextcloud_webroot }}/cron.php"
+    cron_file: "nextcloud"
+
+
+- name: "Set Cron method to Crontab"
+  become_user: "{{ site }}"
+  command: php occ background:cron
+  args:
+    chdir: "{{ nextcloud_webroot }}"

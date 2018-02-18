@@ -14,10 +14,21 @@
     home: "/var/www/{{ site }}"
     shell: /bin/false
 
+- name: set home directory permissions
+  file:
+    path: "/var/www/{{ site }}"
+    owner: "{{ site }}"
+    group: "{{ site }}"
+    mode: "u=rwx,g=rx,o="
+
 - name: directories
   file:
     path: "/var/www/{{ site }}/{{ item }}"
     state: directory
+    owner: "{{ site }}"
+    group: "{{ site }}"
+    mode: "u=rwx,g=rx,o="
+
   with_items:
     - www
     - log
@@ -80,3 +91,9 @@
     state: link
   notify:
     - reload nginx
+
+- name: "Adding user 'www-data' to group '{{ site }}'"
+  user:
+    name: www-data
+    groups: "{{ site }}"
+    append: yes

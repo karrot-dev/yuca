@@ -1,0 +1,46 @@
+---
+- name: kanthaus-nextcloud | setup
+  hosts: all
+  become: yes
+  vars_files:
+    - secrets.vars.yml
+  vars:
+    site: kanthaus-nextcloud
+    server_name: cloud.kanthaus.online
+    redirects: []
+    postgresql_user: kanthaus-nextcloud
+    postgresql_database: kanthaus-nextcloud
+
+  tasks:
+    - name: check ansible version
+      include_role:
+        name: check-ansible-version
+
+    - name: basic-site
+      include_role:
+        name: basic-site
+
+    - name: php-fpm-site
+      include_role:
+        name: php-fpm-site
+
+    - name: postgresql-db
+      include_role:
+        name: postgresql-db
+      vars:
+        backup_host: tor-relay.chandi.it
+        backup_user: tiltec
+        backup_path: ~/backup/
+        # backup_password set by secrets.vars.yml
+
+    - name: Setup Nextcloud
+      include_role:
+        name: nextcloud
+      vars:
+        nextcloud_webroot: "/var/www/{{ site }}/www"
+        nextcloud_data_dir: "/var/www/{{ site }}/nextcloud_data"
+        nextcloud_admin_user: admin
+        nextcloud_trusted_domains:
+          - "{{ server_name }}"
+        # nextcloud_admin_password set by secrets.vars.yml
+
