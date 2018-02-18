@@ -15,35 +15,11 @@
     - redis-server
     - gettext
 
-#------------------------------------------------------------------
-# database
-
 - name: Start Redis and enable at boot
   service:
     name: redis-server
-    enabled: yes
+    enabled: true
     state: started
-
-- name: Start PostgreSQL and enable at boot
-  service:
-    name: postgresql
-    enabled: yes
-    state: started
-
-- postgresql_db:
-    name: "{{ postgresql_database }}"
-    encoding: UTF-8
-    template: template0
-  become: true
-  become_user: postgres
-
-- postgresql_user:
-    db: "{{ postgresql_database }}"
-    name: "{{ postgresql_user }}"
-    password: "{{ postgresql_password }}"
-    priv: ALL
-  become: true
-  become_user: postgres
 
 #------------------------------------------------------------------
 # nginx config
@@ -83,7 +59,7 @@
   git:
     repo: https://github.com/yunity/foodsaving-backend.git
     dest: /var/www/{{ site }}/www
-    update: yes
+    update: true
     version: "{{ branch }}"
 
 - name: virtualenv
@@ -189,3 +165,20 @@
     name: "{{ site }}-worker.target"
     state: started
     enabled: yes
+
+#------------------------------------------------------------------
+# deploy setup
+
+- name: setup deploy user
+  user:
+    name: "{{ site }}-deploy"
+    state: present
+    groups:
+      - "{{ site }}"
+    home: "/var/www/{{ site }}-deploy"
+
+- name: set deploy public key
+  authorized_key:
+    user: "{{ site }}-deploy"
+    state: present
+    key: "{{ deploy_public_key }}"

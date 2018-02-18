@@ -20,6 +20,7 @@
     owner: "{{ site }}"
     group: "{{ site }}"
     mode: "u=rwx,g=rx,o="
+
 - name: directories
   file:
     path: "/var/www/{{ site }}/{{ item }}"

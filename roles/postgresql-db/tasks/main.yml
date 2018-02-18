@@ -1,30 +1,38 @@
 ---
-- name: "PostgreSQL packages are installed"
+- name: PostgreSQL packages are installed
   package:
     name: "{{ item }}"
-    state: "installed"
+    state: installed
   with_items:
-    - "postgresql"
-    - "python-psycopg2"
+    - postgresql
+    - python-psycopg2
 
+- name: Start PostgreSQL and enable at boot
+  service:
+    name: postgresql
+    enabled: yes
+    state: started
 
-- name: "role is created."
+- name: role
   postgresql_user:
+    db: "{{ postgresql_database }}"
     name: "{{ postgresql_user }}"
     password: "{{ postgresql_password }}"
     encrypted: yes
     state: present
     role_attr_flags: CREATEDB
+  become: true
   become_user: postgres
-  become: yes
 
-- name: "database is created."
+- name: database
   postgresql_db:
     name: "{{ postgresql_database }}"
+    encoding: UTF-8
+    template: template0
     state: present
     owner: "{{ postgresql_user }}"
+  become: true
   become_user: postgres
-  become: yes
 
 - block:
   - name: generate ssh key for site user
