@@ -12,5 +12,5 @@
       include_role:
         name: karrot-backend-deploy
       vars:
-        site: karrot
+        site: karrot-world
         branch: production
