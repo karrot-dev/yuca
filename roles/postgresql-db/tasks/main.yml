@@ -57,14 +57,9 @@
       mode: "770"
 
   - name: "add backup server to known hosts"
-    lineinfile:
-      dest: "/var/www/{{ site }}/.ssh/known_hosts"
-      create: yes
-      state: present
-      line: "{{ lookup('pipe', 'ssh-keyscan {{ backup_host }}') }}"
-      regexp: "^{{ backup_host }}"
-      owner: "{{ site }}"
-      group: "{{ site }}"
+    copy:
+      dest: "/var/www/{{ site }}/.ssh/backup_known_hosts"
+      content: "{{ lookup('pipe', 'ssh-keyscan {{ backup_host }}') }}"
 
   - name: setup backup password file
     copy:

@@ -38,6 +38,8 @@
         backup_user: tiltec
         backup_path: ~/backup/
         # backup_password set by secrets.vars.yml
+      tags:
+        - foo
 
     - name: karrot-backend
       include_role:
@@ -45,6 +47,7 @@
       vars:
         site_name: karrot.world
         static_root: /home/deploy/karrot-frontend/release
+        apk: /home/deploy/karrot-app/release/app.apk
         from_email_address: karrot.world <noreply@karrot.world>
         redis_db: 2
         influxdb_database: fstool
