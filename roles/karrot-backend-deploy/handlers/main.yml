@@ -1,31 +1,5 @@
 ---
 
-- name: install tools
-  listen: deploy
-  pip:
-    name: "{{ item }}"
-    virtualenv: "/var/www/{{ site }}/www/env"
-  with_items:
-    - setuptools
-    - pip-tools
-
-- name: pip sync
-  listen: deploy
-  command: env/bin/pip-sync
-  args:
-    chdir: "/var/www/{{ site }}/www"
-
-- name: manage.py stuff
-  listen: deploy
-  command: "env/bin/python manage.py {{ item }}"
-  args:
-    chdir: "/var/www/{{ site }}/www"
-  with_items:
-    - check --deploy
-    - migrate
-    - collectstatic --clear --no-input
-    - compilemessages
-
 - name: restart workers
   listen: deploy
   service:

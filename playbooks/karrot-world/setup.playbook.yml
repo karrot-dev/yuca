@@ -38,8 +38,6 @@
         backup_user: tiltec
         backup_path: ~/backup/
         # backup_password set by secrets.vars.yml
-      tags:
-        - foo
 
     - name: karrot-backend
       include_role:
