@@ -70,6 +70,7 @@
   args:
     chdir: "{{ nextcloud_webroot }}"
   with_indexed_items: "{{ nextcloud_trusted_domains }}"
+  changed_when: False
 
 
 - name: "cronjob"
@@ -86,3 +87,4 @@
   command: php occ background:cron
   args:
     chdir: "{{ nextcloud_webroot }}"
+  changed_when: False

@@ -47,6 +47,16 @@
     file:
       path: "/var/www/{{ site }}/backup/archive"
       state: directory
+      owner: "{{ site }}"
+      group: "{{ site }}"
+
+  - name: create pgpass file
+    copy:
+      dest: /var/www/{{ site }}/.pgpass
+      content: "localhost:5432:{{ postgresql_database }}:{{ postgresql_user }}:{{ postgresql_password }}\n"
+      owner: "{{ site }}"
+      group: "{{ site }}"
+      mode: "600"
 
   - name: install backup script
     template:
@@ -59,7 +69,7 @@
   - name: "add backup server to known hosts"
     copy:
       dest: "/var/www/{{ site }}/.ssh/backup_known_hosts"
-      content: "{{ lookup('pipe', 'ssh-keyscan {{ backup_host }}') }}"
+      content: "{{ lookup('pipe', 'ssh-keyscan {{ backup_host }}') }}\n"
 
   - name: setup backup password file
     copy:
