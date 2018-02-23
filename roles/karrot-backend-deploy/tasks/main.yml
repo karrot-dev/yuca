@@ -37,3 +37,11 @@
       - compilemessages
     changed_when: False
   
+  - name: compile mjml templates
+    shell: |
+      set -e
+      yarn
+      ./convert
+    args:
+      chdir: "/var/www/{{ site }}/www/mjml"
+    changed_when: False
