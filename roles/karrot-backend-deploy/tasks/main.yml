@@ -1,35 +1,39 @@
 ---
 
-- name: install tools
-  pip:
-    name: "{{ item }}"
-    virtualenv: "/var/www/{{ site }}/www/env"
-  with_items:
-    - setuptools
-    - pip-tools
+- become_user: "{{ site }}-deploy"
+  block:
 
-- name: update code
-  git:
-    repo: https://github.com/yunity/foodsaving-backend.git
-    dest: /var/www/{{ site }}/www
-    update: yes
-    version: "{{ branch }}"
-  notify:
-    - deploy
+  - name: install tools
+    pip:
+      name: "{{ item }}"
+      virtualenv: "/var/www/{{ site }}/www/env"
+    with_items:
+      - setuptools
+      - pip-tools
 
-- name: pip sync
-  command: env/bin/pip-sync
-  args:
-    chdir: "/var/www/{{ site }}/www"
-  changed_when: False
+  - name: update code
+    git:
+      repo: https://github.com/yunity/foodsaving-backend.git
+      dest: /var/www/{{ site }}/www
+      update: yes
+      version: "{{ branch }}"
+    notify:
+      - deploy
 
-- name: manage.py stuff
-  command: "env/bin/python manage.py {{ item }}"
-  args:
-    chdir: "/var/www/{{ site }}/www"
-  with_items:
-    - check --deploy
-    - migrate
-    - collectstatic --clear --no-input
-    - compilemessages
-  changed_when: False
+  - name: pip sync
+    command: env/bin/pip-sync
+    args:
+      chdir: "/var/www/{{ site }}/www"
+    changed_when: False
+
+  - name: manage.py stuff
+    command: "env/bin/python manage.py {{ item }}"
+    args:
+      chdir: "/var/www/{{ site }}/www"
+    with_items:
+      - check --deploy
+      - migrate
+      - collectstatic --clear --no-input
+      - compilemessages
+    changed_when: False
+  

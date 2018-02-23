@@ -27,7 +27,7 @@
     state: directory
     owner: "{{ site }}"
     group: "{{ site }}"
-    mode: "u=rwx,g=rx,o="
+    mode: "u=rwx,g=rwx,o="
 
   with_items:
     - www
