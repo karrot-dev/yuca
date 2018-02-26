@@ -17,8 +17,6 @@
       dest: /var/www/{{ site }}/www
       update: yes
       version: "{{ branch }}"
-    notify:
-      - deploy
 
   - name: pip sync
     command: env/bin/pip-sync
