@@ -46,3 +46,8 @@
     args:
       chdir: "/var/www/{{ site }}/www/mjml"
     changed_when: False
+
+    # need to use 'sudo' to allow privileges just for this command
+  - name: restart workers
+    shell: "sudo systemctl restart {{ site }}-worker.target"
+    changed_when: False
