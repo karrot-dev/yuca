@@ -108,7 +108,7 @@ CHANNEL_LAYERS = {
 HUEY = {
     "always_eager": False,
     "connection": {
-        "url": "redis://{}:6739/{{ redis_db }}".format(REDIS_HOST),
+        "url": "redis://{}:6379/{{ redis_db }}".format(REDIS_HOST),
     },
     "consumer": {
         "workers": 4,
