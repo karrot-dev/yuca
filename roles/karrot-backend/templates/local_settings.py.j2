@@ -138,10 +138,6 @@ LOGGING = {
 
     },
     'loggers': {
-        'root': {
-            'level': 'ERROR',
-            'handlers': ['sentry'],
-        },
         'raven': {
             'level': 'WARNING',
             'handlers': ['console'],
@@ -155,6 +151,10 @@ LOGGING = {
         'django': { # Disable django admin email logging by overriding
             'level': 'ERROR',
             'handlers': ['sentry'],
-        }
+        },
+    },
+    'root': { # log everything unconfigured as error
+        'level': 'ERROR',
+        'handlers': ['sentry'],
     },
 }
