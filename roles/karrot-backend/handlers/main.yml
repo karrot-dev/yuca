@@ -13,3 +13,10 @@
     name: "{{ site }}-worker.target"
     state: restarted
     daemon_reload: yes
+
+- name: restart huey
+  listen: restart app
+  systemd:
+    name: "{{ site }}-huey.service"
+    state: restarted
+    daemon_reload: yes
