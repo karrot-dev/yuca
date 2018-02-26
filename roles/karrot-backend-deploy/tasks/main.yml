@@ -35,8 +35,9 @@
       - migrate
       - collectstatic --clear --no-input
       - compilemessages
+      - setup_sparkpost
     changed_when: False
-  
+
   - name: compile mjml templates
     shell: |
       set -e

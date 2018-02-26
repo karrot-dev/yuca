@@ -8,10 +8,11 @@
     - python-psycopg2
 
 - name: Start PostgreSQL and enable at boot
-  service:
+  systemd:
     name: postgresql
     enabled: yes
     state: started
+    daemon_reload: yes
 
 - name: role
   postgresql_user:

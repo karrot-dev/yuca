@@ -28,10 +28,11 @@
     - yarn # for building the mjml templates
 
 - name: Start Redis and enable at boot
-  service:
+  systemd:
     name: redis-server
     enabled: true
     state: started
+    daemon_reload: yes
 
 #------------------------------------------------------------------
 # nginx config
@@ -170,7 +171,6 @@
     src: systemd.daphne.service.j2
     dest: /etc/systemd/system/{{ site }}-daphne.service
   notify:
-    - reload systemd daemon
     - restart daphne
 
 - name: systemd worker target
@@ -178,7 +178,6 @@
     src: systemd.worker.target.j2
     dest: /etc/systemd/system/{{ site }}-worker.target
   notify:
-    - reload systemd daemon
     - restart workers
 
 - name: systemd worker service
@@ -186,7 +185,6 @@
     src: systemd.worker.service.j2
     dest: /etc/systemd/system/{{ site }}-worker@.service
   notify:
-    - reload systemd daemon
     - restart workers
 
 - name: systemd enable daphne

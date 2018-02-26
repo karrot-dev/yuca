@@ -51,9 +51,9 @@ INFLUXDB_USE_CELERY = False
 INFLUXDB_USE_THREADING = True
 
 import os
-import raven
 
 {% if raven_dsn is defined %}
+import raven
 RAVEN_CONFIG = {
     'dsn': '{{ raven_dsn }}',
     'release': raven.fetch_git_sha(os.path.dirname(os.pardir)),
@@ -61,7 +61,25 @@ RAVEN_CONFIG = {
 {% endif %}
 
 SECRET_KEY = '{{ secret_key }}'
-ANYMAIL_SPARKPOST_API_KEY = '{{ sparkpost_api_key }}'
+
+ANYMAIL_SPARKPOST_API_KEY = '{{ sparkpost_subaccount_key }}'
+ANYMAIL = {
+    # Should be a subaccount to receive webhooks scoped to this account
+    # https://app.sparkpost.com/account/subaccounts
+    # Transmissions: Read/Write
+    # Event Webhooks: Read/Write
+    "SPARKPOST_API_KEY": "{{ sparkpost_subaccount_key }}"
+}
+
+# to set up a relay webhook for incoming emails
+# Relay Webhooks: Read/Write
+# Inbound Domains: Read/Write
+SPARKPOST_ACCOUNT_KEY = '{{ sparkpost_account_key }}'
+SPARKPOST_RELAY_DOMAIN = '{{ sparkpost_relay_domain }}'
+
+# shared secrets, will be used by setup_sparkpost management command and checked when receiving webhook requests
+SPARKPOST_RELAY_SECRET = '{{ sparkpost_relay_secret }}'
+SPARKPOST_WEBHOOK_SECRET = '{{ sparkpost_webhook_secret }}'
 
 FCM_SERVER_KEY = '{{ fcm_server_key }}'
 

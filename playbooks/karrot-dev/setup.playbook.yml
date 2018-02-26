@@ -17,6 +17,7 @@
       - mvp-proposal.yunity.org
     postgresql_database: fstool-dev
     postgresql_user: fstool-dev
+    sparkpost_relay_domain: replies.dev.karrot.world
 
   tasks:
 
@@ -43,7 +44,7 @@
         site_name: karrot.world beta
         static_root: /home/deploy/karrot-frontend/master
         apk: /home/deploy/karrot-app/master/app.apk
-        from_email_address: karrot.world <noreply@karrot.world>
+        from_email_address: noreply@dev.karrot.world
         redis_db: 4
         workers: 4
         additional_allowed_hosts:

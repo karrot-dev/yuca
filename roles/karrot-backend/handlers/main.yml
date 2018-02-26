@@ -1,17 +1,15 @@
 ---
 
-- name: reload systemd daemon
-  systemd:
-    daemon_reload: yes
-
 - name: restart daphne
   listen: restart app
-  service:
+  systemd:
     name: "{{ site }}-daphne.service"
     state: restarted
+    daemon_reload: yes
 
 - name: restart workers
   listen: restart app
-  service:
+  systemd:
     name: "{{ site }}-worker.target"
     state: restarted
+    daemon_reload: yes

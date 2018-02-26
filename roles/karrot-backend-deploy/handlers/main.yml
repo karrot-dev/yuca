@@ -2,6 +2,7 @@
 
 - name: restart workers
   listen: deploy
-  service:
+  systemd:
     name: "{{ site }}-worker.target"
     state: restarted
+    daemon_reload: yes

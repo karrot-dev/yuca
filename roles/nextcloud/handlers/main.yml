@@ -1,12 +1,13 @@
 ---
 
 - name: reload php-fpm
-  service:
+  systemd:
     name: php7.0-fpm
     state: reloaded
-
+    daemon_reload: yes
 
 - name: reload nginx
-  service:
+  systemd:
     name: nginx
     state: reloaded
+    daemon_reload: yes
