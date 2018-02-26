@@ -187,6 +187,13 @@
   notify:
     - restart workers
 
+- name: systemd huey service
+  template:
+    src: systemd.huey.service.j2
+    dest: /etc/systemd/system/{{ site }}-huey.service
+  notify:
+    - restart huey
+
 - name: systemd enable daphne
   systemd:
     name: "{{ site }}-daphne.service"
@@ -198,6 +205,13 @@
     name: "{{ site }}-worker.target"
     state: started
     enabled: yes
+
+- name: systemd enable huey
+  systemd:
+    name: "{{ site }}-huey.service"
+    state: started
+    enabled: yes
+
 
 #------------------------------------------------------------------
 # deploy setup

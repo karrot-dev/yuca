@@ -104,3 +104,14 @@ CHANNEL_LAYERS = {
         "ROUTING": "foodsaving.subscriptions.routing.channel_routing",
     },
 }
+
+HUEY = {
+    "always_eager": False,
+    "connection": {
+        "url": "redis://{}:6739/{{ redis_db }}".format(REDIS_HOST),
+    },
+    "consumer": {
+        "workers": 4,
+        "worker_type" : "greenlet",
+    },
+}
