@@ -49,3 +49,7 @@
   - name: restart workers
     shell: "sudo systemctl restart {{ site }}-worker.target"
     changed_when: False
+
+  - name: restart huey
+    shell: "sudo systemctl restart {{ site }}-huey.service"
+    changed_when: False

@@ -121,7 +121,9 @@
 - name: allow user to restart workers
   copy:
     dest: "/etc/sudoers.d/deploy_{{ site }}"
-    content: "%{{ site }} ALL=(ALL) NOPASSWD: /bin/systemctl restart {{ site }}-worker.target\n"
+    content: |
+      %{{ site }} ALL=(ALL) NOPASSWD: /bin/systemctl restart {{ site }}-worker.target
+      %{{ site }} ALL=(ALL) NOPASSWD: /bin/systemctl restart {{ site }}-huey.service
 
 - name: make uploads directory
   file:
