@@ -1,0 +1,16 @@
+# This file is managed by ansible. It belongs to {{ role_path }}.
+# See https://github.com/yunity/yuca to change.
+[Unit]
+Description={{ site }} | huey worker
+After=network.target
+
+[Service]
+Type=simple
+User={{ site }}
+Group={{ site }}
+WorkingDirectory=/var/www/{{ site }}/www
+ExecStart=/var/www/{{ site }}/www/env/bin/python manage.py run_huey
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
