@@ -231,3 +231,12 @@
     user: "{{ site }}-deploy"
     state: present
     key: "{{ deploy_public_key }}"
+
+- name: set deploy permission
+  file:
+    state: directory
+    path: "/var/www/{{ site }}/www"
+    owner: "{{ site }}"
+    group: "{{ site }}"
+    mode: "u=rwx,g=rwx,o="
+    recurse: yes

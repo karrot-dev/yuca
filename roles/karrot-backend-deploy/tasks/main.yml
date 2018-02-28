@@ -16,6 +16,7 @@
       repo: https://github.com/yunity/foodsaving-backend.git
       dest: /var/www/{{ site }}/www
       update: yes
+      force: yes
       version: "{{ branch }}"
 
   - name: pip sync
