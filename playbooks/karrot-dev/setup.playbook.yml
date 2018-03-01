@@ -46,6 +46,7 @@
         apk: /home/deploy/karrot-app/master/app.apk
         from_email_address: noreply@dev.karrot.world
         redis_db: 4
+        influxdb_database: karrot-dev
         workers: 4
         additional_allowed_hosts:
           - .netlify.com
