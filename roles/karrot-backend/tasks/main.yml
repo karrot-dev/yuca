@@ -34,6 +34,8 @@
     state: started
     daemon_reload: yes
 
+- import_tasks: influxdb.yml
+
 #------------------------------------------------------------------
 # nginx config
 

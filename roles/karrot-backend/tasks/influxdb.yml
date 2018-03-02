@@ -1,0 +1,24 @@
+---
+
+- name: add influxdb apt key
+  apt_key:
+    url: https://repos.influxdata.com/influxdb.key
+    state: present
+
+- name: add influxdb repository
+  apt_repository:
+    repo: deb https://repos.influxdata.com/debian stretch stable
+    state: present
+
+- name: install influxdb
+  apt:
+    # there is an old influxdb in debian repo
+    # we want new shiny one, for which I had to specify the version
+    name: influxdb=1.4.2-1
+    state: present
+
+- name: enable/start influxdb
+  systemd:
+    name: influxdb
+    state: started
+    enabled: yes
