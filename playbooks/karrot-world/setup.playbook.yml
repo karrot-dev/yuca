@@ -6,6 +6,7 @@
     - secrets.vars.yml
   vars:
     site: karrot-world
+    site_name: karrot.world
     server_name: karrot.world
     uploads_directory: uploads
     branch: production
@@ -16,6 +17,8 @@
       - fstool.yunity.org
     postgresql_database: fstool
     postgresql_user: fstool
+    sparkpost_relay_domain: replies.karrot.world
+    from_email_address: noreply@karrot.world
 
   tasks:
     - name: check ansible version
@@ -43,10 +46,8 @@
       include_role:
         name: karrot-backend
       vars:
-        site_name: karrot.world
         static_root: /home/deploy/karrot-frontend/release
         apk: /home/deploy/karrot-app/release/app.apk
-        from_email_address: karrot.world <noreply@karrot.world>
         redis_db: 2
         influxdb_database: fstool
         workers: 4
