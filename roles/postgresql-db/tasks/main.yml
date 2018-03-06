@@ -16,7 +16,6 @@
 
 - name: role
   postgresql_user:
-    db: "{{ postgresql_database }}"
     name: "{{ postgresql_user }}"
     password: "{{ postgresql_password }}"
     encrypted: yes

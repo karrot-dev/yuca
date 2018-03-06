@@ -6,15 +6,15 @@
   - name: install tools
     pip:
       name: "{{ item }}"
-      virtualenv: "/var/www/{{ site }}/www/env"
+      virtualenv: "/var/www/{{ site }}/www/backend/env"
     with_items:
       - setuptools
       - pip-tools
 
   - name: update code
     git:
-      repo: https://github.com/yunity/foodsaving-backend.git
-      dest: /var/www/{{ site }}/www
+      repo: https://github.com/yunity/karrot-backend.git
+      dest: /var/www/{{ site }}/www/backend
       update: yes
       force: yes
       version: "{{ branch }}"
@@ -22,28 +22,31 @@
   - name: pip sync
     command: env/bin/pip-sync
     args:
-      chdir: "/var/www/{{ site }}/www"
+      chdir: "/var/www/{{ site }}/www/backend"
+    changed_when: False
+
+  - name: install mjml dependencies
+    command: yarn
+    args:
+      chdir: "/var/www/{{ site }}/www/backend/mjml"
     changed_when: False
 
   - name: compile mjml templates
-    shell: |
-      set -e
-      yarn
-      ./convert
+    shell: ./convert
     args:
-      chdir: "/var/www/{{ site }}/www/mjml"
+      chdir: "/var/www/{{ site }}/www/backend/mjml"
     changed_when: False
 
   - name: manage.py stuff
     command: "env/bin/python manage.py {{ item }}"
     args:
-      chdir: "/var/www/{{ site }}/www"
+      chdir: "/var/www/{{ site }}/www/backend"
     with_items:
       - check --deploy
       - migrate
       - collectstatic --clear --no-input
       - compilemessages
-      # - setup_sparkpost
+      - setup_sparkpost
     changed_when: False
 
     # need to use 'sudo' to allow privileges just for this command

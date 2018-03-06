@@ -16,6 +16,7 @@
     # we want new shiny one, for which I had to specify the version
     name: influxdb=1.4.2-1
     state: present
+    update_cache: true
 
 - name: enable/start influxdb
   systemd:

@@ -2,7 +2,7 @@
 #---------------------------------------------------------
 # PHP pool
 - name: php packages
-  package: 
+  package:
     name: "{{ item }}"
     state: present
   with_items:
@@ -10,6 +10,31 @@
     - "php7.0-fpm"
   notify:
     - reload php-fpm
+
+- name: allow group read access to home directory
+  file:
+    path: "/var/www/{{ site }}"
+    owner: "{{ site }}"
+    group: "{{ site }}"
+    mode: "g=rx,o="
+
+- name: allow group read access to home subdirectories
+  file:
+    path: "/var/www/{{ site }}/{{ item }}"
+    state: directory
+    owner: "{{ site }}"
+    group: "{{ site }}"
+    mode: "g=rx,o="
+  with_items:
+    - www
+    - log
+    - cert
+
+- name: "Adding user 'www-data' to group '{{ site }}'"
+  user:
+    name: www-data
+    groups: "{{ site }}"
+    append: yes
 
 - name: php fpm pool config
   template:

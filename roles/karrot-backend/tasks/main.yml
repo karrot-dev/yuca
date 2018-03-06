@@ -10,10 +10,21 @@
     repo: deb https://dl.yarnpkg.com/debian/ stable main
     state: present
 
+- name: add nodesource apt key
+  apt_key:
+    url: https://deb.nodesource.com/gpgkey/nodesource.gpg.key
+    state: present
+
+- name: add nodejs repository
+  apt_repository:
+    repo: deb https://deb.nodesource.com/node_6.x stretch main
+    state: present
+
 - name: install dependencies
   apt:
     name: "{{ item }}"
     state: present
+    update_cache: yes
   with_items:
     - postgresql
     - python-psycopg2 # needed for ansible postgresql module
@@ -26,6 +37,7 @@
     - gettext
     - python-pip # so we can pip install influxdb later
     - yarn # for building the mjml templates
+    - nodejs # for yarn
 
 - name: Start Redis and enable at boot
   systemd:
@@ -85,55 +97,189 @@
 
   when: influxdb_database is defined
 
-#------------------------------------------------------------------
-# initialize basics
-# does not actually deploy site, but should be ready to after this
+#------------------------------------------------
+# create directories and set default permissions
 
-- name: git repo
-  git:
-    repo: https://github.com/yunity/foodsaving-backend.git
-    dest: /var/www/{{ site }}/www
-    update: true
-    version: "{{ branch }}"
+- name: set default acl permission mask
+  acl:
+    path: "/var/www/{{ site }}/www"
+    etype: mask
+    permissions: rwx
+    recursive: yes
+    default: yes
+    state: present
 
-- name: virtualenv
-  command: >
-    virtualenv
-      --no-setuptools
-      --python=python3
-      --no-site-packages
-      /var/www/{{ site }}/www/env
-  args:
-    creates: /var/www/{{ site }}/www/env
+- name: make all files readable to site user by default
+  acl:
+    path: "/var/www/{{ site }}/www/"
+    entity: "{{ site }}"
+    etype: user
+    permissions: rX
+    recursive: yes
+    default: yes
+    state: present
 
-- name: install tools
-  pip:
-    name: "{{ item }}"
-    virtualenv: "/var/www/{{ site }}/www/env"
-  with_items:
-    - setuptools
-    - pip-tools
-
-- name: pip sync
-  command: env/bin/pip-sync
-  args:
-    chdir: "/var/www/{{ site }}/www"
-  changed_when: False
-
-- name: allow user to restart workers
-  copy:
-    dest: "/etc/sudoers.d/deploy_{{ site }}"
-    content: |
-      %{{ site }} ALL=(ALL) NOPASSWD: /bin/systemctl restart {{ site }}-worker.target
-      %{{ site }} ALL=(ALL) NOPASSWD: /bin/systemctl restart {{ site }}-huey.service
-
-- name: make uploads directory
+- name: create uploads directory and set ownership to site user
   file:
     dest: /var/www/{{ site }}/www/{{ uploads_directory }}
     state: directory
     owner: "{{ site }}"
     group: "{{ site }}"
+    mode: "u+rwX"
+    recurse: yes
 
+- name: make new uploads readable to www-data by default
+  acl:
+    path: "/var/www/{{ site }}/www/{{ uploads_directory }}"
+    entity: "www-data"
+    etype: user
+    permissions: rX
+    default: yes
+    recursive: yes
+    state: present
+
+- name: create static files directory and set ownership to deploy user
+  file:
+    path: "/var/www/{{ site }}/www/static"
+    state: directory
+    owner: "{{ site }}-deploy"
+    group: "{{ site }}-deploy"
+    mode: "u+rwX"
+    recurse: yes
+
+- name: make static files readable to www-data by default
+  acl:
+    path: "/var/www/{{ site }}/www/static"
+    entity: "www-data"
+    etype: user
+    permissions: rX
+    recursive: yes
+    default: yes
+    state: present
+
+#------------------------------------------------------------------
+# deploy setup
+
+- name: setup deploy user
+  user:
+    name: "{{ site }}-deploy"
+    state: present
+    groups:
+      - "{{ site }}"
+    home: "/var/www/{{ site }}-deploy"
+
+- name: set deploy public key
+  authorized_key:
+    user: "{{ site }}-deploy"
+    state: present
+    key: "{{ deploy_public_key }}"
+
+- name: make www readable by deploy user
+  acl:
+    path: "/var/www/{{ site }}/www"
+    entity: "{{ site }}-deploy"
+    etype: user
+    permissions: rX
+    state: present
+
+#-----------------------------------------------------------------
+# handle permissions of existing files
+
+- name: make www readable to www-data
+  acl:
+    path: "/var/www/{{ site }}/www"
+    entity: "www-data"
+    etype: user
+    permissions: rX
+    state: present
+
+- name: set acl permission mask for existing files
+  acl:
+    path: "/var/www/{{ site }}/www"
+    etype: mask
+    permissions: rwx
+    recursive: yes
+    state: present
+
+- name: make all files readable to site user
+  acl:
+    path: "/var/www/{{ site }}/www/"
+    entity: "{{ site }}"
+    etype: user
+    permissions: rX
+    recursive: yes
+    state: present
+
+- name: make uploads readable to www-data
+  acl:
+    path: "/var/www/{{ site }}/www/{{ uploads_directory }}"
+    entity: "www-data"
+    etype: user
+    permissions: rX
+    recursive: yes
+    state: present
+
+- name: make static files readable to www-data
+  acl:
+    path: "/var/www/{{ site }}/www/static"
+    entity: "www-data"
+    etype: user
+    permissions: rX
+    recursive: yes
+    state: present
+
+- name: backend directory owned by deploy user
+  file:
+    path: "/var/www/{{ site }}/www/backend"
+    state: directory
+    owner: "{{ site }}-deploy"
+    group: "{{ site }}-deploy"
+    mode: "u+rwX"
+    recurse: yes
+
+#------------------------------------------------------------------
+# env setup & basic deploy
+
+- become_user: "{{ site }}-deploy"
+  block:
+  - name: git repo
+    git:
+      repo: https://github.com/yunity/karrot-backend.git
+      dest: /var/www/{{ site }}/www/backend
+      update: true
+      force: yes
+      version: "{{ branch }}"
+
+  - name: virtualenv
+    command: >
+      virtualenv
+        --no-setuptools
+        --python=python3
+        --no-site-packages
+        /var/www/{{ site }}/www/backend/env
+    args:
+      creates: /var/www/{{ site }}/www/backend/env
+
+  - name: install tools
+    pip:
+      name: "{{ item }}"
+      virtualenv: "/var/www/{{ site }}/www/backend/env"
+    with_items:
+      - setuptools
+      - pip-tools
+
+  - name: pip sync
+    command: env/bin/pip-sync
+    args:
+      chdir: "/var/www/{{ site }}/www/backend"
+    changed_when: False
+
+- name: allow user to restart workers
+  copy:
+    dest: "/etc/sudoers.d/deploy_{{ site }}"
+    content: |
+      %{{ site }}-deploy ALL=(ALL) NOPASSWD: /bin/systemctl restart {{ site }}-worker.target
+      %{{ site }}-deploy ALL=(ALL) NOPASSWD: /bin/systemctl restart {{ site }}-huey.service
 
 #------------------------------------------------------------------
 # django settings
@@ -141,7 +287,7 @@
 - name: django local settings
   template:
     src: local_settings.py.j2
-    dest: /var/www/{{ site }}/www/config/local_settings.py
+    dest: /var/www/{{ site }}/www/backend/config/local_settings.py
   notify:
     - restart app
 
@@ -152,13 +298,13 @@
   cron:
     name: "{{ site }} | update pickup dates"
     minute: "0"
-    job: "cd /var/www/{{ site }}/www/ && env/bin/python manage.py update_pickup_dates"
+    job: "cd /var/www/{{ site }}/www/backend/ && env/bin/python manage.py update_pickup_dates"
     user: "{{ site }}"
 
 - name: process finished pickup dates cronjob
   cron:
     name: "{{ site }} | process finished pickup dates"
-    job: "cd /var/www/{{ site }}/www/ && env/bin/python manage.py process_finished_pickup_dates"
+    job: "cd /var/www/{{ site }}/www/backend/ && env/bin/python manage.py process_finished_pickup_dates"
     user: "{{ site }}"
 
 #------------------------------------------------------------------
@@ -209,31 +355,3 @@
     name: "{{ site }}-huey.service"
     state: started
     enabled: yes
-
-
-#------------------------------------------------------------------
-# deploy setup
-
-- name: setup deploy user
-  user:
-    name: "{{ site }}-deploy"
-    state: present
-    groups:
-      - "{{ site }}"
-    home: "/var/www/{{ site }}-deploy"
-
-- name: set deploy public key
-  authorized_key:
-    user: "{{ site }}-deploy"
-    state: present
-    key: "{{ deploy_public_key }}"
-
-- name: set deploy permission
-  acl:
-    path: "/var/www/{{ site }}/www"
-    entity: "{{ site }}-deploy"
-    etype: user
-    permissions: rwx
-    default: yes
-    recursive: yes
-    state: present

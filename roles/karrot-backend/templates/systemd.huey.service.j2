@@ -8,8 +8,8 @@ After=network.target
 Type=simple
 User={{ site }}
 Group={{ site }}
-WorkingDirectory=/var/www/{{ site }}/www
-ExecStart=/var/www/{{ site }}/www/env/bin/python manage.py run_huey
+WorkingDirectory=/var/www/{{ site }}/www/backend
+ExecStart=/var/www/{{ site }}/www/backend/env/bin/python manage.py run_huey
 Restart=always
 
 [Install]

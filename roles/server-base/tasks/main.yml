@@ -1,7 +1,17 @@
-- name: install nginx
+- name: install base packages
   apt:
-    name: nginx-extras
+    name: "{{ item }}"
     state: present
+    update_cache: true
+  with_items:
+    - nginx-extras
+    - apt-transport-https
+    - acl
+
+- name: remove cmdtest package because it conflicts with yarn
+  apt:
+    name: cmdtest
+    state: absent
 
 - name: setup basic nginx config
   copy:

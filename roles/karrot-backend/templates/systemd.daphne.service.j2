@@ -8,8 +8,8 @@ After=network.target
 Type=simple
 User={{ site }}
 Group={{ site }}
-WorkingDirectory=/var/www/{{ site }}/www
-ExecStart=/var/www/{{ site }}/www/env/bin/daphne \
+WorkingDirectory=/var/www/{{ site }}/www/backend
+ExecStart=/var/www/{{ site }}/www/backend/env/bin/daphne \
 	-u /tmp/{{ site }}.sock \
 	--ws-protocol karrot.token \
 	--proxy-headers \
