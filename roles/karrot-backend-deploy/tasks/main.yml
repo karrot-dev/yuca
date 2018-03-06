@@ -25,6 +25,15 @@
       chdir: "/var/www/{{ site }}/www"
     changed_when: False
 
+  - name: compile mjml templates
+    shell: |
+      set -e
+      yarn
+      ./convert
+    args:
+      chdir: "/var/www/{{ site }}/www/mjml"
+    changed_when: False
+
   - name: manage.py stuff
     command: "env/bin/python manage.py {{ item }}"
     args:
@@ -34,16 +43,7 @@
       - migrate
       - collectstatic --clear --no-input
       - compilemessages
-      - setup_sparkpost
-    changed_when: False
-
-  - name: compile mjml templates
-    shell: |
-      set -e
-      yarn
-      ./convert
-    args:
-      chdir: "/var/www/{{ site }}/www/mjml"
+      # - setup_sparkpost
     changed_when: False
 
     # need to use 'sudo' to allow privileges just for this command
