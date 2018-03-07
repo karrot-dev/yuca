@@ -46,7 +46,7 @@
       - migrate
       - collectstatic --clear --no-input
       - compilemessages
-      - setup_sparkpost
+      - setup_sparkpost --quiet
     changed_when: False
 
     # need to use 'sudo' to allow privileges just for this command
