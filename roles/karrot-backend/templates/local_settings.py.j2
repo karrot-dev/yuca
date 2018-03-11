@@ -67,6 +67,7 @@ RAVEN_CONFIG = {
 
 SECRET_KEY = '{{ secret_key }}'
 
+EMAIL_BACKEND = 'anymail.backends.sparkpost.EmailBackend'
 ANYMAIL_SPARKPOST_API_KEY = '{{ sparkpost_subaccount_key }}'
 ANYMAIL = {
     # Should be a subaccount to receive webhooks scoped to this account
