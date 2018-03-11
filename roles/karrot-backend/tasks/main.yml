@@ -79,7 +79,7 @@
   when: we_are_in_vagrant
 
 #------------------------------------------------------------------
-# ensure influxdb database is created
+# influxdb/stats/etc
 
 - block:
 
@@ -94,6 +94,17 @@
       hostname: 127.0.0.1
       username: ""
       password: ""
+
+  - name: create grafana postgres user 
+    postgresql_user:
+      name: "{{ site }}-grafana"
+      password: grafana
+      db: "{{ postgresql_database }}"
+      priv: CONNECT/group_names:SELECT
+      encrypted: yes
+      state: present
+    become: true
+    become_user: postgres
 
   when: influxdb_database is defined
 
