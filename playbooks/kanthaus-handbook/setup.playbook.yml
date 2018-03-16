@@ -1,0 +1,20 @@
+---
+- name: kanthaus-handbook | setup
+  hosts: all
+  become: yes
+  vars:
+    site: kanthaus-handbook
+    server_name: handbook.kanthaus.online
+    redirects:
+     - www.handbook.kanthaus.online
+    setup_html_vhost: yes
+    public_key: ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHiajP/2dbl/trIeGnxlEne658EiAKmUCpF3Na5TV9Yy kanthaus-handbook
+  tasks:
+
+    - name: check ansible version
+      include_role:
+        name: check-ansible-version
+
+    - name: basic-site
+      include_role:
+        name: basic-site

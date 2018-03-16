@@ -5,7 +5,7 @@
     name: "{{ site }}"
     state: present
 
-- name: user
+- name: user without shell
   user:
     name: "{{ site }}"
     state: present
@@ -13,6 +13,24 @@
     createhome: no
     home: "/var/www/{{ site }}"
     shell: /bin/false
+  when: public_key is not defined
+
+- name: user with shell
+  user:
+    name: "{{ site }}"
+    state: present
+    group: "{{ site }}"
+    createhome: no
+    home: "/var/www/{{ site }}"
+    shell: /bin/bash
+  when: public_key is defined
+
+- name: user public key
+  authorized_key:
+    user: "{{ site }}"
+    state: present
+    key: "{{ public_key }}"
+  when: public_key is defined
 
 - name: set home directory permissions
   file:
