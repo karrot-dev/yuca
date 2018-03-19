@@ -1,0 +1,19 @@
+#!/bin/sh
+
+set -e
+
+export BORG_RSH="ssh -oBatchMode=yes"
+export BORG_PASSPHRASE="{{ backup_password }}"
+
+DIRECTORIES=/var/www/{{ site }}/www/{{ uploads_directory }}
+REPOSITORY={{ borgbackup_server_user }}@{{ borgbackup_client_backup_server }}:{{ site }}/borg
+
+/usr/bin/borg create \
+  --compression zlib,6 \
+  /var/www/{{ site }}/backup/borg::$(date -I) \
+  $DIRECTORIES
+
+/usr/bin/borg create \
+  --compression zlib,6 \
+  $REPOSITORY::$(date -I) \
+  $DIRECTORIES

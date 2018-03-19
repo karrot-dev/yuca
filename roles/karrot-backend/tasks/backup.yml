@@ -1,0 +1,51 @@
+---
+
+- name: add backports repo
+  apt_repository:
+    repo: deb http://ftp.debian.org/debian stretch-backports main
+    state: present
+
+- name: install borgbackup from backports
+  apt:
+    name: borgbackup
+    state: latest
+    default_release: stretch-backports
+
+- become_user: "{{ site }}"
+  block:
+  - name: initialize backup repositories
+    command: borg init -e repokey {{ item }}
+    environment:
+      - BORG_PASSPHRASE: "{{ backup_password }}"
+    register: borgbackup_initialize_result
+    failed_when: (borgbackup_initialize_result.rc != 0) and (borgbackup_initialize_result.stderr != "") and ('already exists' not in borgbackup_initialize_result.stderr)
+    changed_when: borgbackup_initialize_result.rc == 0
+    with_items:
+      - /var/www/{{ site }}/backup/borg
+      - "{{ borgbackup_server_user }}@{{ borgbackup_client_backup_server }}:{{ site }}/borg"
+
+  - name: files backup script
+    template:
+      src: borg_backup.sh.j2
+      dest: /var/www/{{ site }}/backup/backup.files.sh
+      mode: 0700
+
+  - name: create files backup cronjob
+    cron:
+      name: "{{ site }} | file backup"
+      minute: "0"
+      hour: "4"
+      job: "cd /var/www/{{ site }}/backup/ && ./backup.files.sh 2>&1 | /usr/bin/logger -t borgbackup"
+
+  - name: prune file backup script
+    template:
+      src: borg_backup_prune.sh.j2
+      dest: /var/www/{{ site }}/backup/backup.files.prune.sh
+      mode: 0700
+
+  - name: create prune file backup cronjob
+    cron:
+      name: "{{ site }} | prune file backup"
+      minute: "0"
+      hour: "2"
+      job: "cd /var/www/{{ site }}/backup/ && ./backup.files.prune.sh 2>&1 | /usr/bin/logger -t borgbackup"

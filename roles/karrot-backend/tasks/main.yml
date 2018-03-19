@@ -95,7 +95,7 @@
       username: ""
       password: ""
 
-  - name: create grafana postgres user 
+  - name: create grafana postgres user
     postgresql_user:
       name: "{{ site }}-grafana"
       password: grafana
@@ -334,6 +334,12 @@
     name: "{{ site }} | process finished pickup dates"
     job: "cd /var/www/{{ site }}/www/backend/ && env/bin/python manage.py process_finished_pickup_dates"
     user: "{{ site }}"
+
+#------------------------------------------------------------------
+# file backups
+
+- import_tasks: backup.yml
+  when: backup_password is defined
 
 #------------------------------------------------------------------
 # systemd servics
