@@ -51,6 +51,7 @@
     - www
     - log
     - cert
+    - backup
 
 - name: generate list of DNS entries
   set_fact:
