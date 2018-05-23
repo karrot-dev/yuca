@@ -46,8 +46,6 @@
     state: started
     daemon_reload: yes
 
-- import_tasks: influxdb.yml
-
 #------------------------------------------------------------------
 # nginx config
 
@@ -78,38 +76,22 @@
     dest: "{{ static_root }}/index.html"
   when: we_are_in_vagrant
 
-#------------------------------------------------------------------
-# influxdb/stats/etc
-
-- block:
-
-  - name: install influxdb python lib
-    pip:
-      name: influxdb
-      state: present
-
-  - name: create influxdb database
-    influxdb_database:
-      database_name: "{{ influxdb_database }}"
-      hostname: 127.0.0.1
-      username: ""
-      password: ""
-
-  - name: create grafana postgres user
-    postgresql_user:
-      name: "{{ site }}-grafana"
-      password: grafana
-      db: "{{ postgresql_database }}"
-      priv: CONNECT/group_names:SELECT
-      encrypted: yes
-      state: present
-    become: true
-    become_user: postgres
-
-  when: influxdb_database is defined
-
 #------------------------------------------------
 # create directories and set default permissions
+
+- name: deploy group
+  group:
+    name: "{{ site }}-deploy"
+    state: present
+
+- name: deploy user
+  user:
+    name: "{{ site }}-deploy"
+    state: present
+    group: "{{ site }}-deploy"
+    createhome: no
+    home: "/var/www/{{ site }}-deploy"
+    shell: /bin/false
 
 - name: set default acl permission mask
   acl:
@@ -302,6 +284,20 @@
       chdir: "/var/www/{{ site }}/www/backend"
     changed_when: False
 
+- name: django local settings
+  template:
+    src: local_settings.py.j2
+    dest: /var/www/{{ site }}/www/backend/config/local_settings.py
+  notify:
+    - restart app
+
+- name: initialize database
+  command: "env/bin/python manage.py migrate"
+  args:
+    chdir: "/var/www/{{ site }}/www/backend"
+  become_user: "{{ site }}-deploy"
+  changed_when: False
+
 - name: allow user to restart workers
   copy:
     dest: "/etc/sudoers.d/deploy_{{ site }}"
@@ -309,15 +305,8 @@
       %{{ site }}-deploy ALL=(ALL) NOPASSWD: /bin/systemctl restart {{ site }}-worker.target
       %{{ site }}-deploy ALL=(ALL) NOPASSWD: /bin/systemctl restart {{ site }}-huey.service
 
-#------------------------------------------------------------------
-# django settings
-
-- name: django local settings
-  template:
-    src: local_settings.py.j2
-    dest: /var/www/{{ site }}/www/backend/config/local_settings.py
-  notify:
-    - restart app
+- import_tasks: influxdb.yml
+  when: influxdb_database is defined
 
 #------------------------------------------------------------------
 # cron jobs

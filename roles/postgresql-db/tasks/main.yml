@@ -2,7 +2,7 @@
 - name: PostgreSQL packages are installed
   package:
     name: "{{ item }}"
-    state: installed
+    state: present
   with_items:
     - postgresql
     - python-psycopg2
