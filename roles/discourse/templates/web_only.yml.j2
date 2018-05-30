@@ -1,0 +1,82 @@
+templates:
+  - "templates/web.template.yml"
+  - "templates/web.ratelimited.template.yml"
+  - "templates/web.socketed.template.yml"
+
+# any extra arguments for Docker?
+# docker_args:
+
+params:
+  ## Which Git revision should this container use? (default: tests-passed)
+  version: tests-passed
+
+env:
+  LANG: en_US.UTF-8
+  DISCOURSE_DEFAULT_LOCALE: en
+
+  ## How many concurrent web requests are supported? Depends on memory and CPU cores.
+  ## will be set automatically by bootstrap based on detected CPUs, or you can override
+  # UNICORN_WORKERS: 3
+
+  DISCOURSE_HOSTNAME: {{ server_name }}
+
+  ## Uncomment if you want the container to be started with the same
+  ## hostname (-h option) as specified above (default "$hostname-$config")
+  # DOCKER_USE_HOSTNAME: true
+
+  ## List of comma delimited emails that will be made admin and developer on initial signup
+  DISCOURSE_DEVELOPER_EMAILS: {{ discourse_developer_emails }}
+
+  DISCOURSE_SMTP_ADDRESS: {{ discourse_smtp_address }}
+  DISCOURSE_SMTP_PORT: {{ discourse_smtp_port }}
+  DISCOURSE_SMTP_USER_NAME: {{ discourse_smtp_user_name }}
+  DISCOURSE_SMTP_PASSWORD: {{ discourse_smtp_password }}
+  #DISCOURSE_SMTP_ENABLE_START_TLS: true           # (optional, default true)
+
+  #DISCOURSE_DB_HOST: 192.168.1.1
+  DISCOURSE_DB_SOCKET: /var/run/postgresql
+  DISCOURSE_DB_NAME: {{ postgresql_database }}
+  DISCOURSE_DB_USERNAME: {{ postgresql_user }}
+  DISCOURSE_DB_PASSWORD: {{ postgresql_password }}
+  DISCOURSE_REDIS_HOST: 192.168.1.1
+  DISCOURSE_REDIS_DB: {{ redis_db }}
+
+  ## The CDN address for this Discourse instance (configured to pull)
+  #DISCOURSE_CDN_URL: //discourse-cdn.example.com
+
+volumes:
+  - volume:
+      host: {{ discourse_location }}/shared/web_only
+      guest: /shared
+  - volume:
+      host: {{ discourse_location }}/shared/web_only/log/var-log
+      guest: /var/log
+  - volume:
+      host: /var/run/postgresql
+      guest: /var/run/postgresql
+
+## Plugins go here
+## see https://meta.discourse.org/t/19157 for details
+hooks:
+  after_code:
+    - exec:
+        cd: $home/plugins
+        cmd:
+          - git clone https://github.com/discourse/docker_manager.git
+          - git clone https://github.com/upbitit/discourse-mailgun
+
+## Remember, this is YAML syntax - you can only have one block with a name
+run:
+  - exec: echo "Beginning of custom commands"
+
+  ## If you want to configure password login for root, uncomment and change:
+  ## Use only one of the following lines:
+  #- exec: /usr/sbin/usermod -p 'PASSWORD_HASH' root
+  #- exec: /usr/sbin/usermod -p "$(mkpasswd -m sha-256 'RAW_PASSWORD')" root
+
+  ## If you want to authorized additional users, uncomment and change:
+  #- exec: ssh-import-id username
+  #- exec: ssh-import-id anotherusername
+
+  - exec: echo "End of custom commands"
+  - exec: awk -F\# '{print $1;}' ~/.ssh/authorized_keys | awk 'BEGIN { print "Authorized SSH keys for this container:"; } NF>=2 {print $NF;}'

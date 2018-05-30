@@ -4,6 +4,5 @@
   notify: print ssh key (output)
 
 - name: print ssh key (output)
-  debug: 
+  debug:
     msg: "Add following line to ~/.ssh/authorized_keys on {{ backup_user }}@{{ backup_host }}: {{ sshkey.stdout }}"
-

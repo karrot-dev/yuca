@@ -15,6 +15,7 @@
     postgresql_database: fstaiwan
     postgresql_user: fstaiwan
     sparkpost_relay_domain: replies.app.foodsharing.tw
+    postgresql_socket_auth: false
   tasks:
 
     - name: check ansible version

@@ -89,13 +89,19 @@ If you install [ansible-lint](https://github.com/willthames/ansible-lint) you ca
 ## local testing with vagrant
 
 You can run playbooks against a local vagrant vm.
-This is lets you check whether the playbook is actually able to setup the server from fresh and lets you
-try out changes before you run them in production.
+This is lets you check whether the playbook is actually able to setup the server from fresh and lets you try out changes before you run them in production.
+
+First start the vagrant box, configure your ssh file and run the playbook.
 
 ```
 vagrant up
 vagrant ssh-config >> ~/.ssh/config
 ansible-playbook -i inventory_vagrant playbooks/karrot-dev/setup.playbook.yml
+```
+
+After some time, see if it works:
+
+```
 curl -k -H 'Host: dev.karrot.world' https://localhost:8443/
 ```
 

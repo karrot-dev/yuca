@@ -1,0 +1,7 @@
+---
+
+- name: rebuild discourse
+  command: ./launcher rebuild app
+  args:
+    chdir: "{{ discourse_location }}"
+  become: yes

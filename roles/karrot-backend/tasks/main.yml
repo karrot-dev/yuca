@@ -26,9 +26,6 @@
     state: present
     update_cache: yes
   with_items:
-    - postgresql
-    - python-psycopg2 # needed for ansible postgresql module
-    - git
     - virtualenv
     - build-essential # for pip to build some libraries
     - python3

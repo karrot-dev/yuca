@@ -46,6 +46,7 @@
 - name: nginx php upstream config
   template:
     src: nginx.j2
+    # TODO: should be moved to sites-available and then symlinked
     dest: /etc/nginx/sites-enabled/{{ site }}-php-upstream
   notify:
     - reload nginx

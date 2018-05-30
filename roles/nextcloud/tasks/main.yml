@@ -5,7 +5,8 @@
     path: "{{ nextcloud_webroot }}/index.php"
   register: nc_nextcloud_installed
 
-- block:
+- when: not nc_nextcloud_installed.stat.exists
+  block:
   - name: system packages
     package:
       name: "{{ item }}"
@@ -35,9 +36,6 @@
     file:
       path: /tmp/nextcloud
       state: absent
-
-  when: not nc_nextcloud_installed.stat.exists
-
 
 - name: "Run occ installation command"
   become_user: "{{ site }}"
