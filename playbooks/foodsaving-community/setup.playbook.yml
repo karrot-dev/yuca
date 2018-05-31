@@ -7,10 +7,7 @@
   vars:
     site: foodsaving-community
     server_name: community.foodsaving.world
-    redirects:
-      - forum.foodsaving.world
-      - forum.karrot.world
-      - community.karrot.world
+    redirects: []
     discourse_location: "/var/www/{{ site }}/docker"
     discourse_smtp_address: smtp.mailgun.org
     discourse_smtp_port: 25

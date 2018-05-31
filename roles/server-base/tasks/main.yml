@@ -9,6 +9,7 @@
     - acl
     - ca-certificates
     - git
+    - ufw
 
 - name: remove cmdtest package because it conflicts with yarn
   apt:
@@ -44,3 +45,5 @@
   copy:
     dest: /etc/nginx/conf.d/dhparams.pem
     src: dhparams.pem
+
+- import_tasks: docker.yml

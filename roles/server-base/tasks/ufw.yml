@@ -1,0 +1,65 @@
+---
+
+- name: install base packages
+  apt:
+    name: ufw
+    state: present
+    update_cache: true
+
+- name: deny all incoming traffic
+  ufw:
+    policy: deny
+    direction: incoming
+
+- name: allow all outgoing traffic
+  ufw:
+    policy: allow
+    direction: outgoing
+
+- name: allow incoming traffic for ssh and web server
+  ufw:
+    rule: allow
+    direction: in
+    to_port: "{{ item.port }}"
+    proto: tcp
+  with_items:
+    - port: 22
+    - port: 80
+    - port: 443
+
+- name: allow incoming influxdb access for some IPs from foodsharing.de
+  ufw:
+    rule: allow
+    direction: in
+    proto: tcp
+    to_port: 8086
+    from_ip: "{{ item.ip }}"
+    comment: "{{ item.comment }}"
+  with_items:
+    - ip: 89.238.67.181
+      comment: foodsharing-banana
+    - ip: 89.238.64.169
+      comment: foodsharing
+    - ip: 2a00:1828:2000:873::4
+      comment: foodsharing
+
+- name: allow ports 60000-61000 for mosh
+  ufw:
+    rule: allow
+    direction: in
+    proto: udp
+    to_port: 60000:61000
+    comment: mobile shell (mosh)
+
+- name: allow internal emails - maybe not needed?
+  ufw:
+    rule: allow
+    direction: in
+    proto: tcp
+    to_port: 25
+    to_ip: 127.0.0.1
+    from_ip: 127.0.0.1
+
+- name: enable ufw
+  ufw:
+    state: enabled

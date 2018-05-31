@@ -64,6 +64,16 @@
   systemd:
     name: redis-server
     state: restarted
+  when: redis_configuration.changed
+
+- name: allow docker containers to access redis on host
+  ufw:
+    rule: allow
+    direction: in
+    proto: tcp
+    to_port: 6379
+    to_ip: 192.168.1.1
+    from_ip: 192.168.1.0/24
 
 - when: discourse_configuration.changed
   block:
