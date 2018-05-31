@@ -88,3 +88,29 @@
   args:
     chdir: "{{ nextcloud_webroot }}"
   changed_when: False
+
+- name: "get list of installed apps"
+  become_user: "{{ site }}"
+  shell:
+    cmd: "php occ app:list --output json"
+    chdir: "{{ nextcloud_webroot }}"
+  register: installed_apps
+
+
+- name: "install uninstalled apps"
+  become_user: "{{ site }}"
+
+  shell:
+    cmd: "php occ app:install {{ item }}"
+    chdir: "{{ nextcloud_webroot }}"  
+  when: (installed_apps.stdout | from_json).enabled[item] is not defined and (installed_apps.stdout | from_json).disabled[item] is not defined
+  with_items: "{{ nextcloud_apps }}"
+
+- name: "enable apps"
+  become_user: "{{ site }}"
+
+  shell:
+    cmd: "php occ app:enable {{ item }} "
+    chdir: "{{ nextcloud_webroot }}"  
+  when: (installed_apps.stdout | from_json).enabled[item] is not defined
+  with_items: "{{ nextcloud_apps }}"
