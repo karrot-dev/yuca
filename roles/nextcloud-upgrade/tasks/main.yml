@@ -1,0 +1,11 @@
+- name: "upgrade"
+  become_user: "{{ site }}"
+  shell: >
+      php updater/updater.phar --no-ansi --no-interaction
+  args:
+    chdir: "{{ nextcloud_webroot }}"
+  register: command_result
+  changed_when: "'No update available' not in command_result.stdout"
+  failed_when: "'No update available' not in command_result.stdout and 'Update successful' not in command_result.stderr"
+
+
