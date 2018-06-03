@@ -46,8 +46,14 @@
       - migrate
       - collectstatic --clear --no-input
       - compilemessages
-      - setup_sparkpost --quiet
     changed_when: False
+
+  - name: setup sparkpost account
+    command: "env/bin/python manage.py setup_sparkpost --quiet"
+    args:
+      chdir: "/var/www/{{ site }}/www/backend"
+    changed_when: False
+    when: not we_are_in_vagrant
 
     # need to use 'sudo' to allow privileges just for this command
   - name: restart workers

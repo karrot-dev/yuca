@@ -14,7 +14,7 @@
   apt:
     # there is an old influxdb in debian repo
     # we want new shiny one, for which I had to specify the version
-    name: influxdb=1.4.2-1
+    name: influxdb=1.5*
     state: present
     update_cache: true
 
@@ -23,3 +23,26 @@
     name: influxdb
     state: started
     enabled: yes
+
+- name: install influxdb python lib
+  pip:
+    name: influxdb
+    state: present
+
+- name: create influxdb database
+  influxdb_database:
+    database_name: "{{ influxdb_database }}"
+    hostname: 127.0.0.1
+    username: ""
+    password: ""
+
+- name: create grafana postgres user
+  postgresql_user:
+    name: "{{ site }}-grafana"
+    password: grafana
+    db: "{{ postgresql_database }}"
+    priv: CONNECT/group_names:SELECT
+    encrypted: yes
+    state: present
+  become: true
+  become_user: postgres

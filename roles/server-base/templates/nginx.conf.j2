@@ -42,7 +42,9 @@ http {
 	ssl_session_timeout 3h;
 	ssl_dhparam /etc/nginx/conf.d/dhparams.pem;
 
+	{% if not we_are_in_vagrant %}
 	add_header Strict-Transport-Security "max-age=63072000; includeSubdomains; preload";
+	{% endif %}
 
 	##
 	# Logging Settings

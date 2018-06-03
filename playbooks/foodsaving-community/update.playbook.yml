@@ -1,0 +1,15 @@
+---
+- name: community.foodsaving.world | update
+  hosts: all
+  become: yes
+  vars:
+    discourse_location: "/var/www/{{ site }}/docker"
+
+  tasks:
+    - name: check ansible version
+      include_role:
+        name: check-ansible-version
+
+    - name: update-discourse
+      include_role:
+        name: update-discourse

@@ -2,7 +2,7 @@
 - name: PostgreSQL packages are installed
   package:
     name: "{{ item }}"
-    state: installed
+    state: present
   with_items:
     - postgresql
     - python-psycopg2
@@ -13,6 +13,32 @@
     enabled: yes
     state: started
     daemon_reload: yes
+
+- name: Copy postgres config
+  copy:
+    dest: /etc/postgresql/9.6/main/postgresql.conf
+    src: postgresql.conf
+  register: postgresql_config
+
+- name: allow md5 login via postgres socket
+  lineinfile:
+    path: /etc/postgresql/9.6/main/pg_hba.conf
+    line: "local {{ postgresql_database }} {{ postgresql_user }} md5"
+    insertafter: '# "local" is for Unix domain socket connections only'
+  when: postgresql_socket_auth
+  register: postgresql_hba_config
+
+- name: restart postgresql
+  when: postgresql_config.changed
+  systemd:
+    name: postgresql
+    state: restarted
+
+- name: reload postgresql
+  when: postgresql_hba_config.changed
+  systemd:
+    name: postgresql
+    state: reloaded
 
 - name: role
   postgresql_user:
@@ -34,7 +60,24 @@
   become: true
   become_user: postgres
 
-- block:
+- name: add extensions to application postgres database
+  postgresql_ext:
+    db: "{{ postgresql_database }}"
+    name: "{{ item }}"
+  with_items: "{{ postgresql_extensions | default([]) }}"
+  become: true
+  become_user: postgres
+
+- name: adjust owner of schema public
+  postgresql_schema:
+    database: "{{ postgresql_database }}"
+    name: public
+    owner: "{{ postgresql_user }}"
+  become: true
+  become_user: postgres
+
+- when: backup_host is defined
+  block:
   - name: generate ssh key for site user
     user:
       name: "{{ site }}"
@@ -50,7 +93,7 @@
       owner: "{{ site }}"
       group: "{{ site }}"
 
-  - name: create pgpass file
+  - name: create pgpass file for backup script
     copy:
       dest: /var/www/{{ site }}/.pgpass
       content: "localhost:5432:{{ postgresql_database }}:{{ postgresql_user }}:{{ postgresql_password }}\n"
@@ -85,5 +128,3 @@
       hour: "3"
       job: "cd /var/www/{{ site }}/backup/ && ./backup.postgres.sh > /dev/null"
       user: "{{ site }}"
-
-  when: backup_host is defined

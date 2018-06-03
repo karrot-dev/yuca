@@ -1,0 +1,42 @@
+---
+
+- name: add docker apt key
+  apt_key:
+    url: https://download.docker.com/linux/debian/gpg
+    id: 9DC858229FC7DD38854AE2D88D81803C0EBFCD88
+    state: present
+
+- name: add docker repository
+  apt_repository:
+    repo: deb https://download.docker.com/linux/debian stretch stable
+    state: present
+    update_cache: yes
+
+- name: install docker
+  apt:
+    name: docker-ce
+    state: present
+
+- name: enable/start docker
+  systemd:
+    name: docker
+    state: started
+    enabled: yes
+
+# set docker bridge to fixed ip for container->host access
+# deny iptables access to not interfere with firewall (ufw)
+- name: set fixed bridge IP
+  copy:
+    dest: "/etc/docker/daemon.json"
+    content: |
+      {
+        "bip": "192.168.1.1/24",
+        "iptables": false
+      }
+  register: docker_configuration
+
+- name: restart docker
+  when: docker_configuration.changed
+  systemd:
+    name: docker
+    state: restarted

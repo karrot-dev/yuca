@@ -7,6 +7,9 @@
     - nginx-extras
     - apt-transport-https
     - acl
+    - ca-certificates
+    - git
+    - ufw
 
 - name: remove cmdtest package because it conflicts with yarn
   apt:
@@ -14,9 +17,9 @@
     state: absent
 
 - name: setup basic nginx config
-  copy:
+  template:
     dest: /etc/nginx/nginx.conf
-    src: nginx.conf
+    src: nginx.conf.j2
 
 - name: copy nginx default site
   copy:
@@ -42,3 +45,5 @@
   copy:
     dest: /etc/nginx/conf.d/dhparams.pem
     src: dhparams.pem
+
+- import_tasks: ufw.yml

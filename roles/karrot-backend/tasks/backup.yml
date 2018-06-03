@@ -14,6 +14,7 @@
 - become_user: "{{ site }}"
   block:
   - name: initialize backup repositories
+    when: not we_are_in_vagrant
     command: borg init -e repokey {{ item }}
     environment:
       - BORG_PASSPHRASE: "{{ backup_password }}"

@@ -1,0 +1,48 @@
+---
+- name: community.foodsaving.world | setup
+  hosts: all
+  become: yes
+  vars_files:
+    - secrets.vars.yml
+  vars:
+    site: foodsaving-community
+    server_name: community.foodsaving.world
+    redirects: []
+    discourse_location: "/var/www/{{ site }}/docker"
+    discourse_smtp_address: smtp.mailgun.org
+    discourse_smtp_port: 25
+    discourse_smtp_user_name: postmaster@community.foodsaving.world
+    discourse_developer_emails: 'tilmann.becker@gmail.com'
+    postgresql_database: "{{ site }}"
+    postgresql_user: "{{ site }}"
+    postgresql_extensions:
+      - hstore
+      - pg_trgm
+    postgresql_socket_auth: true
+    redis_db: 5
+
+  tasks:
+    - name: check ansible version
+      include_role:
+        name: check-ansible-version
+
+    - name: server-base
+      include_role:
+        name: server-base
+
+    - name: basic-site
+      include_role:
+        name: basic-site
+
+    - name: postgresql-db
+      include_role:
+        name: postgresql-db
+      vars:
+        backup_host: tor-relay.chandi.it
+        backup_user: tiltec
+        backup_path: ~/foodsaving-community/
+        # backup_password set by secrets.vars.yml
+
+    - name: discourse
+      include_role:
+        name: discourse

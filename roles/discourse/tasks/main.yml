@@ -1,0 +1,95 @@
+---
+
+- import_tasks: docker.yml
+
+- name: install dependencies
+  apt:
+    name: "{{ item }}"
+    state: present
+    update_cache: yes
+  with_items:
+    - redis-server
+
+- name: Start Redis and enable at boot
+  systemd:
+    name: redis-server
+    enabled: true
+    state: started
+    daemon_reload: yes
+
+- name: nginx config
+  template:
+    src: nginx.j2
+    dest: /etc/nginx/sites-available/{{ site }}
+  notify:
+    - reload nginx
+
+- name: nginx sites-enabled symlink
+  file:
+    src: /etc/nginx/sites-available/{{ site }}
+    dest: /etc/nginx/sites-enabled/{{ site }}
+    state: link
+  notify:
+    - reload nginx
+
+- git:
+    repo: https://github.com/discourse/discourse_docker.git
+    dest: '{{ discourse_location }}'
+    update: no
+
+- name: copy discourse configuration yaml
+  template:
+    src: web_only.yml.j2
+    dest: "{{ discourse_location }}/containers/web_only.yml"
+    owner: "{{ site }}"
+  register: discourse_configuration
+
+- name: fix discourse permissions
+  file: path={{ discourse_location }} owner={{ site }} group={{ site }} recurse=yes
+
+- name: speed up chown step
+  replace:
+    path: "{{ discourse_location }}/templates/web.template.yml"
+    regexp: '- chown -R discourse \$home'
+    replace: '- find $home ! -user discourse -exec chown discourse {} \+'
+
+- name: let redis listen to the docker bridge IP
+  lineinfile:
+    path: /etc/redis/redis.conf
+    regexp: '^bind'
+    line: "bind 127.0.0.1 192.168.1.1"
+  register: redis_configuration
+
+- name: restart redis
+  systemd:
+    name: redis-server
+    state: restarted
+  when: redis_configuration.changed
+
+- name: allow docker containers to access redis on host
+  ufw:
+    rule: allow
+    direction: in
+    proto: tcp
+    to_port: 6379
+    to_ip: 192.168.1.1
+    from_ip: 192.168.1.0/24
+
+- when: discourse_configuration.changed
+  block:
+  - name: bootstrap discourse
+    command: ./launcher bootstrap web_only
+    args:
+      chdir: "{{ discourse_location }}"
+
+  - name: destroy existing discourse container
+    command: ./launcher destroy web_only
+    args:
+      chdir: "{{ discourse_location }}"
+    ignore_errors: true
+
+  - name: start new discourse container
+    command: ./launcher start web_only
+    args:
+      chdir: "{{ discourse_location }}"
+

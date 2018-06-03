@@ -19,6 +19,7 @@
     postgresql_user: fstool
     sparkpost_relay_domain: replies.karrot.world
     from_email_address: noreply@karrot.world
+    postgresql_socket_auth: false
 
   tasks:
     - name: check ansible version
