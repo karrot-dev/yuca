@@ -11,6 +11,7 @@
     postgresql_user: kanthaus-nextcloud
     postgresql_database: kanthaus-nextcloud
     postgresql_socket_auth: false
+    nextcloud_apps: []
 
   tasks:
     - name: check ansible version

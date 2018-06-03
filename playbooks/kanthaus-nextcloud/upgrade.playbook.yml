@@ -1,0 +1,13 @@
+---
+- name: kanthaus-nextcloud | setup
+  hosts: all
+  become: yes
+  vars:
+    site: kanthaus-nextcloud
+
+  tasks:
+    - name: Upgrade Nextcloud
+      include_role:
+        name: nextcloud-upgrade
+      vars:
+        nextcloud_webroot: "/var/www/{{ site }}/www"
