@@ -1,0 +1,84 @@
+---
+
+- name: add yarn apt key
+  apt_key:
+    url: https://dl.yarnpkg.com/debian/pubkey.gpg
+    state: present
+
+- name: add yarn repository
+  apt_repository:
+    repo: deb https://dl.yarnpkg.com/debian/ stable main
+    state: present
+
+- name: add nodesource apt key
+  apt_key:
+    url: https://deb.nodesource.com/gpgkey/nodesource.gpg.key
+    state: present
+
+- name: add nodejs repository
+  apt_repository:
+    repo: deb https://deb.nodesource.com/node_6.x stretch main
+    state: present
+
+- name: install dependencies
+  apt:
+    name: "{{ item }}"
+    state: present
+    update_cache: yes
+  with_items:
+    - build-essential
+    - yarn # for building the mjml templates
+    - nodejs # for yarn
+
+#------------------------------------------------------------------
+# nginx config
+
+- name: nginx config
+  template:
+    src: nginx.j2
+    dest: /etc/nginx/sites-available/{{ site }}
+  notify:
+    - reload nginx
+
+- name: nginx sites-enabled symlink
+  file:
+    src: /etc/nginx/sites-available/{{ site }}
+    dest: /etc/nginx/sites-enabled/{{ site }}
+    state: link
+  notify:
+    - reload nginx
+
+- name: create directories
+  become: yes
+  become_user: "{{ site }}"
+  file:
+    path: "{{ item }}"
+    state: directory
+  with_items:
+    - "{{ static_root }}"
+
+- name: update code
+  git:
+    repo: https://gitlab.com/yunity/ukuvota.git
+    dest: /var/www/{{ site }}/www
+    update: yes
+    version: master
+  become: yes
+  become_user: "{{ site }}"
+
+- name: install dependencies
+  command: yarn
+  args:
+    chdir: "/var/www/{{ site }}/www/server/"
+  changed_when: False
+
+- name: systemd ukuvota backend service
+  template:
+    src: ukuvota.service.j2
+    dest: /etc/systemd/system/{{ site }}-backend.service
+
+- name: systemd enable ukuvota service
+  systemd:
+      name: "{{ site }}-backend.service"
+      state: started
+      enabled: yes

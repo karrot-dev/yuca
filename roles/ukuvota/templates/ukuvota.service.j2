@@ -1,0 +1,13 @@
+[Service]
+ExecStart=/usr/bin/node /var/www/{{ site }}/www/server/index.js /var/www/{{ site }}/data 4000
+Restart=always
+StandardOutput=syslog
+StandardError=syslog
+User={{ site }}
+Group={{ site }}
+Environment=NODE_ENV=production
+WorkingDirectory=/var/www/{{ site }}/www/server
+
+[Install]
+WantedBy=multi-user.target
+

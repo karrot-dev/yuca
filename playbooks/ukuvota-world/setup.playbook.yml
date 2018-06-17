@@ -1,0 +1,27 @@
+---
+- name: ukuvota.world | setup
+  hosts: all
+  become: yes
+  vars:
+    site: ukuvota
+    static_root: /var/www/{{ site }}/production/frontend
+    server_name: ukuvota.world
+    redirects:
+      - www.ukuvota.world
+
+  tasks:
+    - name: check ansible version
+      include_role:
+        name: check-ansible-version
+
+    - name: server-base
+      include_role:
+        name: server-base
+
+    - name: basic-site
+      include_role:
+        name: basic-site
+
+    - name: ukuvota
+      include_role:
+        name: ukuvota
