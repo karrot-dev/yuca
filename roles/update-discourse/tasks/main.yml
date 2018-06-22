@@ -4,17 +4,14 @@
   command: ./launcher bootstrap web_only
   args:
     chdir: "{{ discourse_location }}"
-  become: yes
 
 - name: destroy existing discourse container
   command: ./launcher destroy web_only
   args:
     chdir: "{{ discourse_location }}"
   ignore_errors: true
-  become: yes
 
 - name: start new discourse container
   command: ./launcher start web_only
   args:
     chdir: "{{ discourse_location }}"
-  become: yes

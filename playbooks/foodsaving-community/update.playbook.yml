@@ -3,6 +3,7 @@
   hosts: all
   become: yes
   vars:
+    site: foodsaving-community
     discourse_location: "/var/www/{{ site }}/docker"
 
   tasks:
