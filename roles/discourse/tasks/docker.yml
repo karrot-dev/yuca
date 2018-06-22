@@ -40,3 +40,6 @@
   systemd:
     name: docker
     state: restarted
+
+- name: allow docker -> internet forwarding
+  command: ufw route allow in on docker0 comment 'docker -> internet forwarding'
