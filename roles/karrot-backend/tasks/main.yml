@@ -306,22 +306,6 @@
   when: influxdb_database is defined
 
 #------------------------------------------------------------------
-# cron jobs
-
-- name: update pickup dates cronjob
-  cron:
-    name: "{{ site }} | update pickup dates"
-    minute: "0"
-    job: "cd /var/www/{{ site }}/www/backend/ && env/bin/python manage.py update_pickup_dates"
-    user: "{{ site }}"
-
-- name: process finished pickup dates cronjob
-  cron:
-    name: "{{ site }} | process finished pickup dates"
-    job: "cd /var/www/{{ site }}/www/backend/ && env/bin/python manage.py process_finished_pickup_dates"
-    user: "{{ site }}"
-
-#------------------------------------------------------------------
 # file backups
 
 - import_tasks: backup.yml
