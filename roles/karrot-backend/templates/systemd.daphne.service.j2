@@ -1,7 +1,7 @@
 # This file is managed by ansible. It belongs to {{ role_path }}.
 # See https://github.com/yunity/yuca to change.
 [Unit]
-Description={{ site }} | daphne
+Description={{ site }} | daphne %i
 After=network.target
 
 [Service]
@@ -10,10 +10,10 @@ User={{ site }}
 Group={{ site }}
 WorkingDirectory=/var/www/{{ site }}/www/backend
 ExecStart=/var/www/{{ site }}/www/backend/env/bin/daphne \
-	-u /tmp/{{ site }}.sock \
+	-u /tmp/{{ site }}@%i.sock
 	--ws-protocol karrot.token \
 	--proxy-headers \
-	config.asgi:channel_layer
+	config.asgi:application
 Restart=always
 
 [Install]

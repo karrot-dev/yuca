@@ -317,23 +317,16 @@
 - name: systemd daphne service
   template:
     src: systemd.daphne.service.j2
-    dest: /etc/systemd/system/{{ site }}-daphne.service
+    dest: /etc/systemd/system/{{ site }}-daphne@.service
   notify:
     - restart daphne
 
-- name: systemd worker target
+- name: systemd daphne target
   template:
-    src: systemd.worker.target.j2
-    dest: /etc/systemd/system/{{ site }}-worker.target
+    src: systemd.daphne.target.j2
+    dest: /etc/systemd/system/{{ site }}-daphne.target
   notify:
-    - restart workers
-
-- name: systemd worker service
-  template:
-    src: systemd.worker.service.j2
-    dest: /etc/systemd/system/{{ site }}-worker@.service
-  notify:
-    - restart workers
+    - restart daphne
 
 - name: systemd huey service
   template:
@@ -344,13 +337,7 @@
 
 - name: systemd enable daphne
   systemd:
-    name: "{{ site }}-daphne.service"
-    state: started
-    enabled: yes
-
-- name: systemd enable workers
-  systemd:
-    name: "{{ site }}-worker.target"
+    name: "{{ site }}-daphne.target"
     state: started
     enabled: yes
 
