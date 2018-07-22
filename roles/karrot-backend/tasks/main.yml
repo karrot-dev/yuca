@@ -299,7 +299,7 @@
   copy:
     dest: "/etc/sudoers.d/deploy_{{ site }}"
     content: |
-      %{{ site }}-deploy ALL=(ALL) NOPASSWD: /bin/systemctl restart {{ site }}-worker.target
+      %{{ site }}-deploy ALL=(ALL) NOPASSWD: /bin/systemctl restart {{ site }}.target
       %{{ site }}-deploy ALL=(ALL) NOPASSWD: /bin/systemctl restart {{ site }}-huey.service
 
 - import_tasks: influxdb.yml
