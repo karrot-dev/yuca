@@ -9,6 +9,7 @@ PartOf={{ site }}.target
 Type=simple
 User={{ site }}
 Group={{ site }}
+Environment=PYTHONUNBUFFERED=true
 WorkingDirectory=/var/www/{{ site }}/www/backend
 Sockets={{ site }}.socket
 ExecStart=/var/www/{{ site }}/www/backend/env/bin/daphne \
