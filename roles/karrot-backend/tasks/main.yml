@@ -344,7 +344,7 @@
 
 - name: systemd enable daphne
   systemd:
-    name: "{{ site }}-daphne.target"
+    name: "{{ site }}.target"
     state: started
     enabled: yes
 

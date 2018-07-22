@@ -3,7 +3,7 @@
 - name: restart daphne
   listen: restart app
   systemd:
-    name: "{{ site }}-daphne.target"
+    name: "{{ site }}.target"
     state: restarted
     daemon_reload: yes
 
