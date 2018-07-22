@@ -56,8 +56,8 @@
     when: not we_are_in_vagrant
 
     # need to use 'sudo' to allow privileges just for this command
-  - name: restart workers
-    shell: "sudo systemctl restart {{ site }}-worker.target"
+  - name: restart daphne
+    shell: "sudo systemctl restart {{ site }}.target"
     changed_when: False
 
   - name: restart huey

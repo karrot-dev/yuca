@@ -1,10 +1,10 @@
 # This file is managed by ansible. It belongs to {{ role_path }}.
 # See https://github.com/yunity/yuca to change.
 [Unit]
-Description={{ site }} | django workers
+Description={{ site }} | daphne workers
 
 {% for n in range(workers) %}
-Wants={{ site }}-worker@{{ n+1 }}.service
+Wants={{ site }}@{{ n+1 }}.service
 {% endfor %}
 
 [Install]

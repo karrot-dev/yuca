@@ -1,0 +1,10 @@
+# This file is managed by ansible. It belongs to {{ role_path }}.
+# See https://github.com/yunity/yuca to change.
+[Socket]
+ListenStream=/run/{{ site }}.socket
+SocketUser={{ site }}
+SocketGroup={{ site }}
+Service={{ site }}@1.service
+
+[Install]
+WantedBy=sockets.target
