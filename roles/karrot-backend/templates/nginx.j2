@@ -5,12 +5,6 @@ map $http_upgrade $connection_upgrade {
     '' close;
 }
 
-upstream {{ site }}-backend {
-    {% for n in range(workers) %}
-    server http://unix:/tmp/{{ site }}@{{ n+1 }}.sock;
-    {% endfor %}
-}
-
 server {
 
     server_name {{ server_name }};
@@ -64,7 +58,7 @@ server {
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header X-Forwarded-Proto $http_x_forwarded_proto;
         proxy_set_header Host $host;
-        proxy_pass {{ site }}-backend;
+        proxy_pass http://unix:/run/{{ site }}.socket;
         proxy_redirect off;
         proxy_http_version 1.1;
         proxy_set_header Upgrade $http_upgrade;

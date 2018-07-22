@@ -314,17 +314,24 @@
 #------------------------------------------------------------------
 # systemd servics
 
+- name: systemd daphne socket
+  template:
+    src: systemd.daphne.socket.j2
+    dest: /etc/systemd/system/{{ site }}.socket
+  notify:
+    - restart daphne
+
 - name: systemd daphne service
   template:
-    src: systemd.daphne.service.j2
-    dest: /etc/systemd/system/{{ site }}-daphne@.service
+    src: systemd.daphne.service@.j2
+    dest: /etc/systemd/system/{{ site }}@.service
   notify:
     - restart daphne
 
 - name: systemd daphne target
   template:
     src: systemd.daphne.target.j2
-    dest: /etc/systemd/system/{{ site }}-daphne.target
+    dest: /etc/systemd/system/{{ site }}.target
   notify:
     - restart daphne
 

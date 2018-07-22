@@ -3,17 +3,20 @@
 [Unit]
 Description={{ site }} | daphne %i
 After=network.target
+PartOf={{ site }}.target
 
 [Service]
 Type=simple
 User={{ site }}
 Group={{ site }}
 WorkingDirectory=/var/www/{{ site }}/www/backend
+Sockets={{ site }}.socket
 ExecStart=/var/www/{{ site }}/www/backend/env/bin/daphne \
-	-u /tmp/{{ site }}@%i.sock
+	-e systemd:domain=UNIX:index=0 \
 	--ws-protocol karrot.token \
 	--proxy-headers \
 	config.asgi:application
+NonBlocking=true
 Restart=always
 
 [Install]
