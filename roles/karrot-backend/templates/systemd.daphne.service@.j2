@@ -12,7 +12,7 @@ Group={{ site }}
 WorkingDirectory=/var/www/{{ site }}/www/backend
 Sockets={{ site }}.socket
 ExecStart=/var/www/{{ site }}/www/backend/env/bin/daphne \
-	-e systemd:domain=UNIX:index=0 \
+	--endpoint systemd:domain=UNIX:index=0 \
 	--ws-protocol karrot.token \
 	--proxy-headers \
 	config.asgi:application
