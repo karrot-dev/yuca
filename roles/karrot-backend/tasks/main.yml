@@ -88,7 +88,7 @@
     group: "{{ site }}-deploy"
     createhome: no
     home: "/var/www/{{ site }}-deploy"
-    shell: /bin/false
+    shell: /bin/bash
 
 - name: set default acl permission mask
   acl:
