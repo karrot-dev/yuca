@@ -78,4 +78,8 @@ server {
         expires max;
     }
 
+    location /community_proxy/ {
+        proxy_pass https://community.foodsaving.world/;
+    }
+
 }
