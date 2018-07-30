@@ -2,3 +2,4 @@ group_vars/*.yml
 vault-password
 
 .vagrant
+.idea
