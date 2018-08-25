@@ -14,7 +14,7 @@
   apt:
     # there is an old influxdb in debian repo
     # we want new shiny one, for which I had to specify the version
-    name: influxdb=1.5*
+    name: influxdb=1.6*
     state: present
     update_cache: true
 
