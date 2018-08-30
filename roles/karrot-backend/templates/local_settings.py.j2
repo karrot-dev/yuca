@@ -110,13 +110,16 @@ CHANNEL_LAYERS = {
     },
 }
 
+import redis
+pool = redis.ConnectionPool.from_url("redis://{}:6379/{{ redis_db }}".format(REDIS_HOST))
+
 HUEY = {
     "always_eager": False,
     "connection": {
-        "url": "redis://{}:6379/{{ redis_db }}".format(REDIS_HOST),
+        "connection_pool": pool,
     },
     "consumer": {
-        "workers": 4,
+        "workers": 8,
         "worker_type" : "greenlet",
     },
 }
