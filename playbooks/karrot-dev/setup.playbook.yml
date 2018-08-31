@@ -46,7 +46,6 @@
         static_root: /home/deploy/karrot-frontend/master
         apk: /home/deploy/karrot-app/master/app.apk
         redis_db: 4
-        huey_redis_db: 14
         influxdb_database: karrot-dev
         workers: 4
         additional_allowed_hosts:

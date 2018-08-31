@@ -111,7 +111,7 @@ CHANNEL_LAYERS = {
 }
 
 import redis
-pool = redis.ConnectionPool.from_url("redis://{}:6379/{{ huey_redis_db }}".format(REDIS_HOST))
+pool = redis.ConnectionPool.from_url("redis://{}:6379/{{ redis_db }}".format(REDIS_HOST))
 
 HUEY = {
     "always_eager": False,
