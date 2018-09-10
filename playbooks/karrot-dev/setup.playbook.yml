@@ -21,6 +21,7 @@
     sparkpost_relay_domain: replies.dev.karrot.world
     from_email_address: noreply@dev.karrot.world
     postgresql_socket_auth: false
+    csp_report_uri: "https://sentry.io/api/1249808/security/?sentry_key=5c7a0f337fbe4e9ca8626f0e203a2569&sentry_environment=development"
 
   tasks:
     - name: check ansible version

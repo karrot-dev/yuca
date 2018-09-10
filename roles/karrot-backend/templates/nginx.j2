@@ -49,6 +49,10 @@ server {
     location / {
         try_files $uri /index.html;
 
+        {% if csp_report_uri is defined %}
+        add_header Content-Security-Policy-Report-Only "default-src 'self'; report-uri {{ csp_report_uri }}";
+        {% endif %}
+
         # kill cache
         add_header Last-Modified $date_gmt;
         add_header Cache-Control 'no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0';
