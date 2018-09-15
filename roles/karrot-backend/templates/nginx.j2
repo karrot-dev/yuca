@@ -50,7 +50,7 @@ server {
         try_files $uri /index.html;
 
         {% if csp_report_uri is defined %}
-        add_header Content-Security-Policy-Report-Only "default-src 'self'; report-uri {{ csp_report_uri }}";
+        add_header Content-Security-Policy-Report-Only "default-src 'self'; connect-src 'self' wss://{{ server_name }} https://sentry.io; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://*.tile.openstreetmap.org https://twemoji.maxcdn.com; report-uri {{ csp_report_uri }}";
         {% endif %}
 
         # kill cache
