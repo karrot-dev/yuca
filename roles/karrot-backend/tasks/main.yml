@@ -52,6 +52,8 @@
     dest: /etc/nginx/sites-available/{{ site }}
   notify:
     - reload nginx
+  tags:
+    - nginx
 
 - name: nginx sites-enabled symlink
   file:
@@ -60,6 +62,8 @@
     state: link
   notify:
     - reload nginx
+  tags:
+    - nginx
 
 - name: create frontend directory
   file:

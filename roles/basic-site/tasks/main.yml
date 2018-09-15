@@ -86,6 +86,8 @@
     dest: /etc/nginx/sites-available/{{ site }}
   notify:
     - reload nginx
+  tags:
+    - nginx
 
 - name: nginx redirect config
   template:
@@ -93,6 +95,8 @@
     dest: /etc/nginx/sites-available/{{ site }}-redirect
   notify:
     - reload nginx
+  tags:
+    - nginx
 
 - name: nginx sites-enabled symlink
   when: setup_html_vhost is defined
@@ -102,6 +106,8 @@
     state: link
   notify:
     - reload nginx
+  tags:
+    - nginx
 
 - name: nginx redirect sites-enabled symlink
   file:
@@ -110,3 +116,5 @@
     state: link
   notify:
     - reload nginx
+  tags:
+    - nginx
