@@ -20,6 +20,7 @@
     sparkpost_relay_domain: replies.karrot.world
     from_email_address: noreply@karrot.world
     postgresql_socket_auth: false
+    csp_report_uri: "https://sentry.io/api/1249808/security/?sentry_key=5c7a0f337fbe4e9ca8626f0e203a2569&sentry_environment=production"
 
   tasks:
     - name: check ansible version
@@ -33,6 +34,8 @@
     - name: basic-site
       include_role:
         name: basic-site
+      tags:
+        - nginx
 
     - name: postgresql-db
       include_role:
@@ -56,6 +59,8 @@
         borgbackup_server_user: tiltec
         borgbackup_client_backup_server: tor-relay.chandi.it
         # backup_password set by secrets.vars.yml
+      tags:
+        - nginx
 
     - name: karrot-backend-deploy
       include_role:
