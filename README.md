@@ -57,7 +57,7 @@ cp -r karrot-dev your-new-site
 
 Ensure `roles` is symlinked like so: `playbooks/your-new-site/roles -> roles`.
 
-**Note** copy the most simliar site to what you want to configure (at the moment there is only one anyway...)
+**Note** copy the most simliar site to what you want to configure
 
 ## editing encrypted files
 
@@ -85,6 +85,20 @@ If you install [ansible-lint](https://github.com/willthames/ansible-lint) you ca
 * always use `.yml` extension not `.yaml`
 * don't check in code that fails the `./scripts/lint` check
 * when running a playbook it should all be green/ok if nothing has actually changed
+
+## tags
+
+If you are only changing part of the configuration there may be some tags configured.
+
+## karrot-dev / karrot-world
+
+### nginx
+
+If you are only changing nginx related setup configuration you can do it very quickly using the `nginx` tag, e.g.:
+
+```
+ansible-playbook playbooks/karrot-dev/setup.playbook.yml --tags nginx
+```
 
 ## local testing with vagrant
 
