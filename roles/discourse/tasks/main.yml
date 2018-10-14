@@ -4,11 +4,12 @@
 
 - name: install dependencies
   apt:
-    name: "{{ item }}"
+    name: "{{ packages }}"
     state: present
     update_cache: yes
-  with_items:
-    - redis-server
+  vars:
+    packages:
+      - redis-server
 
 - name: Start Redis and enable at boot
   systemd:

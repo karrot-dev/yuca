@@ -1,15 +1,16 @@
 - name: install base packages
   apt:
-    name: "{{ item }}"
+    name: "{{ packages }}"
     state: present
     update_cache: true
-  with_items:
-    - nginx-extras
-    - apt-transport-https
-    - acl
-    - ca-certificates
-    - git
-    - ufw
+  vars:
+    packages:
+      - nginx-extras
+      - apt-transport-https
+      - acl
+      - ca-certificates
+      - git
+      - ufw
 
 - name: remove cmdtest package because it conflicts with yarn
   apt:

@@ -22,19 +22,20 @@
 
 - name: install dependencies
   apt:
-    name: "{{ item }}"
+    name: "{{ packages }}"
     state: present
     update_cache: yes
-  with_items:
-    - virtualenv
-    - build-essential # for pip to build some libraries
-    - python3
-    - python3-dev
-    - redis-server
-    - gettext
-    - python-pip # so we can pip install influxdb later
-    - yarn # for building the mjml templates
-    - nodejs # for yarn
+  vars:
+    packages:
+      - virtualenv
+      - build-essential # for pip to build some libraries
+      - python3
+      - python3-dev
+      - redis-server
+      - gettext
+      - python-pip # so we can pip install influxdb later
+      - yarn # for building the mjml templates
+      - nodejs # for yarn
 
 - name: Start Redis and enable at boot
   systemd:
