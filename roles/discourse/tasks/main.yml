@@ -35,7 +35,7 @@
 - git:
     repo: https://github.com/discourse/discourse_docker.git
     dest: '{{ discourse_location }}'
-    update: no
+    update: yes
 
 - name: copy discourse configuration yaml
   template:
@@ -43,12 +43,6 @@
     dest: "{{ discourse_location }}/containers/web_only.yml"
     owner: "{{ site }}"
   register: discourse_configuration
-
-- name: speed up chown step
-  replace:
-    path: "{{ discourse_location }}/templates/web.template.yml"
-    regexp: '- chown -R discourse \$home'
-    replace: '- find $home ! -user discourse -exec chown discourse {} \+'
 
 - name: let redis listen to the docker bridge IP
   lineinfile:

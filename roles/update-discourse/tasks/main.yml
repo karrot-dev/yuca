@@ -1,5 +1,10 @@
 ---
 
+- git:
+    repo: https://github.com/discourse/discourse_docker.git
+    dest: '{{ discourse_location }}'
+    update: yes
+
 - name: bootstrap discourse
   command: ./launcher bootstrap web_only
   args:
