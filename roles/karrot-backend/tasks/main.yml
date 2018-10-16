@@ -274,11 +274,12 @@
 
   - name: install tools
     pip:
-      name: "{{ item }}"
+      name: "{{ packages }}"
       virtualenv: "/var/www/{{ site }}/www/backend/env"
-    with_items:
-      - setuptools
-      - pip-tools
+    vars:
+      packages:
+        - setuptools
+        - pip-tools
 
   - name: pip sync
     command: env/bin/pip-sync
