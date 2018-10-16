@@ -23,6 +23,8 @@
     command: env/bin/pip-sync
     args:
       chdir: "/var/www/{{ site }}/www/backend"
+    environment:
+      PIP_EXISTS_ACTION: w
     changed_when: False
 
   - name: install mjml dependencies
