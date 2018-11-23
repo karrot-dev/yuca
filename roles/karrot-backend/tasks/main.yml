@@ -47,6 +47,19 @@
 #------------------------------------------------------------------
 # nginx config
 
+- name: build csp config
+  set_fact:
+    csp_config: "{{ csp_config | default('') }}{{ item.key}} {{ item.value }}; "
+  with_dict:
+    default-src: "'self'"
+    connect-src: "'self' wss://{{ server_name }} https://sentry.io"
+    style-src: "'self' 'unsafe-inline'"
+    img-src: "'self' https: data:"
+    report-uri: "{{ csp_report_uri }}"
+  when: csp_report_uri is defined
+  tags:
+    - nginx
+
 - name: nginx config
   template:
     src: nginx.j2
