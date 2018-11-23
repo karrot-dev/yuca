@@ -52,8 +52,8 @@ server {
         # security related headers
         add_header X-Frame-Options DENY;
         add_header X-Content-Type-Options nosniff;
-        {% if csp_report_uri is defined %}
-        add_header Content-Security-Policy-Report-Only "default-src 'self'; connect-src 'self' wss://{{ server_name }} https://sentry.io; style-src 'self' 'unsafe-inline'; img-src 'self' https: data:; report-uri {{ csp_report_uri }}";
+        {% if csp_config is defined %}
+        add_header Content-Security-Policy-Report-Only "{{ csp_config | trim }}";
         {% endif %}
 
         # kill cache
