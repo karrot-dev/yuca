@@ -83,6 +83,22 @@
   tags:
     - nginx
 
+- name: create snippets directory
+  file:
+    path: /etc/nginx/snippets/{{ site }}
+    state: directory
+  tags:
+    - nginx
+
+- name: nginx headers snippet
+  template:
+    src: nginx.headers.j2
+    dest: /etc/nginx/snippets/{{ site }}/headers
+  notify:
+    - reload nginx
+  tags:
+    - nginx
+
 - name: nginx config
   template:
     src: nginx.j2
