@@ -50,6 +50,7 @@
 - name: build csp config
   set_fact:
     csp_config: "{{ csp_config | default('') }}{{ item.key}} {{ item.value | join(' ') }}; "
+    csp_header: "Content-Security-Policy"
   with_dict:
     default-src:
       - "'self'"
@@ -72,6 +73,13 @@
     report-uri:
       - "{{ csp_report_uri }}"
   when: csp_report_uri is defined
+  tags:
+    - nginx
+
+- name: set csp to report-only
+  set_fact:
+    csp_header: "Content-Security-Policy-Report-Only"
+  when: csp_report_only
   tags:
     - nginx
 
