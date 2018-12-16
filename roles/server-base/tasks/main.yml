@@ -26,3 +26,5 @@
 - import_tasks: redis.yml
 
 - import_tasks: yarn.yml
+
+- import_tasks: influxdb.yml

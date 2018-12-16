@@ -1,0 +1,15 @@
+---
+
+- name: create influxdb admin user
+  influxdb_user:
+    user_name: "{{ influxdb_admin_user }}"
+    user_password: "{{ influxdb_admin_password }}"
+    admin: yes
+
+# a user that can be given read permissions on various database if you want it to be public
+- name: create influxdb public user
+  influxdb_user:
+    user_name: public
+    user_password: public
+    login_username: "{{ influxdb_admin_username }}"
+    login_password: "{{ influxdb_admin_password }}"

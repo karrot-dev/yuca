@@ -33,8 +33,33 @@
   influxdb_database:
     database_name: "{{ influxdb_database }}"
     hostname: 127.0.0.1
-    username: ""
-    password: ""
+    login_username: "{{ influxdb_admin_username }}"
+    login_password: "{{ influxdb_admin_password }}"
+
+- name: create influxdb user
+  influxdb_user:
+    user_name: "{{ influxdb_database }}"
+    user_password: "{{ influxdb_password }}"
+    login_username: "{{ influxdb_admin_username }}"
+    login_password: "{{ influxdb_admin_password }}"
+
+# When https://github.com/ansible/ansible/pull/46216 is ready we can use that instead
+- name: grant influxdb user full access to the database
+  influxdb_query:  
+    hostname: 127.0.0.1
+    query: "GRANT ALL ON \"{{ influxdb_database }}\" TO \"{{ influxdb_database }}\""
+    login_username: "{{ influxdb_admin_username }}"
+    login_password: "{{ influxdb_admin_password }}"
+  changed_when: False
+
+# When https://github.com/ansible/ansible/pull/46216 is ready we can use that instead
+- name: grant influxdb public user read access to the database
+  influxdb_query:  
+    hostname: 127.0.0.1
+    query: "GRANT READ ON \"public\" TO \"{{ influxdb_database }}\""
+    login_username: "{{ influxdb_admin_username }}"
+    login_password: "{{ influxdb_admin_password }}"
+  changed_when: False
 
 - name: create grafana postgres user
   postgresql_user:
