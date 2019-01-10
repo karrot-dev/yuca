@@ -12,7 +12,7 @@
     discourse_smtp_address: smtp.mailgun.org
     discourse_smtp_port: 25
     discourse_smtp_user_name: postmaster@community.foodsaving.world
-    discourse_developer_emails: 'tilmann.becker@gmail.com'
+    discourse_developer_emails: 'tilmann.becker@gmail.com,community.foodsaving.world@nicksellen.co.uk'
     postgresql_database: "{{ site }}"
     postgresql_user: "{{ site }}"
     postgresql_extensions:
