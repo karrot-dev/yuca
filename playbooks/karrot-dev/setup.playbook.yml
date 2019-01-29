@@ -23,6 +23,7 @@
     postgresql_socket_auth: false
     csp_report_uri: "https://sentry.io/api/1249808/security/?sentry_key=5c7a0f337fbe4e9ca8626f0e203a2569&sentry_environment=development"
     csp_report_only: false
+    disable_issues: 'False'
 
   tasks:
     - name: check ansible version
