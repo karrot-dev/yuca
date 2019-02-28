@@ -29,6 +29,8 @@
     - name: basic-site
       include_role:
         name: basic-site
+      tags:
+        - nginx
 
     - name: postgresql-db
       include_role:
@@ -54,6 +56,8 @@
         influxdb_database: fstaiwan
         borgbackup_server_user: tiltec
         borgbackup_client_backup_server: tor-relay.chandi.it
+      tags:
+        - nginx
 
     - name: karrot-backend-deploy
       include_role:
