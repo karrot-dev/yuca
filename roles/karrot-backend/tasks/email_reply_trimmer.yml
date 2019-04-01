@@ -1,0 +1,25 @@
+---
+
+- name: install docker python library
+  pip:
+    name: docker
+    state: present
+
+- name: email_reply_trimmer service container
+  docker_container:
+    name: "karrot-email-reply-trimmer"
+    image: karrot/email_reply_trimmer_service
+    state: started
+    published_ports: "4567:4567"
+    restart_policy: unless-stopped
+
+# TODO use this in another role to update the container
+# - name: update container
+#   docker_container:
+#     image: karrot/email_reply_trimmer_service
+#     state: started
+#     pull: yes
+#     recreate: yes
+#     restart: yes
+#     published_ports: "4567:4567"
+#     restart_policy: unless-stopped

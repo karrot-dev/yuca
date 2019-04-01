@@ -372,7 +372,7 @@
   when: backup_password is defined
 
 #------------------------------------------------------------------
-# systemd servics
+# systemd services
 
 - name: systemd daphne socket
   template:
@@ -413,3 +413,8 @@
     name: "{{ site }}-huey.service"
     state: started
     enabled: yes
+
+#------------------------------------------------------------------
+# external email reply trimmer service
+
+- import_tasks: email_reply_trimmer.yml
