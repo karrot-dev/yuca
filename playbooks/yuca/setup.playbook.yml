@@ -1,0 +1,25 @@
+---
+- name: yuca | setup
+  hosts: all
+  become: yes
+  vars_files:
+    - secrets.vars.yml
+  tasks:
+    - name: restic-backup
+      include_role:
+        name: restic-backup
+      vars:
+        name: yuca
+        restic_repo: sftp:yuca-backup@cashew.chandi.it:/repo
+        restic_password: "{{ restic_password_cashew }}"
+        postgres_databases: 
+          - foodsaving-community
+          - fstaiwan
+          - fstool
+          - fstool-dev
+          - kanthaus-nextcloud
+        folders:
+            - /etc
+            - /var/www/kanthaus-nextcloud/nextcloud_data
+            - /var/www/kanthaus-nextcloud/www
+            - /var/www/karrot-dev/www/uploads
