@@ -19,6 +19,7 @@ pg_dump \
 
 echo dumped into $filename
 
+{% if backup_host is defined %}
 # copy to offsite
 rsync \
     -avz \
@@ -27,3 +28,4 @@ rsync \
     {{ backup_user }}@{{ backup_host }}:{{ backup_path }}
 
 echo copied to offsite location
+{% endif %}

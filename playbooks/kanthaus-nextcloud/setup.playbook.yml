@@ -30,9 +30,9 @@
       include_role:
         name: postgresql-db
       vars:
-        backup_host: tor-relay.chandi.it
-        backup_user: tiltec
-        backup_path: ~/kanthaus-nextcloud-backup/
+        # backup_host: tor-relay.chandi.it
+        # backup_user: tiltec
+        # backup_path: ~/kanthaus-nextcloud-backup/
         # backup_password set by secrets.vars.yml
 
     - name: Setup Nextcloud

@@ -1,8 +1,0 @@
-- name: print ssh key
-  shell: "cat /var/www/{{ site }}/.ssh/id_ed25519.pub | sed 's/ansible-generated on / {{ site }}@/'"
-  register: sshkey
-  notify: print ssh key (output)
-
-- name: print ssh key (output)
-  debug:
-    msg: "Add following line to ~/.ssh/authorized_keys on {{ backup_user }}@{{ backup_host }}: {{ sshkey.stdout }}"

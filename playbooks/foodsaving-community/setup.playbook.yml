@@ -38,9 +38,9 @@
       include_role:
         name: postgresql-db
       vars:
-        backup_host: tor-relay.chandi.it
-        backup_user: tiltec
-        backup_path: ~/foodsaving-community/
+        # backup_host: tor-relay.chandi.it
+        # backup_user: tiltec
+        # backup_path: ~/foodsaving-community/
         # backup_password set by secrets.vars.yml
 
     - name: discourse
