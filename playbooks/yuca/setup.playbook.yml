@@ -15,7 +15,7 @@
         postgres_databases: 
           - foodsaving-community
           - fstaiwan
-          - fstool
+          - karrot-world
           - fstool-dev
           - kanthaus-nextcloud
         folders:
@@ -23,3 +23,6 @@
             - /var/www/kanthaus-nextcloud/nextcloud_data
             - /var/www/kanthaus-nextcloud/www
             - /var/www/karrot-dev/www/uploads
+            - /var/www/karrot-world/www/uploads
+            - /var/www/foodsharing-taiwan/www/uploads
+            - /var/www/foodsaving-community/docker/shared/web_only/uploads/default/original
