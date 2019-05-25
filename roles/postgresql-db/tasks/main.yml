@@ -99,20 +99,22 @@
     group: "{{ site }}"
     mode: "770"
 
-- name: setup backup password file
-  copy:
-    dest: "/var/www/{{ site }}/backup/backup.key"
-    content: "{{ backup_password }}"
-    mode: "600"
-    owner: "{{ site }}"
+- when: backup_password is defined
+  block:
+  - name: setup backup password file
+    copy:
+      dest: "/var/www/{{ site }}/backup/backup.key"
+      content: "{{ backup_password }}"
+      mode: "600"
+      owner: "{{ site }}"
 
-- name: create backup cronjob
-  cron:
-    name: "{{ site }} | backup"
-    minute: "0"
-    hour: "3"
-    job: "cd /var/www/{{ site }}/backup/ && ./backup.postgres.sh > /dev/null"
-    user: "{{ site }}"
+  - name: create backup cronjob
+    cron:
+      name: "{{ site }} | backup"
+      minute: "0"
+      hour: "3"
+      job: "cd /var/www/{{ site }}/backup/ && ./backup.postgres.sh > /dev/null"
+      user: "{{ site }}"
 
 - when: backup_host is defined
   block:

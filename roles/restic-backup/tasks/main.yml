@@ -12,7 +12,7 @@
 
 - name: backup script
   template:
-    src: run.sh
+    src: run.sh.j2
     dest: "/root/backup/run-{{ name }}.sh"
     mode: u=rwx
 

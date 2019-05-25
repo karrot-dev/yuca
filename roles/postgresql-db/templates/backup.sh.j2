@@ -3,8 +3,7 @@
 # This file is managed by ansible.
 # See https://github.com/yunity/yuca to change.
 
-set -e
-set -o pipefail
+set -euo pipefail
 
 filename={{ site }}-$(date -I).db.enc
 
