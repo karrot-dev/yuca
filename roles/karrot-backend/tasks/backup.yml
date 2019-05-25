@@ -23,7 +23,7 @@
     changed_when: borgbackup_initialize_result.rc == 0
     with_items:
       - /var/www/{{ site }}/backup/borg
-      - "{{ borgbackup_server_user }}@{{ borgbackup_client_backup_server }}:{{ site }}/borg"
+#      - "{{ borgbackup_server_user }}@{{ borgbackup_client_backup_server }}:{{ site }}/borg"
 
   - name: files backup script
     template:

@@ -1,16 +1,16 @@
 #!/bin/sh
 
-set -e
+set -euo pipefail
 
 export BORG_RSH="ssh -oBatchMode=yes"
 export BORG_PASSPHRASE="{{ backup_password }}"
 
-REPOSITORY={{ borgbackup_server_user }}@{{ borgbackup_client_backup_server }}:{{ site }}/borg
+# REPOSITORY={{ borgbackup_server_user }}@{{ borgbackup_client_backup_server }}:{{ site }}/borg
 
 /usr/bin/borg prune \
   --keep-daily 14 --keep-monthly 6 \
   /var/www/{{ site }}/backup/borg
 
-/usr/bin/borg prune \
-  --keep-daily 14 --keep-monthly 6 \
-  $REPOSITORY
+# /usr/bin/borg prune \
+#   --keep-daily 14 --keep-monthly 6 \
+#  $REPOSITORY
