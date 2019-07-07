@@ -2,12 +2,14 @@
 #---------------------------------------------------------
 # PHP pool
 - name: php packages
-  package:
-    name: "{{ item }}"
+  apt:
+    name: "{{ packages }}"
     state: present
-  with_items:
-    - "php7.0"
-    - "php7.0-fpm"
+    update_cache: true
+  vars:
+    packages:
+      - "php" 
+      - "php-fpm"
   notify:
     - reload php-fpm
 
@@ -39,7 +41,7 @@
 - name: php fpm pool config
   template:
     src: php.j2
-    dest: /etc/php/7.0/fpm/pool.d/{{ site }}.conf
+    dest: /etc/php/7.3/fpm/pool.d/{{ site }}.conf
   notify:
     - reload php-fpm
 
@@ -48,5 +50,13 @@
     src: nginx.j2
     # TODO: should be moved to sites-available and then symlinked
     dest: /etc/nginx/sites-enabled/{{ site }}-php-upstream
+  notify:
+    - reload nginx
+
+- name: nginx sites-enabled symlink
+  file:
+    src: /etc/nginx/sites-available/{{ site }}
+    dest: /etc/nginx/sites-enabled/{{ site }}
+    state: link
   notify:
     - reload nginx

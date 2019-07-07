@@ -1,0 +1,13 @@
+---
+- name: install redis
+  apt:
+    name: redis-server
+    state: present
+    update_cache: true
+
+- name: Start Redis and enable at boot
+  systemd:
+    name: redis-server
+    enabled: true
+    state: started
+    daemon_reload: yes

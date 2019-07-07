@@ -5,7 +5,7 @@
     state: present
   with_items:
     - postgresql
-    - python-psycopg2
+    - python3-psycopg2
 
 - name: Start PostgreSQL and enable at boot
   systemd:
@@ -14,19 +14,38 @@
     state: started
     daemon_reload: yes
 
-- name: Copy postgres config
-  copy:
-    dest: /etc/postgresql/9.6/main/postgresql.conf
-    src: postgresql.conf
+- name: configure postgres (as recommended by Discourse)
+  postgresql_set:
+    name: "{{ item.name }}"
+    value: "{{ item.value }}"
+  loop:
+    - name: shared_buffers
+      value: 256MB
+    - name: work_mem
+      value: 10MB
+    - name: synchronous_commit
+      value: "off"
+    - name: default_text_search_config
+      value: "pg_catalog.english"
+    - name: max_wal_senders
+      value: 0
+    - name: wal_level
+      value: minimal      
   register: postgresql_config
+  become: true
+  become_user: postgres  
 
 - name: allow md5 login via postgres socket
-  lineinfile:
-    path: /etc/postgresql/9.6/main/pg_hba.conf
-    line: "local {{ postgresql_database }} {{ postgresql_user }} md5"
-    insertafter: '# "local" is for Unix domain socket connections only'
   when: postgresql_socket_auth
+  postgresql_pg_hba:
+    dest: /etc/postgresql/11/main/pg_hba.conf
+    contype: local
+    databases: "{{ postgresql_database }}"
+    users: "{{ postgresql_user }}"
+    method: md5
   register: postgresql_hba_config
+  become: true
+  become_user: postgres  
 
 - name: restart postgresql
   when: postgresql_config.changed

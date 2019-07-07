@@ -1,36 +1,5 @@
 ---
 
-- name: add yarn apt key
-  apt_key:
-    url: https://dl.yarnpkg.com/debian/pubkey.gpg
-    state: present
-
-- name: add yarn repository
-  apt_repository:
-    repo: deb https://dl.yarnpkg.com/debian/ stable main
-    state: present
-
-- name: add nodesource apt key
-  apt_key:
-    url: https://deb.nodesource.com/gpgkey/nodesource.gpg.key
-    state: present
-
-- name: add nodejs repository
-  apt_repository:
-    repo: deb https://deb.nodesource.com/node_6.x stretch main
-    state: present
-
-- name: install dependencies
-  apt:
-    name: "{{ packages }}"
-    state: present
-    update_cache: yes
-  vars:
-    packages:
-      - build-essential
-      - yarn # for building the mjml templates
-      - nodejs # for yarn
-
 #------------------------------------------------------------------
 # nginx config
 

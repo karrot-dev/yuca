@@ -35,7 +35,7 @@
         # backup_path: ~/kanthaus-nextcloud-backup/
         # backup_password set by secrets.vars.yml
 
-    - name: Setup Nextcloud
+    - name: nextcloud
       include_role:
         name: nextcloud
       vars:

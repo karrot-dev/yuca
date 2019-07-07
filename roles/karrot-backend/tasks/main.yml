@@ -1,25 +1,5 @@
 ---
 
-- name: add yarn apt key
-  apt_key:
-    url: https://dl.yarnpkg.com/debian/pubkey.gpg
-    state: present
-
-- name: add yarn repository
-  apt_repository:
-    repo: deb https://dl.yarnpkg.com/debian/ stable main
-    state: present
-
-- name: add nodesource apt key
-  apt_key:
-    url: https://deb.nodesource.com/gpgkey/nodesource.gpg.key
-    state: present
-
-- name: add nodejs repository
-  apt_repository:
-    repo: deb https://deb.nodesource.com/node_6.x stretch main
-    state: present
-
 - name: install dependencies
   apt:
     name: "{{ packages }}"
@@ -28,21 +8,10 @@
   vars:
     packages:
       - virtualenv
-      - build-essential # for pip to build some libraries
       - python3
       - python3-dev
-      - redis-server
       - gettext
-      - python-pip # so we can pip install influxdb later
-      - yarn # for building the mjml templates
-      - nodejs # for yarn
-
-- name: Start Redis and enable at boot
-  systemd:
-    name: redis-server
-    enabled: true
-    state: started
-    daemon_reload: yes
+      - python3-pip # so we can pip install influxdb later
 
 #------------------------------------------------------------------
 # nginx config

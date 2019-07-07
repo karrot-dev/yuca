@@ -2,6 +2,6 @@
 
 - name: reload php-fpm
   systemd:
-    name: php7.0-fpm
+    name: php7.3-fpm
     state: reloaded
     daemon_reload: yes

@@ -1,2 +1,2 @@
 [all]
-default we_are_in_vagrant=True
+default we_are_in_vagrant=True ansible_python_interpreter=/usr/bin/python3

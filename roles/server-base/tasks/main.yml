@@ -1,3 +1,4 @@
+
 - name: install base packages
   apt:
     name: "{{ packages }}"
@@ -5,46 +6,23 @@
     update_cache: true
   vars:
     packages:
-      - nginx-extras
-      - apt-transport-https
+      - aptitude
+      - build-essential
       - acl
       - ca-certificates
       - git
       - ufw
+      - nodejs
+      - vim
+      - mosh
+      - tmux
 
-- name: remove cmdtest package because it conflicts with yarn
-  apt:
-    name: cmdtest
-    state: absent
-
-- name: setup basic nginx config
-  template:
-    dest: /etc/nginx/nginx.conf
-    src: nginx.conf.j2
-
-- name: copy nginx default site
-  copy:
-    dest: /etc/nginx/sites-available/default
-    src: default
-  notify:
-    - reload nginx
-
-- name: enable nginx default site
-  file:
-    src: /etc/nginx/sites-available/default
-    dest: /etc/nginx/sites-enabled/default
-    state: link
-  notify:
-    - reload nginx
-
-- name: copy letsencrypt intermediate cert
-  get_url:
-    url: https://letsencrypt.org/certs/lets-encrypt-x3-cross-signed.pem.txt
-    dest: /etc/nginx/conf.d/lets-encrypt-x3-cross-signed.pem
-
-- name: copy dhparams
-  copy:
-    dest: /etc/nginx/conf.d/dhparams.pem
-    src: dhparams.pem
+- import_tasks: nginx.yml
 
 - import_tasks: ufw.yml
+
+- import_tasks: docker.yml
+
+- import_tasks: redis.yml
+
+- import_tasks: yarn.yml

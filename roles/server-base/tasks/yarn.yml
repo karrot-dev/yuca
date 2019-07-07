@@ -1,0 +1,22 @@
+---
+- name: add yarn apt key
+  apt_key:
+    url: https://dl.yarnpkg.com/debian/pubkey.gpg
+    state: present
+
+- name: add yarn repository
+  apt_repository:
+    repo: deb https://dl.yarnpkg.com/debian/ stable main
+    state: present
+
+- name: remove cmdtest package because it conflicts with yarn
+  apt:
+    name: cmdtest
+    state: absent    
+
+- name: install yarn
+  apt:
+    name: yarn
+    state: present
+    update_cache: true
+  

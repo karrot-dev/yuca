@@ -8,18 +8,30 @@
 - when: not nc_nextcloud_installed.stat.exists
   block:
   - name: system packages
-    package:
-      name: "{{ item }}"
+    apt:
+      name: "{{ packages }}"
       state: present
-    with_items:
-      - "php7.0-gd"
-      - "php7.0-imap"
-      - "php7.0-json"
-      - "php7.0-curl"
-      - "php7.0-intl"
-      - "php7.0-mcrypt"
-      - "php7.0-pgsql"
-      - "unzip"
+      update_cache: true
+    vars:
+      packages:
+        - "php"
+        - "php-curl"
+        - "php-dom"
+        - "php-gd"
+        - "php-iconv"
+        - "php-json"
+        - "php-mbstring"
+        - "php-posix"
+        - "php-xml"
+        - "php-zip"
+        - "php-pgsql"
+        - "php-fileinfo"
+        - "php-bz2"
+        - "php-intl"
+        - "php-imap"
+        - "php-exif"
+        - "php-imagick"
+        - "unzip"
     notify:
       - reload php-fpm
 

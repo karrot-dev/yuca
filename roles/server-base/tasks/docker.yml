@@ -8,7 +8,7 @@
 
 - name: add docker repository
   apt_repository:
-    repo: deb https://download.docker.com/linux/debian stretch stable
+    repo: deb https://download.docker.com/linux/debian buster stable
     state: present
     update_cache: yes
 
@@ -24,14 +24,12 @@
     enabled: yes
 
 # set docker bridge to fixed ip for container->host access
-# deny iptables access to not interfere with firewall (ufw)
 - name: set fixed bridge IP
   copy:
     dest: "/etc/docker/daemon.json"
     content: |
       {
-        "bip": "192.168.1.1/24",
-        "iptables": false
+        "bip": "192.168.1.1/24"
       }
   register: docker_configuration
 

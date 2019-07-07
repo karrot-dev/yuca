@@ -1,2 +1,2 @@
 [all]
-yuca.yunity.org we_are_in_vagrant=False
+yuca.yunity.org we_are_in_vagrant=False ansible_python_interpreter=/usr/bin/python3

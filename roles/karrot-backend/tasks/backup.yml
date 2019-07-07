@@ -1,15 +1,9 @@
 ---
 
-- name: add backports repo
-  apt_repository:
-    repo: deb http://ftp.debian.org/debian stretch-backports main
-    state: present
-
-- name: install borgbackup from backports
+- name: install borgbackup
   apt:
     name: borgbackup
     state: latest
-    default_release: stretch-backports
 
 - become_user: "{{ site }}"
   block:
