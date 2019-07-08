@@ -47,7 +47,7 @@
   lineinfile:
     path: /etc/redis/redis.conf
     regexp: '^bind'
-    line: "bind 127.0.0.1 192.168.1.1"
+    line: "bind 127.0.0.1 ::1 192.168.1.1"
   register: redis_configuration
 
 - name: restart redis
