@@ -72,8 +72,9 @@ EMAIL_BACKEND = 'anymail.backends.postal.EmailBackend'
 ANYMAIL = {
     'POSTAL_API_URL': '{{ postal_api_url }}',
     'POSTAL_API_KEY': '{{ postal_api_key }}',
-    'WEBHOOK_SECRET': '{{ anymail_webhook_secret }}',
 }
+
+SPARKPOST_RELAY_DOMAIN = '{{ sparkpost_relay_domain }}'
 
 FCM_SERVER_KEY = '{{ fcm_server_key }}'
 
