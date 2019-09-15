@@ -57,6 +57,7 @@
         # borgbackup remote repository is unused
         borgbackup_server_user: tiltec
         borgbackup_client_backup_server: tor-relay.chandi.it
+        postal_api_url: "https://postal.karrot.world"
       tags:
         - nginx
 
