@@ -20,6 +20,7 @@
     postgresql_user: fstool-dev
     sparkpost_relay_domain: replies.dev.karrot.world
     postal_api_url: "https://postal.karrot.world"
+    postal_webhook_public_key: "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDXnPQvaIqgtlUn/bfGX/4rhhuWohuw5j0rqlgFvU2ANDBhsRzoQEabJ1bLAIOP63sWbgIGxvb9xRcorSm16kmBTWHSemsYkHQ/ib71trtMDvhyqW+HdiG5krHeok/LIdLKhl3/aGEsxO+WjMjHKoKBbBnuwkVC4cXK3oTPSfTFtwIDAQAB"
     from_email_address: noreply@dev.karrot.world
     postgresql_socket_auth: false
     csp_report_uri: "https://sentry.io/api/1249808/security/?sentry_key=5c7a0f337fbe4e9ca8626f0e203a2569&sentry_environment=development"
