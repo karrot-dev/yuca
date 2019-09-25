@@ -15,6 +15,7 @@
     postgresql_database: fstaiwan
     postgresql_user: fstaiwan
     sparkpost_relay_domain: replies.app.foodsharing.tw
+    postal_webhook_public_key: "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDXnPQvaIqgtlUn/bfGX/4rhhuWohuw5j0rqlgFvU2ANDBhsRzoQEabJ1bLAIOP63sWbgIGxvb9xRcorSm16kmBTWHSemsYkHQ/ib71trtMDvhyqW+HdiG5krHeok/LIdLKhl3/aGEsxO+WjMjHKoKBbBnuwkVC4cXK3oTPSfTFtwIDAQAB"
     postgresql_socket_auth: false
   tasks:
 
