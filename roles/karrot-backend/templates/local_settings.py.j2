@@ -116,6 +116,11 @@ HUEY = {
 
 EMAIL_REPLY_TRIMMER_URL = 'http://localhost:4567/trim'
 
+{% if admin_slack_webhook is defined %}
+ADMIN_SLACK_WEBHOOK = {{ admin_slack_webhook }}
+{% endif %}
+
+
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
