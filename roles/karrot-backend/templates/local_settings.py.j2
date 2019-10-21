@@ -104,13 +104,13 @@ import redis
 pool = redis.ConnectionPool.from_url("redis://{}:6379/{{ redis_db }}".format(REDIS_HOST))
 
 HUEY = {
-    "always_eager": False,
+    "immediate": False,
     "connection": {
         "connection_pool": pool,
     },
     "consumer": {
         "workers": 8,
-        "worker_type" : "greenlet",
+        "worker_type" : "thread",
     },
 }
 
