@@ -27,7 +27,8 @@
       - "'self'"
       - "wss://{{ server_name }}"
       - "https://nominatim.openstreetmap.org"
-      - "https://fcm.googleapis.com"
+      - "https://firebaseinstallations.googleapis.com"
+      - "https://fcmregistrations.googleapis.com"
       - "https://sentry.io"
     style-src:
       - "'self'"
