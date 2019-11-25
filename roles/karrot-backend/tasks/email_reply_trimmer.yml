@@ -10,7 +10,7 @@
     name: "karrot-email-reply-trimmer"
     image: karrot/email_reply_trimmer_service
     state: started
-    published_ports: "4567:4567"
+    published_ports: "127.0.0.1:4567:4567"
     restart_policy: unless-stopped
 
 # TODO use this in another role to update the container
