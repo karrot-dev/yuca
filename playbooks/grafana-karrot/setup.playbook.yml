@@ -1,0 +1,67 @@
+---
+- name: grafana-karrot
+  hosts: all
+  become: yes
+  vars:
+    site: grafana-karrot
+    server_name: grafana.karrot.world
+    redirects: []
+    service_name: grafana-server-karrot
+    grafana_plugins:
+      - grafana-piechart-panel
+    grafana_auth:
+      github:
+        enabled: true
+        allow_sign_up: true
+        client_id: db56d73f5f695a5e9926
+        # secret encrypted with 'ansible-vault encrypt_string foo'
+        client_secret: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          37323831356361393831376535643034343639323966613933363331353336326366613165613062
+          3265623834363739363261353932653933613739656339330a623664373338633036663738343361
+          63626338666630646332363433343161626238633434656434303735663363346537646163383161
+          6239376439343863620a333232393933633939353862626462636266313835633435306235333735
+          61656636316432666164373039343535633765353433643237363864636461313032353061353365
+          3733656532303561613131653262376162343332663536663161
+        scopes: "user:email,read:org"
+        auth_url: https://github.com/login/oauth/authorize
+        token_url: https://github.com/login/oauth/access_token
+        api_url: https://api.github.com/user
+        allowed_organizations: yunity
+      disable_login_form: true
+      oauth_auto_login: true    
+    grafana_users:
+      allow_sign_up: false
+      auto_assign_org: true
+      auto_assign_org_role: Admin
+      auto_assign_org_id: 3
+      default_theme: light        
+    grafana_security:
+      admin_user: admin
+      admin_password: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          34323235373133643362353333636339623639343431306635646230616363316230336533666536
+          6438373166643866363134613037313736353735353266340a636339613532613236343963393161
+          38373330663433303938626338366361363863633333326138353264343561393235663266316639
+          3930623966393866310a383364393166336166356239306235363463363764623639333336363562
+          66306430626539346235313237333765323962376438633065316565356661393431
+
+
+  tasks:
+    - name: check ansible version
+      include_role:
+        name: check-ansible-version
+
+    - name: server-base
+      include_role:
+        name: server-base
+
+    - name: basic-site
+      include_role:
+        name: basic-site
+      tags:
+        - nginx
+
+    - name: grafana
+      include_role:
+        name: grafana

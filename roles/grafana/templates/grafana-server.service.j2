@@ -1,0 +1,30 @@
+# This file is managed by ansible.
+# See https://github.com/yunity/yuca to change.
+
+# based on https://github.com/grafana/grafana/blob/master/packaging/deb/systemd/grafana-server.service
+
+[Unit]
+Description={{ site }}
+Documentation=http://docs.grafana.org
+Wants=network-online.target
+After=network-online.target
+After=postgresql.service mariadb.service mysql.service
+
+[Service]
+User={{ site }}
+Group={{ site }}
+Type=simple
+Restart=on-failure
+WorkingDirectory=/usr/share/grafana
+RuntimeDirectory=grafana
+RuntimeDirectoryMode=0750
+ExecStart=/usr/sbin/grafana-server                                                  \
+                            --config=/var/www/{{ site }}/grafana.ini                \
+                            --pidfile=/var/www/{{ site }}/grafana-server.pid    \
+
+LimitNOFILE=10000
+TimeoutStopSec=20
+UMask=0027
+
+[Install]
+WantedBy=multi-user.target

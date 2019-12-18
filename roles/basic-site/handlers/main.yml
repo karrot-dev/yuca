@@ -3,10 +3,11 @@
 - name: generate cert
   command: |
     /root/simp_le/venv/bin/simp_le
+      --email mail@yunity.org
       -f account_key.json
+      -f account_reg.json
       -f fullchain.pem
       -f key.pem
-      --email mail@yunity.org
       {% for entry in dns %}
       -d {{ entry }}
       {% endfor %}

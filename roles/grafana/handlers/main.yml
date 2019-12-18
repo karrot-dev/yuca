@@ -1,0 +1,11 @@
+- name: restart grafana
+  become: true
+  service:
+    name: "{{ service_name }}"
+    state: restarted
+
+- name: reload nginx
+  systemd:
+    name: nginx
+    state: reloaded
+    daemon_reload: yes
