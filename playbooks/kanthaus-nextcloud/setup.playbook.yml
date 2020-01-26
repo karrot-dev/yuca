@@ -25,6 +25,8 @@
     - name: php-fpm-site
       include_role:
         name: php-fpm-site
+      vars:
+        memory_limit: '512M'
 
     - name: postgresql-db
       include_role:
