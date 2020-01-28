@@ -8,7 +8,7 @@ The aim here is to slowly switch all configuration over to using ansible.
 
 Prerequisites:
 
-* a working installation of ansible >= 2.6 such that you have `ansible-playbook` and `ansible-vault` commands available
+* a working installation of ansible >= 2.8 such that you have `ansible-playbook` and `ansible-vault` commands available
 * an account on `yuca.yunity.org` with sudo powers
 * access to the vault password (ask @nicksellen or @tiltec or @NerdyProjects)
 

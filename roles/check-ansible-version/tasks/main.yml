@@ -1,10 +1,10 @@
 ---
 
 - fail:
-    msg: You need to have at least ansible >= 2.6
+    msg: You need to have at least ansible >= 2.8
   when: |
     not (
-      (ansible_version.major == 2 and ansible_version.minor >= 6)
+      (ansible_version.major == 2 and ansible_version.minor >= 8)
       or
       ansible_version.major > 2
     )

@@ -1,15 +1,29 @@
 ---
-
 - name: create influxdb admin user
   influxdb_user:
-    user_name: "{{ influxdb_admin_user }}"
+    user_name: "{{ influxdb_admin_username }}"
     user_password: "{{ influxdb_admin_password }}"
     admin: yes
 
-# a user that can be given read permissions on various database if you want it to be public
-- name: create influxdb public user
-  influxdb_user:
-    user_name: public
-    user_password: public
-    login_username: "{{ influxdb_admin_username }}"
-    login_password: "{{ influxdb_admin_password }}"
+- name: create influxdb proxy
+  include_role:
+        name: basic-site
+
+- name: setup influxdb proxy config
+  template:
+    src: nginx_influxdb_proxy.conf.j2
+    dest: /etc/nginx/sites-available/{{ site }}
+  notify:
+    - reload nginx
+  tags:
+    - nginx
+
+- name: nginx sites-enabled symlink
+  file:
+    src: /etc/nginx/sites-available/{{ site }}
+    dest: /etc/nginx/sites-enabled/{{ site }}
+    state: link
+  notify:
+    - reload nginx
+  tags:
+    - nginx
