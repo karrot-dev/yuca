@@ -1,0 +1,22 @@
+---
+- name: foodsharing services on yuca
+  hosts: all
+  become: yes
+  vars_files:
+    - secrets.vars.yml
+
+  tasks:
+    - name: check ansible version
+      include_role:
+        name: check-ansible-version
+
+    - name: server-base
+      include_role:
+        name: server-base
+
+    - name: telegraf_influxdb
+      include_role:
+        name: influxdb
+      vars:
+        influxdb_database: foodsharing_telegraf
+        influxdb_password: "{{ telegraf_influxdb_password }}"
