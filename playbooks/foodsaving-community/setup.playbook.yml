@@ -9,9 +9,9 @@
     server_name: community.foodsaving.world
     redirects: []
     discourse_location: "/var/www/{{ site }}/docker"
-    discourse_smtp_address: smtp.mailgun.org
+    discourse_smtp_address: postal.karrot.world
     discourse_smtp_port: 25
-    discourse_smtp_user_name: postmaster@community.foodsaving.world
+    discourse_smtp_user_name: "karrot/community-foodsaving-world"
     discourse_developer_emails: 'tilmann.becker@gmail.com,community.foodsaving.world@nicksellen.co.uk'
     postgresql_database: "{{ site }}"
     postgresql_user: "{{ site }}"
