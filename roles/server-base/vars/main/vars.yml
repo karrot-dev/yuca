@@ -1,0 +1,4 @@
+site: influxdb-proxy
+site_name: influxdb proxy
+server_name: influxdb.yunity.org
+redirects: []

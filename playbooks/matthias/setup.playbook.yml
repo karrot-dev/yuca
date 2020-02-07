@@ -1,0 +1,22 @@
+---
+- name: matthias private hosted stuff on yuca
+  hosts: all
+  become: yes
+  vars_files:
+    - secrets.vars.yml
+
+  tasks:
+    - name: check ansible version
+      include_role:
+        name: check-ansible-version
+
+    - name: server-base
+      include_role:
+        name: server-base
+
+    - name: larse8n_influxdb
+      include_role:
+        name: influxdb
+      vars:
+        influxdb_database: matthias_larse8n
+        influxdb_password: "{{ larse8n_influxdb_password }}"

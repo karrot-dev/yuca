@@ -1,0 +1,29 @@
+---
+- name: create influxdb admin user
+  influxdb_user:
+    user_name: "{{ influxdb_admin_username }}"
+    user_password: "{{ influxdb_admin_password }}"
+    admin: yes
+
+- name: create influxdb proxy
+  include_role:
+        name: basic-site
+
+- name: setup influxdb proxy config
+  template:
+    src: nginx_influxdb_proxy.conf.j2
+    dest: /etc/nginx/sites-available/{{ site }}
+  notify:
+    - reload nginx
+  tags:
+    - nginx
+
+- name: nginx sites-enabled symlink
+  file:
+    src: /etc/nginx/sites-available/{{ site }}
+    dest: /etc/nginx/sites-enabled/{{ site }}
+    state: link
+  notify:
+    - reload nginx
+  tags:
+    - nginx

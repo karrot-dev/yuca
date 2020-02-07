@@ -27,6 +27,13 @@
     - port: 80
     - port: 443
 
+- name: allow incoming traffic for https influxdb
+  ufw:
+    rule: allow
+    direction: in
+    to_port: 8087
+    proto: tcp
+
 - name: allow incoming influxdb access for some IPs from foodsharing.de
   ufw:
     rule: allow

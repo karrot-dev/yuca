@@ -33,8 +33,18 @@
   influxdb_database:
     database_name: "{{ influxdb_database }}"
     hostname: 127.0.0.1
-    username: ""
-    password: ""
+    login_username: "{{ influxdb_admin_username }}"
+    login_password: "{{ influxdb_admin_password }}"
+
+- name: create influxdb user
+  influxdb_user:
+    user_name: "{{ influxdb_database }}"
+    user_password: "{{ influxdb_password }}"
+    login_username: "{{ influxdb_admin_username }}"
+    login_password: "{{ influxdb_admin_password }}"
+    grants:
+      - database: "{{ influxdb_database }} "
+        privilege: 'ALL'
 
 - name: create grafana postgres user
   postgresql_user:
