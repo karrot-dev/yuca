@@ -73,6 +73,9 @@
   template:
     src: nginx.j2
     dest: /etc/nginx/sites-available/{{ site }}
+  vars:
+    karrot_nginx_server_name: '{{ server_name }}'
+    karrot_nginx_root: '{{ static_root }}'
   notify:
     - reload nginx
   tags:
@@ -82,6 +85,30 @@
   file:
     src: /etc/nginx/sites-available/{{ site }}
     dest: /etc/nginx/sites-enabled/{{ site }}
+    state: link
+  notify:
+    - reload nginx
+  tags:
+    - nginx
+
+- name: nginx branch config
+  when: karrot_branch_deployment_enabled
+  template:
+    src: nginx.j2
+    dest: /etc/nginx/sites-available/{{ site }}-branch
+  vars:
+    karrot_nginx_server_name: '{{ karrot_branch_deployment_server_name }}'
+    karrot_nginx_root: '{{ karrot_branch_deployment_root }}'
+  notify:
+    - reload nginx
+  tags:
+    - nginx
+
+- name: nginx branch sites-enabled symlink
+  when: karrot_branch_deployment_enabled
+  file:
+    src: /etc/nginx/sites-available/{{ site }}-branch
+    dest: /etc/nginx/sites-enabled/{{ site }}-branch
     state: link
   notify:
     - reload nginx
