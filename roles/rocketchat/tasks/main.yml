@@ -1,0 +1,101 @@
+- name: Import Mongo GPG signing key
+  apt_key:
+    url: "https://www.mongodb.org/static/pgp/server-4.2.asc"
+    state: present
+
+- name: Add mongodb repository
+  apt_repository:
+    repo: deb http://repo.mongodb.org/apt/debian buster/mongodb-org/4.2 main
+    state: present
+    update_cache: true
+
+- name: Install dependencies
+  apt:
+    name:
+      - build-essential
+      - graphicsmagick
+      - nodejs # we'll just hope dist version is high enough
+      - npm
+      - python3-pymongo # for ansible mongodb tools (or maybe I need python2 one? python-pymongo)
+
+- name: Install mongodb
+  apt:
+    name: "mongodb-org"
+    state: "latest"
+
+- name: Start/enable mongodb
+  systemd:
+    name: "mongod"
+    enabled: true
+    state: started
+
+- name: Create root dir
+  file:
+    path: "{{ rocketchat__root }}"
+    state: directory
+    owner: "{{ rocketchat__user }}"
+    group: "{{ rocketchat__group }}"
+
+- name: Download rocketchat
+  unarchive:
+    src: "https://releases.rocket.chat/{{ rocketchat__version }}/download"
+    dest: "{{ rocketchat__root }}"
+    remote_src: yes
+    owner: "{{ rocketchat__user }}"
+    group: "{{ rocketchat__group }}"
+    # this means upgrades will need more manual intervention
+    creates: "{{ rocketchat__root }}/bundle"
+
+- name: npm install
+  npm:
+    path: "{{ rocketchat__root }}/bundle/programs/server"
+  notify:
+    - restart rocketchat
+
+- name: rocketchat systemd service
+  template:
+    src: rocketchat.service
+    dest: "/etc/systemd/system/{{ rocketchat__service_name }}.service"
+  notify:
+    - restart rocketchat
+
+- name: Start/enable rocketchat
+  systemd:
+    name: "{{ rocketchat__service_name }}"
+    enabled: true
+    state: started
+    daemon_reload: yes
+
+- name: Enable mongo replicaset
+  blockinfile:
+    path: /etc/mongod.conf
+    block: |
+      replication:
+        replSetName: {{ rocketchat__replicaset_name }}
+
+- name: Restart mongodb
+  systemd:
+    name: "mongod"
+    state: restarted
+
+- name: Initialize mongo replicaset
+  mongodb_replicaset:
+    replica_set: "{{ rocketchat__replicaset_name }}"
+    members:
+      - "localhost:27017"
+    validate: no
+
+- name: nginx config
+  template:
+    src: nginx.conf
+    dest: /etc/nginx/sites-available/{{ site }}
+  notify:
+    - reload nginx
+
+- name: nginx sites-enabled symlink
+  file:
+    src: /etc/nginx/sites-available/{{ site }}
+    dest: /etc/nginx/sites-enabled/{{ site }}
+    state: link
+  notify:
+    - reload nginx

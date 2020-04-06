@@ -1,0 +1,17 @@
+---
+
+- name: reload nginx
+  systemd:
+    name: nginx
+    state: reloaded
+
+- name: restart mongodb
+  systemd:
+    name: 'mongod'
+    state: restarted
+
+- name: restart rocketchat
+  systemd:
+    name: '{{ rocketchat__service_name }}'
+    state: restarted
+    daemon_reload: yes

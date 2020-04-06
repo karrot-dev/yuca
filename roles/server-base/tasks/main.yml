@@ -12,10 +12,11 @@
       - ca-certificates
       - git
       - ufw
-      - nodejs
       - vim
       - mosh
       - tmux
+
+- import_tasks: nodejs.yml
 
 - import_tasks: nginx.yml
 

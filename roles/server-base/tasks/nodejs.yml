@@ -1,0 +1,21 @@
+---
+- name: add nodesource apt key
+  apt_key:
+    url: https://deb.nodesource.com/gpgkey/nodesource.gpg.key
+    state: present
+
+- name: add nodesource repository
+  apt_repository:
+    repo: deb https://deb.nodesource.com/node_12.x buster main
+    state: present
+
+- name: add nodesource src repository
+  apt_repository:
+    repo: deb-src https://deb.nodesource.com/node_12.x buster main
+    state: present
+
+- name: install nodejs
+  apt:
+    name: nodejs
+    state: latest
+    update_cache: true
