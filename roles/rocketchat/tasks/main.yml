@@ -12,11 +12,10 @@
 - name: Install dependencies
   apt:
     name:
+      # nodejs is installed via server-base
       - build-essential
       - graphicsmagick
-      - nodejs # we'll just hope dist version is high enough
-      - npm
-      - python3-pymongo # for ansible mongodb tools (or maybe I need python2 one? python-pymongo)
+      - python3-pymongo # for ansible mongodb tools
 
 - name: Install mongodb
   apt:
