@@ -1,0 +1,27 @@
+# /etc/systemd/system/prometheus-node-exporter.service
+
+- name: install node_exporter
+  shell: curl -L https://github.com/prometheus/node_exporter/releases/download/v1.0.0-rc.0/node_exporter-1.0.0-rc.0.linux-amd64.tar.gz | tar xvz -C /usr/bin/ --strip-components 1 --wildcards 'node_exporter-*-amd64/node_exporter'
+  args:
+    creates: /usr/bin/node_exporter
+
+- name: create systemd service
+  template:
+    src: systemd.service
+    dest: "/etc/systemd/system/prometheus-node-exporter.service"
+
+
+- name: Start and enable service
+  systemd:
+    name: prometheus-node-exporter
+    enabled: yes
+    state: started
+    daemon_reload: yes
+
+
+- name: allow incoming traffic to metrics
+  ufw:
+    rule: allow
+    direction: in
+    to_port: 9100
+    proto: tcp

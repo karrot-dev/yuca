@@ -26,3 +26,7 @@
             - /var/www/karrot-world/www/uploads
             - /var/www/foodsharing-taiwan/www/uploads
             - /var/www/foodsaving-community/docker/shared/web_only/uploads/default/original
+
+    - name: prometheus node exporter
+      include_role:
+        name: prometheus
