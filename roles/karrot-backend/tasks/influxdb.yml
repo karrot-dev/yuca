@@ -12,10 +12,8 @@
 
 - name: install influxdb
   apt:
-    # there is an old influxdb in debian repo
-    # we want new shiny one, for which I had to specify the version
-    name: influxdb>=1.7
-    state: present
+    name: influxdb
+    state: latest
     update_cache: true
 
 - name: enable/start influxdb
