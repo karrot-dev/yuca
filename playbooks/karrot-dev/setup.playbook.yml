@@ -6,7 +6,7 @@
     - secrets.vars.yml
   vars:
     site: karrot-dev
-    site_name: karrot.world beta
+    site_name: dev.karrot.world
     server_name: dev.karrot.world
     uploads_directory: uploads
     branch: master
