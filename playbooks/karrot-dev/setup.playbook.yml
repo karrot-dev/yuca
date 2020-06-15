@@ -16,6 +16,12 @@
       - karrot-dev.foodsaving.world
       - dev.yunity.org
       - mvp-proposal.yunity.org
+    extra_dns:
+      # for branch deployments
+      # long term
+      - circleci-update-dependencies.dev.karrot.world
+      # temporary
+      - rename-pickups-to-activities.dev.karrot.world
     postgresql_database: fstool-dev
     postgresql_user: fstool-dev
     sparkpost_relay_domain: replies.dev.karrot.world
