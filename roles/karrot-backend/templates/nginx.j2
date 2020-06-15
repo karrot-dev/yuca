@@ -79,7 +79,7 @@ server {
         {% endif %}
     }
 
-    location ~ ^\/(api(\-auth)?|docs)\/ {
+    location ~ ^\/(api(\-auth)?|docs|silk)\/ {
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $remote_addr;
         proxy_set_header X-Forwarded-Proto $scheme;
