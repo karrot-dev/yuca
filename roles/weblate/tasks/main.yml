@@ -23,6 +23,9 @@
       - libacl1-dev
       - gir1.2-pango-1.0
 
+      # for GitHub integration
+      - hub
+
 - name: create weblate basedir
   file:
     path: "{{ weblate__basedir }}"

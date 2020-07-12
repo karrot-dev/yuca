@@ -5,6 +5,7 @@ weblate__cmd: "{{ weblate__virtualenv }}/bin/weblate"
 weblate__libdir: "{{ weblate__virtualenv }}/lib/python3.7/site-packages/weblate"
 weblate__datadir: "{{ weblate__basedir }}/data"
 weblate__logdir: "{{ weblate__sitedir }}/log"
+weblate__homedir: "{{ weblate__datadir }}/home"
 
 weblate__user: "{{ site }}"
 weblate__group: "{{ site }}"

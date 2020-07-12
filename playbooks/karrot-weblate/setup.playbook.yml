@@ -38,6 +38,7 @@
       include_role:
         name: weblate
       vars:
+        weblate__github_username: karrot-weblate
         weblate__redis_db: 6
         weblate__smtp_host: postal.karrot.world
         weblate__smtp_user: weblate.karrot.world
