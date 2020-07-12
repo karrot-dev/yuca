@@ -1,0 +1,20 @@
+weblate__sitedir: "/var/www/{{ site }}"
+weblate__basedir: "{{ weblate__sitedir }}/weblate"
+weblate__virtualenv: "{{ weblate__basedir }}/env"
+weblate__cmd: "{{ weblate__virtualenv }}/bin/weblate"
+weblate__libdir: "{{ weblate__virtualenv }}/lib/python3.7/site-packages/weblate"
+weblate__datadir: "{{ weblate__basedir }}/data"
+weblate__logdir: "{{ weblate__sitedir }}/log"
+
+weblate__user: "{{ site }}"
+weblate__group: "{{ site }}"
+weblate__database_name: "{{ site }}"
+
+weblate__redis_host: "127.0.0.1"
+# weblate__redis_db: "" # need to set this in playbook... don't clobber an existing db!
+
+# depends on having RuntimeDirectory={{ site }}
+weblate__uwsgi_socket: "/run/{{ site }}/uwsgi.socket"
+weblate__uwsgi_ini_path: "{{ weblate__basedir }}/uwsgi.ini"
+
+weblate__celery_environment_path: "{{ weblate__basedir }}/celery.environment"

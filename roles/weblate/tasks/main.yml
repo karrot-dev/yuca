@@ -1,0 +1,148 @@
+---
+
+# https://docs.weblate.org/en/latest/admin/install.html#server
+
+- name: install dependencies
+  apt:
+    name: "{{ packages }}"
+    state: present
+    update_cache: yes
+  vars:
+    packages:
+      - virtualenv
+      - python3
+      - python3-dev
+      - gettext
+      - python3-pip
+
+      # stuff weblate wants available
+      # see https://docs.weblate.org/en/latest/admin/install/venv-debian.html#system-requirements
+      - libgirepository1.0-dev # needed by pygobject
+      - libcairo2
+      - libcairo2-dev
+      - libacl1-dev
+      - gir1.2-pango-1.0
+
+- name: create weblate basedir
+  file:
+    path: "{{ weblate__basedir }}"
+    state: directory
+    owner: "{{ weblate__user }}"
+    group: "{{ weblate__group }}"
+
+# our application postgres user does not have permission to add extensions so we do it here
+- name: add pg_trgm postgres extension
+  postgresql_ext:
+    name: pg_trgm
+    db: "{{ weblate__database_name }}"
+  become_user: postgres
+
+- name: "Adding user 'www-data' to weblate user group"
+  user:
+    name: www-data
+    groups: "{{ weblate__group }}"
+    append: yes
+
+- become_user: "{{ weblate__user }}"
+  block:
+
+  - name: virtualenv
+    command: >
+      virtualenv
+        --no-setuptools
+        --python=python3
+        {{ weblate__virtualenv }}
+    args:
+      # don't re-run if the env already exists or it runs into error
+      # "OSError: [Errno 26] Text file busy"
+      creates: "{{ weblate__virtualenv }}"
+
+  - name: install basic tools
+    pip:
+      name: "{{ packages }}"
+      virtualenv: "{{ weblate__virtualenv }}"
+    vars:
+      packages:
+        - setuptools
+        - Cython # for borgbackup (which is part of weblate)
+
+  - name: install weblate pip dependencies
+    pip:
+      name: "{{ packages }}"
+      virtualenv: "{{ weblate__virtualenv }}"
+    vars:
+      packages:
+        # core dependencies
+        - Weblate==4.1.1
+        - psycopg2-binary==2.8.5
+
+        # for running server
+        - uwsgi==2.0.19.1
+
+        # optional dependencies
+        # see https://docs.weblate.org/en/latest/admin/install.html#optional-deps
+
+  - name: weblate settings.py
+    template:
+      src: weblate.settings.py
+      dest: "{{ weblate__libdir }}/settings.py"
+    notify:
+      - restart weblate
+
+  - name: weblate uwsgi config
+    template:
+      src: weblate.uwsgi.ini
+      dest: "{{ weblate__uwsgi_ini_path }}"
+    notify:
+      - restart weblate
+
+  - name: weblate commands
+    command: "{{ weblate__cmd }} {{ item }}"
+    args:
+      chdir: "{{ weblate__basedir }}"
+    with_items:
+      - migrate --noinput
+      # - check --deploy # does some checks that require celery to be running...
+      - collectstatic --clear --no-input
+      # - compress # needs to be enabled elsewhere
+    changed_when: False
+
+- name: celery environment
+  template:
+    src: celery.environment
+    dest: "{{ weblate__celery_environment_path }}"
+  notify:
+    - restart weblate
+
+- name: nginx config
+  template:
+    src: weblate.nginx.conf
+    dest: /etc/nginx/sites-available/{{ site }}
+  notify:
+    - reload nginx
+  tags:
+    - nginx
+
+- name: nginx sites-enabled symlink
+  file:
+    src: /etc/nginx/sites-available/{{ site }}
+    dest: /etc/nginx/sites-enabled/{{ site }}
+    state: link
+  notify:
+    - reload nginx
+  tags:
+    - nginx
+
+- name: weblate service
+  template:
+    src: weblate.service
+    dest: /etc/systemd/system/{{ site }}.service
+  notify:
+    - restart weblate
+
+- name: weblate celery service
+  template:
+    src: weblate-celery.service
+    dest: /etc/systemd/system/{{ site }}-celery.service
+  notify:
+    - restart weblate

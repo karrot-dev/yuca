@@ -1,0 +1,52 @@
+---
+- name: weblate.karrot.world | setup
+  hosts: all
+  become: yes
+  vars_files:
+    - secrets.vars.yml
+  vars:
+    site: karrot-weblate
+    server_name: weblate.karrot.world
+    redirects: []
+
+    # it cannot handle dashes in db name because of:
+    # https://github.com/WeblateOrg/weblate/blob/c70f5bb64efc1739176643efd710b55f8392e7c9/weblate/memory/migrations/0008_adjust_similarity.py#L17
+    postgresql_database: karrot_weblate
+    postgresql_user: karrot-weblate
+    postgresql_socket_auth: false
+    # in vault
+    # postgresql_password:
+
+  tasks:
+    - name: check ansible version
+      include_role:
+        name: check-ansible-version
+
+    - name: server-base
+      include_role:
+        name: server-base
+
+    - name: basic-site
+      include_role:
+        name: basic-site
+
+    - name: postgresql-db
+      include_role:
+        name: postgresql-db
+
+    - name: weblate
+      include_role:
+        name: weblate
+      vars:
+        weblate__redis_db: 6
+        weblate__smtp_host: postal.karrot.world
+        weblate__smtp_user: weblate.karrot.world
+        # in vault
+        # weblate__smtp_password:
+        # weblate__secret_key:
+        weblate__smtp_port: 25
+        weblate__from_email: weblate@karrot.world
+        weblate__server_email: weblate@karrot.world
+        weblate__database_name: "{{ postgresql_database }}"
+        weblate__database_user: "{{ postgresql_user }}"
+        weblate__database_password: "{{ postgresql_password }}"

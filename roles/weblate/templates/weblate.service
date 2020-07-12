@@ -1,0 +1,21 @@
+# This file is managed by ansible. It belongs to {{ role_path }}.
+# See https://github.com/yunity/yuca to change.
+[Unit]
+Description={{ site }} | uwsgi
+After=syslog.target
+
+[Service]
+ExecStart={{ weblate__virtualenv }}/bin/uwsgi --ini {{ weblate__uwsgi_ini_path }}
+# Requires systemd version 211 or newer
+# not sure if I want/need it...
+RuntimeDirectory={{ site }}
+User={{ weblate__user }}
+Group={{ weblate__group }}
+Restart=always
+KillSignal=SIGQUIT
+Type=notify
+StandardError=syslog
+NotifyAccess=all
+
+[Install]
+WantedBy=multi-user.target
