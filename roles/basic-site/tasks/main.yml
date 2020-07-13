@@ -56,6 +56,8 @@
 - name: generate list of DNS entries
   set_fact:
     dns: "{{ redirects }} + {{ extra_dns | default([]) }} + ['{{ server_name }}']"
+  tags:
+    - cert
 
 - name: cert/dns entries
   copy:
@@ -69,6 +71,8 @@
     backup: true
   notify:
     - generate cert
+  tags:
+    - cert
 
 - name: copy selfsigned cert
   copy:
@@ -78,6 +82,8 @@
     - fullchain.pem
     - key.pem
   when: we_are_in_vagrant
+  tags:
+    - cert
 
 - name: nginx config
   when: setup_html_vhost is defined

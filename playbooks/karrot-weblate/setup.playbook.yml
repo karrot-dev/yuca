@@ -29,6 +29,9 @@
     - name: basic-site
       include_role:
         name: basic-site
+      tags:
+        - nginx
+        - cert
 
     - name: postgresql-db
       include_role:

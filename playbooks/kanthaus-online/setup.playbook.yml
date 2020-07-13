@@ -15,6 +15,9 @@
     - name: basic-site
       include_role:
         name: basic-site
+      tags:
+        - nginx
+        - cert
 
     - name: php-fpm-site
       include_role:

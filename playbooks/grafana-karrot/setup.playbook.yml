@@ -58,9 +58,10 @@
 
     - name: basic-site
       include_role:
-        name: basic-site
+        name: basic-sitex
       tags:
         - nginx
+        - cert
 
     - name: grafana
       include_role:
