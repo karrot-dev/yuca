@@ -21,7 +21,7 @@
       # long term
       - circleci-update-dependencies.dev.karrot.world
       # temporary
-      - chat-input-max-height.dev.karrot.world
+      - add-message-images.dev.karrot.world
     postgresql_database: fstool-dev
     postgresql_user: fstool-dev
     sparkpost_relay_domain: replies.dev.karrot.world
