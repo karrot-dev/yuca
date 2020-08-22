@@ -10,6 +10,7 @@ Environment=MONGO_URL=mongodb://localhost:27017/{{ rocketchat__database_name }}?
 Environment=MONGO_OPLOG_URL=mongodb://localhost:27017/local?replicaSet={{ rocketchat__replicaset_name }}
 Environment=ROOT_URL={{ rocketchat__root_url }}
 Environment=PORT={{ rocketchat__port }}
+Restart=always
 
 [Install]
 WantedBy=multi-user.target
