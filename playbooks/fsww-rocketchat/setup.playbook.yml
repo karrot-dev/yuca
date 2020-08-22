@@ -30,3 +30,5 @@
     - name: rocketchat
       include_role:
         name: rocketchat
+      tags:
+        - upgrade

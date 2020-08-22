@@ -28,28 +28,64 @@
     enabled: true
     state: started
 
-- name: Create root dir
+- name: Create dirs
   file:
-    path: "{{ rocketchat__root }}"
+    path: "{{ item }}"
     state: directory
     owner: "{{ rocketchat__user }}"
     group: "{{ rocketchat__group }}"
+  loop:
+    - "{{ rocketchat__root }}"
+    - "{{ rocketchat__root }}/versions"
+  tags:
+    - upgrade
+
+- name: Check if version exists
+  stat:
+    path: "{{ rocketchat__latest }}"
+  register: rocketchat__latest_stat
+  tags:
+    - upgrade
 
 - name: Download rocketchat
-  unarchive:
-    src: "https://releases.rocket.chat/{{ rocketchat__version }}/download"
-    dest: "{{ rocketchat__root }}"
-    remote_src: yes
-    owner: "{{ rocketchat__user }}"
-    group: "{{ rocketchat__group }}"
-    # this means upgrades will need more manual intervention
-    creates: "{{ rocketchat__root }}/bundle"
+  when: not rocketchat__latest_stat.stat.exists
+  block:
+
+    - name: Create temporary download directory
+      tempfile:
+        state: directory
+        suffix: "rocketchat-{{ rocketchat__version }}"
+      register: download_dir
+
+    - name: Fetch archive
+      unarchive:
+        src: "https://releases.rocket.chat/{{ rocketchat__version }}/download"
+        dest: "{{ download_dir.path }}"
+        remote_src: yes
+        owner: "{{ rocketchat__user }}"
+        group: "{{ rocketchat__group }}"
+
+    - name: Move download to versions dir
+      command: "mv {{ download_dir.path }}/bundle {{ rocketchat__latest }}"
+
+  tags:
+    - upgrade
 
 - name: npm install
   npm:
-    path: "{{ rocketchat__root }}/bundle/programs/server"
+    path: "{{ rocketchat__latest }}/programs/server"
   notify:
     - restart rocketchat
+  tags:
+    - upgrade
+
+- name: symlink latest
+  file:
+    src: "{{ rocketchat__latest }}"
+    dest: "{{ rocketchat__current }}"
+    state: link
+  tags:
+    - upgrade
 
 - name: rocketchat systemd service
   template:
@@ -57,6 +93,8 @@
     dest: "/etc/systemd/system/{{ rocketchat__service_name }}.service"
   notify:
     - restart rocketchat
+  tags:
+    - upgrade
 
 - name: Start/enable rocketchat
   systemd:

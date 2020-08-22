@@ -3,7 +3,7 @@ Description={{ rocketchat__service_description }}
 After=network.target remote-fs.target nss-lookup.target nginx.target mongod.target
 
 [Service]
-ExecStart=/usr/bin/node {{ rocketchat__root }}/bundle/main.js
+ExecStart=/usr/bin/node {{ rocketchat__current }}/main.js
 User={{ rocketchat__user }}
 Group={{ rocketchat__group }}
 Environment=MONGO_URL=mongodb://localhost:27017/{{ rocketchat__database_name }}?replicaSet={{ rocketchat__replicaset_name }}

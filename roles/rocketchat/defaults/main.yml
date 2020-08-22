@@ -1,5 +1,5 @@
 # check https://github.com/RocketChat/Rocket.Chat/releases for available versions
-rocketchat__version: '3.0.12'
+rocketchat__version: '3.5.3'
 
 rocketchat__service_name: '{{ site }}'
 rocketchat__service_description: '{{ site_name }}'
@@ -7,6 +7,8 @@ rocketchat__service_description: '{{ site_name }}'
 rocketchat__root_url: 'https://{{ server_name }}/'
 
 rocketchat__root: '/var/www/{{ site }}/rocketchat'
+rocketchat__latest: '{{ rocketchat__root }}/versions/{{ rocketchat__version }}'
+rocketchat__current:  '{{ rocketchat__root }}/current'
 
 rocketchat__user: '{{ site }}'
 rocketchat__group: '{{ site }}'
