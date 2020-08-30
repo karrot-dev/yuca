@@ -26,7 +26,7 @@ server {
     }
     {% endif %}
 
-    location /assets {
+    location /css {
       expires max;
     }
 
@@ -35,10 +35,6 @@ server {
     }
 
     location /img {
-      expires max;
-    }
-
-    location ~* ^/app\..+\.css$ {
       expires max;
     }
 
