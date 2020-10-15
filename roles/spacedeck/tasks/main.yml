@@ -1,0 +1,59 @@
+- become_user: "{{ spacedeck__user }}"
+  block:
+  - name: git repo
+    git:
+      repo: '{{ spacedeck__repo }}'
+      dest: '{{ spacedeck__root }}'
+      update: true
+      force: yes
+      version: "{{ spacedeck__repo_branch }}"
+    tags:
+      - upgrade
+
+  - name: npm install
+    npm:
+      path: "{{ spacedeck__root }}"
+    notify:
+      - restart spacedeck
+    tags:
+      - upgrade
+
+  - name: spacedeck config
+    template:
+      src: config.json
+      dest: "{{ spacedeck__root }}/config/default.json"
+    notify:
+      - restart spacedeck
+    tags:
+      - upgrade
+
+- name: spacedeck systemd service
+  template:
+    src: spacedeck.service
+    dest: "/etc/systemd/system/{{ spacedeck__service_name }}.service"
+  notify:
+    - restart spacedeck
+  tags:
+    - upgrade
+
+- name: start/enable spacedeck
+  systemd:
+    name: "{{ spacedeck__service_name }}"
+    enabled: true
+    state: started
+    daemon_reload: yes
+
+- name: nginx config
+  template:
+    src: nginx.conf
+    dest: /etc/nginx/sites-available/{{ site }}
+  notify:
+    - reload nginx
+
+- name: nginx sites-enabled symlink
+  file:
+    src: /etc/nginx/sites-available/{{ site }}
+    dest: /etc/nginx/sites-enabled/{{ site }}
+    state: link
+  notify:
+    - reload nginx

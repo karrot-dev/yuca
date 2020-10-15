@@ -1,0 +1,16 @@
+[Unit]
+Description={{ spacedeck__service_description }}
+After=network.target remote-fs.target nss-lookup.target nginx.target
+StartLimitIntervalSec=400
+StartLimitBurst=15
+
+[Service]
+WorkingDirectory={{ spacedeck__root }}
+ExecStart=/usr/bin/node spacedeck.js
+User={{ spacedeck__user }}
+Group={{ spacedeck__group }}
+Restart=always
+RestartSec=15
+
+[Install]
+WantedBy=multi-user.target

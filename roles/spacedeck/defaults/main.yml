@@ -1,0 +1,13 @@
+spacedeck__repo: 'https://github.com/spacedeck/spacedeck-open.git'
+spacedeck__repo_branch: 'mnt'
+spacedeck__user: '{{ site }}'
+spacedeck__group: '{{ site }}'
+spacedeck__root: '/var/www/{{ site }}/www'
+spacedeck__service_name: '{{ site }}'
+spacedeck__service_description: 'spacedeck | {{ site }}'
+
+spacedeck__config__team_name: "{{ site }}"
+spacedeck__config__contact_email: "example@example.conm"
+spacedeck__config__port: '9666'
+spacedeck__config__endpoint: 'http://localhost:{{ spacedeck__config__port }}'
+spacedeck__config__invite_code: 'letmein'

@@ -1,0 +1,22 @@
+{
+    "team_name": "{{ spacedeck__config__team_name }}",
+    "contact_email": "{{ spacedeck__config__contact_email }}",
+
+    "host": "::",
+    "port": {{ spacedeck__config__port }},
+    "endpoint": "{{ spacedeck__config__endpoint }}",
+    "invite_code": "{{ spacedeck__config__invite_code }}",
+
+    "storage_local_path": "./storage",
+    "storage_local_db": "./database.sqlite",
+    "storage_bucket": "my_spacedeck_bucket",
+    "storage_cdn": "/storage",
+
+    "mongodb_host": "",
+    "redis_mock": true,
+    "redis_host": "localhost",
+
+    "phantom_api_secret": "",
+
+    "mail_provider": "console"
+}

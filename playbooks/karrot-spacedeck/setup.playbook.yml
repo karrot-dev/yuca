@@ -1,0 +1,28 @@
+---
+- name: spacedeck.karrot.world | setup
+  hosts: all
+  become: yes
+  vars:
+    site: karrot-spacedeck
+    server_name: spacedeck.karrot.world
+    redirects: []
+
+  tasks:
+    - name: check ansible version
+      include_role:
+        name: check-ansible-version
+
+    - name: server-base
+      include_role:
+        name: server-base
+
+    - name: basic-site
+      include_role:
+        name: basic-site
+      tags:
+        - nginx
+        - cert
+
+    - name: spacedeck
+      include_role:
+        name: spacedeck
