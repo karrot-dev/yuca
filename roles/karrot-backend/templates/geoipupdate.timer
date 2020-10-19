@@ -1,0 +1,12 @@
+[Unit]
+Description=Update maxmind databases
+
+[Timer]
+# https://dev.maxmind.com/geoip/geoip2/geolite2/ says:
+# "The GeoLite2 Country, City, and ASN databases are updated weekly, every Tuesday."
+# so we can run it the next morning
+OnCalendar=Wed 06:00
+Persistent=true
+
+[Install]
+WantedBy=timers.target

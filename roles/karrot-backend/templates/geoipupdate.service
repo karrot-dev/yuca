@@ -1,0 +1,6 @@
+[Unit]
+Description=Update maxmind database service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/geoipupdate

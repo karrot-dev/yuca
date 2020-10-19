@@ -21,6 +21,8 @@
       # see https://docs.djangoproject.com/en/dev/ref/contrib/gis/geoip2/
       - libmaxminddb0
       - libmaxminddb-dev
+      # tool for updating the database
+      - geoipupdate
   tags:
   - dependencies
 
@@ -378,6 +380,14 @@
 
 - import_tasks: backup.yml
   when: backup_password is defined
+
+#------------------------------------------------------------------
+# maxmind geoip updates
+
+- import_tasks: geoipupdate.yml
+  when: geoipupdate__account_id is defined and geoipupdate__license_key is defined
+  tags:
+    - geoipupdate
 
 #------------------------------------------------------------------
 # systemd services

@@ -1,0 +1,24 @@
+---
+# we set it up globally not per karrot setup
+
+- name: geoipupdate config
+  template:
+    dest: '/etc/GeoIP.conf'
+    src: 'geoipupdate.conf'
+      
+- name: systemd geoipupdate service
+  template:
+    src: 'geoipupdate.service'
+    dest: '/etc/systemd/system/geoipupdate.service'
+
+- name: systemd geoipupdate timer
+  template:
+    src: 'geoipupdate.timer'
+    dest: '/etc/systemd/system/geoipupdate.timer'
+
+- name: enable geoipupdate timer
+  systemd:
+    name: 'geoipupdate.timer'
+    state: started
+    enabled: yes
+    daemon_reload: yes
