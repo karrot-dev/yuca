@@ -73,6 +73,7 @@
         karrot_branch_deployment_root: '/home/deploy/karrot-frontend/branches/$branch'
       tags:
         - nginx
+        - dependencies
 
     - name: karrot-backend-deploy
       include_role:

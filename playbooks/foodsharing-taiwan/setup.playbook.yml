@@ -62,6 +62,7 @@
         postal_api_url: "https://postal.karrot.world"
       tags:
         - nginx
+        - dependencies
 
     - name: karrot-backend-deploy
       include_role:

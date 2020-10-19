@@ -12,6 +12,17 @@
       - python3-dev
       - gettext
       - python3-pip # so we can pip install influxdb later
+      # geospatial libaries for django
+      # see https://docs.djangoproject.com/en/dev/ref/contrib/gis/install/geolibs/
+      - binutils
+      - libproj-dev
+      - gdal-bin
+      # to improve performance when using maxmind geoip db
+      # see https://docs.djangoproject.com/en/dev/ref/contrib/gis/geoip2/
+      - libmaxminddb0
+      - libmaxminddb-dev
+  tags:
+  - dependencies
 
 #------------------------------------------------------------------
 # nginx config

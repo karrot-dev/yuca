@@ -66,6 +66,7 @@
         # backup_password set by secrets.vars.yml
       tags:
         - nginx
+        - dependencies
 
     - name: karrot-backend-deploy
       include_role:
