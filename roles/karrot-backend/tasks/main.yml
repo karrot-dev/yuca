@@ -357,6 +357,8 @@
     dest: /var/www/{{ site }}/www/backend/config/local_settings.py
   notify:
     - restart app
+  tags:
+    - django settings
 
 - name: initialize database
   command: "env/bin/python manage.py migrate"
