@@ -11,6 +11,7 @@ User={{ spacedeck__user }}
 Group={{ spacedeck__group }}
 Restart=always
 RestartSec=15
+Environment=NODE_ENV=production
 
 [Install]
 WantedBy=multi-user.target
