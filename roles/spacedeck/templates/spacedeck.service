@@ -11,7 +11,9 @@ User={{ spacedeck__user }}
 Group={{ spacedeck__group }}
 Restart=always
 RestartSec=15
-Environment=NODE_ENV=production
+# production env doesn't work
+# see https://github.com/spacedeck/spacedeck-open/issues/109
+#Environment=NODE_ENV=production
 
 [Install]
 WantedBy=multi-user.target
