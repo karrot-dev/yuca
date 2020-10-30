@@ -23,6 +23,7 @@
       - circleci-update-dependencies.dev.karrot.world
       # temporary
       - change-emphasise-nearby-groups.dev.karrot.world
+      - add-custom-activity-types.dev.karrot.world
     postgresql_database: fstool-dev
     postgresql_user: fstool-dev
     sparkpost_relay_domain: replies.dev.karrot.world
