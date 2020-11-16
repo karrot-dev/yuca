@@ -59,7 +59,10 @@
 
     - name: Fetch archive
       unarchive:
-        src: "https://releases.rocket.chat/{{ rocketchat__version }}/download"
+        # looks like they did'nt update something
+        # see https://github.com/RocketChat/Rocket.Chat/issues/19553
+        #src: "https://releases.rocket.chat/{{ rocketchat__version }}/download"
+        src: "https://cdn-download.rocket.chat/build/rocket.chat-{{ rocketchat__version }}.tgz"
         dest: "{{ download_dir.path }}"
         remote_src: yes
         owner: "{{ rocketchat__user }}"
