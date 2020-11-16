@@ -7,7 +7,7 @@ rocketchat__service_description: '{{ site_name }}'
 rocketchat__root_url: 'https://{{ server_name }}/'
 
 rocketchat__root: '/var/www/{{ site }}/rocketchat'
-rocketchat__latest: '{{ rocketchat__root }}/versions/{{ rocketchat__version }}-bump1'
+rocketchat__latest: '{{ rocketchat__root }}/versions/{{ rocketchat__version }}'
 rocketchat__current:  '{{ rocketchat__root }}/current'
 
 rocketchat__user: '{{ site }}'
