@@ -1,5 +1,5 @@
 # check https://github.com/RocketChat/Rocket.Chat/releases for available versions
-rocketchat__version: '3.8.0'
+rocketchat__version: '3.8.1'
 
 rocketchat__service_name: '{{ site }}'
 rocketchat__service_description: '{{ site_name }}'
