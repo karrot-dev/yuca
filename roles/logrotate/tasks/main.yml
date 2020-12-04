@@ -1,0 +1,7 @@
+- name: nginx sites logrotate config
+  template:
+    src: nginx-sites
+    dest: /etc/logrotate.d/nginx-sites
+    mode: 0644
+  tags:
+    - logrotate

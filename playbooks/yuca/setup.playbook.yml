@@ -30,3 +30,9 @@
     - name: prometheus node exporter
       include_role:
         name: prometheus
+
+    - name: logrotate
+      include_role:
+        name: logrotate
+      tags:
+        - logrotate
