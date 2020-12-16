@@ -67,6 +67,8 @@
       tags:
         - nginx
         - dependencies
+        - geoipupdate
+        - django settings
 
     - name: karrot-backend-deploy
       include_role:
