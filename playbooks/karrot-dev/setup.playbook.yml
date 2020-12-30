@@ -23,6 +23,7 @@
       - circleci-update-dependencies.dev.karrot.world
       # temporary
       - fix-ios-no-hover.dev.karrot.world
+      - rewrite-landing-page.dev.karrot.world
     postgresql_database: fstool-dev
     postgresql_user: fstool-dev
     sparkpost_relay_domain: replies.dev.karrot.world
