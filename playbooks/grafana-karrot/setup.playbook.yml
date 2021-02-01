@@ -10,6 +10,10 @@
     grafana_plugins:
       - grafana-piechart-panel
     grafana_auth:
+      anonymous:
+        enabled: true
+        # org for anonymous users
+        org_name: karrot
       github:
         enabled: true
         allow_sign_up: true
@@ -58,7 +62,7 @@
 
     - name: basic-site
       include_role:
-        name: basic-sitex
+        name: basic-site
       tags:
         - nginx
         - cert
