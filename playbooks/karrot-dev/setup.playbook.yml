@@ -22,10 +22,9 @@
       # long term
       - circleci-update-dependencies.dev.karrot.world
       # temporary
-      - fix-ios-no-hover.dev.karrot.world
       - rewrite-landing-page.dev.karrot.world
-      - add-activity-type-editing.dev.karrot.world
       - place-page-redesign.dev.karrot.world
+      - change-open-activity-chat.dev.karrot.world
     postgresql_database: fstool-dev
     postgresql_user: fstool-dev
     sparkpost_relay_domain: replies.dev.karrot.world
