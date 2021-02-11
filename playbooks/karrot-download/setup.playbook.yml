@@ -19,12 +19,6 @@
         - nginx
         - cert
 
-    # - name: set deploy public key
-    #   authorized_key:
-    #     user: "{{ site }}"
-    #     state: present
-    #     key: "{{ deploy_public_key }}"
-
     - name: nginx config
       template:
         src: nginx.j2
