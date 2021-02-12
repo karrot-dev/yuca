@@ -324,7 +324,7 @@
     get_url:
       url: 'https://download.karrot.world/{{ download_filename }}'
       dest: /var/www/{{ site }}/www/backend/karrot-backend.pyz
-      mode: "u+rwX"
+      mode: "u+rwx,a+x"
 
 - name: env config
   template:
