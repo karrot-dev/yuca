@@ -10,13 +10,12 @@ Type=simple
 User={{ site }}
 Group={{ site }}
 Environment=PYTHONUNBUFFERED=true
+Environment=LISTEN_ENDPOINT=systemd:domain=UNIX:index=0
+EnvironmentFile=/var/www/karrot-dev/www/backend/.env
 WorkingDirectory=/var/www/{{ site }}/www/backend
 Sockets={{ site }}.socket
-ExecStart=/var/www/{{ site }}/www/backend/env/bin/daphne \
-	--endpoint systemd:domain=UNIX:index=0 \
-	--ws-protocol karrot.token \
-	--proxy-headers \
-	config.asgi:application
+ExecStart=/var/www/karrot-dev/www/backend/karrot-backend.pyz server
+
 NonBlocking=true
 Restart=always
 

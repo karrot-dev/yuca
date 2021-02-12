@@ -3,52 +3,23 @@
 - become_user: "{{ site }}-deploy"
   block:
 
-  - name: install tools
-    pip:
-      name: "{{ packages }}"
-      virtualenv: "/var/www/{{ site }}/www/backend/env"
-    vars:
-      packages:
-        - setuptools
-        - pip-tools
+  - set_fact:
+      download_filename: "karrot-backend-{{ branch | regex_replace('[^a-zA-Z0-9-]', '-') }}.pyz"
 
-  - name: update code
-    git:
-      repo: https://github.com/yunity/karrot-backend.git
-      dest: /var/www/{{ site }}/www/backend
-      update: yes
-      force: yes
-      version: "{{ branch }}"
+  - name: download karrot-backend
+    get_url:
+      url: 'https://download.karrot.world/{{ download_filename }}'
+      dest: /var/www/{{ site }}/www/backend/karrot-backend.pyz
+      mode: "u+rwX"
 
-  - name: pip sync
-    command: env/bin/pip-sync
-    args:
-      chdir: "/var/www/{{ site }}/www/backend"
-    environment:
-      PIP_EXISTS_ACTION: w
-    changed_when: False
-
-  - name: install mjml dependencies
-    command: yarn
-    args:
-      chdir: "/var/www/{{ site }}/www/backend/mjml"
-    changed_when: False
-
-  - name: compile mjml templates
-    shell: ./convert
-    args:
-      chdir: "/var/www/{{ site }}/www/backend/mjml"
-    changed_when: False
-
-  - name: manage.py stuff
-    command: "env/bin/python manage.py {{ item }}"
+  - name: manage commands
+    command: "./karrot-backend.pyz --env .env manage {{ item }}"
     args:
       chdir: "/var/www/{{ site }}/www/backend"
     with_items:
       - check --deploy
       - migrate
-      - collectstatic --clear --no-input
-      - compilemessages
+    become_user: "{{ site }}-deploy"
     changed_when: False
 
     # need to use 'sudo' to allow privileges just for this command

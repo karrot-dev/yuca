@@ -9,7 +9,8 @@ Type=simple
 User={{ site }}
 Group={{ site }}
 WorkingDirectory=/var/www/{{ site }}/www/backend
-ExecStart=/var/www/{{ site }}/www/backend/env/bin/python manage.py run_huey
+EnvironmentFile=/var/www/karrot-dev/www/backend/.env
+ExecStart=/var/www/{{ site }}/www/backend/karrot-backend.pyz worker
 Restart=always
 
 [Install]

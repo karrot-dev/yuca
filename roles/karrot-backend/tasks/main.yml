@@ -316,52 +316,27 @@
 
 - become_user: "{{ site }}-deploy"
   block:
-  - name: git repo
-    git:
-      repo: https://github.com/yunity/karrot-backend.git
-      dest: /var/www/{{ site }}/www/backend
-      update: true
-      force: yes
-      version: "{{ branch }}"
 
-  - name: virtualenv
-    command: >
-      virtualenv
-        --no-setuptools
-        --python=python3
-        --no-site-packages
-        /var/www/{{ site }}/www/backend/env
-    args:
-      creates: /var/www/{{ site }}/www/backend/env
+  - set_fact:
+      download_filename: "karrot-backend-{{ branch | regex_replace('[^a-zA-Z0-9-]', '-') }}.pyz"
 
-  - name: install tools
-    pip:
-      name: "{{ packages }}"
-      virtualenv: "/var/www/{{ site }}/www/backend/env"
-    vars:
-      packages:
-        - setuptools
-        - pip-tools
+  - name: download karrot-backend
+    get_url:
+      url: 'https://download.karrot.world/{{ download_filename }}'
+      dest: /var/www/{{ site }}/www/backend/karrot-backend.pyz
+      mode: "u+rwX"
 
-  - name: pip sync
-    command: env/bin/pip-sync
-    args:
-      chdir: "/var/www/{{ site }}/www/backend"
-    environment:
-      PIP_EXISTS_ACTION: w
-    changed_when: False
-
-- name: django local settings
+- name: env config
   template:
-    src: local_settings.py.j2
-    dest: /var/www/{{ site }}/www/backend/config/local_settings.py
+    src: karrot.env
+    dest: /var/www/{{ site }}/www/backend/.env
   notify:
     - restart app
   tags:
     - django settings
 
 - name: initialize database
-  command: "env/bin/python manage.py migrate"
+  command: "./karrot-backend.pyz --env .env migrate"
   args:
     chdir: "/var/www/{{ site }}/www/backend"
   become_user: "{{ site }}-deploy"
