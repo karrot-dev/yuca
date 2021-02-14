@@ -317,13 +317,10 @@
 - become_user: "{{ site }}-deploy"
   block:
 
-  - set_fact:
-      download_filename: "karrot-backend-{{ branch | regex_replace('[^a-zA-Z0-9.-]', '-') }}.pyz"
-
   - name: download karrot-backend
     get_url:
-      url: 'https://download.karrot.world/{{ download_filename }}'
-      dest: /var/www/{{ site }}/www/backend/karrot-backend.pyz
+      url: '{{ karrot__download_url }}'
+      dest: '{{ karrot__executable }}'
       mode: "u+rwx,a+x"
 
 - name: env config

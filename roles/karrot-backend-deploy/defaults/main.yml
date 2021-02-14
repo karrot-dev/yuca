@@ -1,7 +1,5 @@
 ---
-csp_report_only: false
-karrot_branch_deployment_enabled: false
-# these need to be duplicated in karrot-backend-deploy role defaults too :/
+# these are copied from karrot-backend role defaults :/
 # bonus points if you can refactor this to have them shared somewhere :)
 karrot__download_filename: "karrot-backend-{{ branch | regex_replace('[^a-zA-Z0-9.-]', '-') }}.pyz"
 karrot__download_url: 'https://download.karrot.world/{{ karrot__download_filename }}'
