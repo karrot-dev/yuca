@@ -1,0 +1,15 @@
+---
+- name: karrot dev | deploy
+  hosts: all
+  become: yes
+  tasks:
+
+    - name: check ansible version
+      include_role:
+        name: check-ansible-version
+
+    - name: deploy
+      include_role:
+        name: karrot-frontend-deploy
+      vars:
+        site: karrot-dev

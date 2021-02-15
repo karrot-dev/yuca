@@ -26,6 +26,11 @@ cp group_vars/all.yml.example group_vars/all.yml
 # edit contents of group_vars/all.yml
 ```
 
+Some roles use ansible galaxy dependencies, you can install them with:
+```
+ansible-galaxy install -r galaxy-requirements.yml
+```
+
 ### manage the vault password
 
 The vault stores secrets for use on the server.

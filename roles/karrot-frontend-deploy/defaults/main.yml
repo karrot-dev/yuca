@@ -1,0 +1,10 @@
+---
+# the three variants types:
+# - production
+# - dev
+# - branch-<safe-branchname>
+# you can set them when running it if you want something different :)
+karrot_frontend__download_variant: 'dev'
+karrot_frontend__download_filename: 'karrot-frontend-{{ karrot_frontend__download_variant }}.zip'
+karrot_frontend__download_url: 'https://download.karrot.world/{{ karrot_frontend__download_filename }}'
+karrot_frontend__deploy_to: '/var/www/{{ site }}/www/frontend'

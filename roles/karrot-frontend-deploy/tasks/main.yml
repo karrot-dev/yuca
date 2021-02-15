@@ -1,0 +1,11 @@
+---
+- become_user: '{{ site }}-deploy'
+  block:
+  - import_role:
+      name: 'ansistrano.deploy'
+    vars:
+      ansistrano_deploy_via: 'download_unarchive'
+      ansistrano_get_url: '{{ karrot_frontend__download_url }}'
+      ansistrano_deploy_to: '{{ karrot_frontend__deploy_to }}'
+      ansistrano_keep_releases: 3
+      ansistrano_allow_anonymous_stats: no
