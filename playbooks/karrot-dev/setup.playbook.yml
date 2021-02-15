@@ -59,7 +59,7 @@
       include_role:
         name: karrot-backend
       vars:
-        static_root: /home/deploy/karrot-frontend/master
+        static_root: /var/www/karrot-dev/www/frontend/dev/current
         apk: /home/deploy/karrot-app/master/app.apk
         redis_db: 4
         influxdb_database: karrot-dev
@@ -73,6 +73,8 @@
         karrot_branch_deployment_enabled: true
         karrot_branch_deployment_server_name: '~^(?<branch>.+)\.dev\.karrot\.world$'
         karrot_branch_deployment_root: '/home/deploy/karrot-frontend/branches/$branch'
+        # not ready yet, as currently have a bunch of things that haven't been deployed there...
+        #karrot_branch_deployment_root: '/var/www/karrot-dev/www/frontend/$branch/current'
         # put in secrets
         #geoipupdate__account_id: 
         #geoipupdate__license_key:
