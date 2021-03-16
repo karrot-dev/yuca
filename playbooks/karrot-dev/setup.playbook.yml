@@ -25,6 +25,7 @@
       - rewrite-landing-page.dev.karrot.world
       - place-page-redesign.dev.karrot.world
       - change-improve-create-new-group.dev.karrot.world
+      - landing-page-new-words.dev.karrot.world
     postgresql_database: fstool-dev
     postgresql_user: fstool-dev
     sparkpost_relay_domain: replies.dev.karrot.world
