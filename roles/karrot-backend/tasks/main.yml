@@ -311,6 +311,15 @@
     mode: "u+rwX"
     recurse: yes
 
+- name: frontend directory owned by deploy user
+  file:
+    path: "/var/www/{{ site }}/www/frontend"
+    state: directory
+    owner: "{{ site }}-deploy"
+    group: "{{ site }}-deploy"
+    mode: "u+rwX"
+    recurse: yes
+
 #------------------------------------------------------------------
 # env setup & basic deploy
 
