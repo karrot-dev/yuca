@@ -9,7 +9,7 @@ Type=simple
 User={{ site }}
 Group={{ site }}
 WorkingDirectory=/var/www/{{ site }}/www/backend
-EnvironmentFile=/var/www/karrot-dev/www/backend/.env
+EnvironmentFile=/var/www/{{ site }}/www/backend/.env
 ExecStart=/var/www/{{ site }}/www/backend/karrot-backend.pyz worker
 Restart=always
 

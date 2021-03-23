@@ -54,7 +54,7 @@
       include_role:
         name: karrot-backend
       vars:
-        static_root: /home/deploy/karrot-frontend/release
+        static_root: /var/www/karrot-dev/www/frontend/release/current
         apk: /home/deploy/karrot-app/release/app.apk
         redis_db: 2
         influxdb_database: karrot-world

@@ -314,30 +314,17 @@
 #------------------------------------------------------------------
 # env setup & basic deploy
 
-- become_user: "{{ site }}-deploy"
-  block:
-
-  - name: download karrot-backend
-    get_url:
-      url: '{{ karrot__download_url }}'
-      dest: '{{ karrot__executable }}'
-      mode: "u+rwx,a+x"
-
 - name: env config
   template:
     src: karrot.env
     dest: /var/www/{{ site }}/www/backend/.env
+    owner: "{{ site }}"
+    group: "{{ site }}"
+    mode: "640"
   notify:
     - restart app
   tags:
     - django settings
-
-- name: initialize database
-  command: "./karrot-backend.pyz --env .env migrate"
-  args:
-    chdir: "/var/www/{{ site }}/www/backend"
-  become_user: "{{ site }}-deploy"
-  changed_when: False
 
 - name: allow user to restart workers
   copy:

@@ -13,3 +13,10 @@
     name: "{{ site }}-huey.service"
     state: restarted
     daemon_reload: yes
+
+- name: reload nginx
+  systemd:
+    name: nginx
+    state: reloaded
+    daemon_reload: yes
+
