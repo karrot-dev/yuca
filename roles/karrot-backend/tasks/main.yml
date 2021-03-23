@@ -176,6 +176,15 @@
     default: yes
     state: present
 
+- name: create frontend directory owned by deploy user
+  file:
+    path: "/var/www/{{ site }}/www/frontend"
+    state: directory
+    owner: "{{ site }}-deploy"
+    group: "{{ site }}-deploy"
+    mode: "u+rwX"
+    recurse: yes
+
 - name: create uploads directory and set ownership to site user
   file:
     dest: /var/www/{{ site }}/www/{{ uploads_directory }}
@@ -207,6 +216,16 @@
 - name: make static files readable to www-data by default
   acl:
     path: "/var/www/{{ site }}/www/static"
+    entity: "www-data"
+    etype: user
+    permissions: rX
+    recursive: yes
+    default: yes
+    state: present
+
+- name: make frontend files readable to www-data by default
+  acl:
+    path: "/var/www/{{ site }}/www/frontend"
     entity: "www-data"
     etype: user
     permissions: rX
@@ -311,14 +330,14 @@
     mode: "u+rwX"
     recurse: yes
 
-- name: frontend directory owned by deploy user
-  file:
+- name: frontend directory readable by www-data
+  acl:
     path: "/var/www/{{ site }}/www/frontend"
-    state: directory
-    owner: "{{ site }}-deploy"
-    group: "{{ site }}-deploy"
-    mode: "u+rwX"
-    recurse: yes
+    entity: "www-data"
+    etype: user
+    permissions: rX
+    recursive: yes
+    state: present
 
 #------------------------------------------------------------------
 # env setup & basic deploy
