@@ -28,6 +28,7 @@
       - landing-page-new-words.dev.karrot.world
       - change-improve-map-bounds.dev.karrot.world
       - change-improve-landingpage-design.dev.karrot.world
+      - change-use-latin-ext-font.dev.karrot.world
     postgresql_database: fstool-dev
     postgresql_user: fstool-dev
     sparkpost_relay_domain: replies.dev.karrot.world
