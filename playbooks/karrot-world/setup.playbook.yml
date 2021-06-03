@@ -58,7 +58,7 @@
         apk: /home/deploy/karrot-app/release/app.apk
         redis_db: 2
         influxdb_database: karrot-world
-        workers: 8
+        workers: 16
         deploy_public_key: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCeO66ZCc2jFyrT+h8yrx1GJg0ReCMh1zsbb2cXqN03xoo6GxmVm1b7Y+BFniYJnuJVYMddOby3A6iq+eCQZDS8lcRjJHINC8Va9qHZn4aYeTrC8c0KMyGoKudtlUupN8XVvaL9iC3XtD+6bdnTVH93D8v2ovGR5l9HAm+bLIiDQxVxb3mWua4+9v9YOIqjoWrNlVZiQmX7pcwB2XeIpvVVxjR9Zxf19d6gCZ+a97ffk+sb90oeq6ROuFD2In9L5I306O6gtx4WOMR1mhm6bDYLCiPsBJi/iyY+7LM59oMlolD9Lq5mPGJg5uUfYHOly3IjwNYOxd1W5G7E6bYAgTFrmgtTzHOURM5FHnmr5gRjdh8783Qid3pXCJpYVWKeO5lTpn/TzW9w3Yxo/LVA8kbBlyweu8ldFXrA5VkWOQY8x2nNlaTM9eL5D2clpTiVhT8Lzri4P5H7pOqVbgwCPY/DfoAp8BJzZ9fSdSbc7hTFOKInKRojt5XRZ+sEvfK+j6wicEQNUtkvFJDDUzBsJHIeE0B76EmkVuIndoY9WRpQdtFlszhaiE0qME2kYtyQGysVpNRAzyPxeGYm4ojSfroJ7PjeHcVtoyP66C19TSDh1whNHZBgbY4OVW41re/hgxUeqL020ur0XgmM4gQH0fp84yLUNdGtWdBLbntxOcKtIw== karrot deploy 2021-04-15"
         # borgbackup remote repository is unused
         borgbackup_server_user: tiltec
