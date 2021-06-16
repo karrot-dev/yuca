@@ -8,7 +8,8 @@
     site: fsww-rocketchat
     site_name: foodsaving worldwide rocketchat
     server_name: chat.foodsaving.world
-    redirects: []
+    redirects:
+      - chat.karrot.world
   tasks:
     - name: check ansible version
       include_role:
