@@ -1,19 +1,19 @@
 ---
-- name: community.foodsaving.world | setup
+- name: community.karrot.world | setup
   hosts: all
   become: yes
   vars_files:
     - secrets.vars.yml
   vars:
     site: foodsaving-community
-    server_name: community.foodsaving.world
+    server_name: community.karrot.world
     redirects:
-      - community.karrot.world
+      - community.foodsaving.world
     discourse_location: "/var/www/{{ site }}/docker"
     discourse_smtp_address: postal.karrot.world
     discourse_smtp_port: 25
-    discourse_smtp_user_name: "karrot/community-foodsaving-world"
-    discourse_developer_emails: 'tilmann.becker@gmail.com,community.foodsaving.world@nicksellen.co.uk'
+    discourse_smtp_user_name: "karrot/community-karrot-world"
+    discourse_developer_emails: 'tilmann.becker@gmail.com,community.foodsaving.world@nicksellen.co.uk,community.karrot.world@nicksellen.co.uk'
     postgresql_database: "{{ site }}"
     postgresql_user: "{{ site }}"
     postgresql_extensions:
