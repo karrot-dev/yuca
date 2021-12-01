@@ -28,6 +28,7 @@
       - add-more-activity-statistics.dev.karrot.world
       - change-defoodify.dev.karrot.world
       - place-default-page.dev.karrot.world
+      - add-markdown-activity-description.dev.karrot.world
     postgresql_database: fstool-dev
     postgresql_user: fstool-dev
     sparkpost_relay_domain: replies.dev.karrot.world
