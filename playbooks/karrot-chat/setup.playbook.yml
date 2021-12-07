@@ -1,0 +1,30 @@
+---
+- name: karrot chat | setup
+  hosts: all
+  become: yes
+  vars:
+    site: karrot-chat
+    site_name: karrot chat
+    server_name: chat.karrot.world
+    redirects: []
+    setup_html_vhost: True
+      - chat.foodsaving.world
+    karrot_chat__url: 'https://matrix.to/#/#karrot:matrix.org'
+  tasks:
+    - name: check ansible version
+      include_role:
+        name: check-ansible-version
+
+    - name: basic-site
+      include_role:
+        name: basic-site
+      tags:
+        - nginx
+        - cert
+
+    - name: nginx config
+      template:
+        src: nginx.j2
+        dest: /etc/nginx/sites-available/{{ site }}
+      tags:
+        - nginx

@@ -7,9 +7,8 @@
   vars:
     site: fsww-rocketchat
     site_name: foodsaving worldwide rocketchat
-    server_name: chat.karrot.world
-    redirects:
-      - chat.foodsaving.world
+    server_name: oldchat.karrot.world
+    redirects: []
   tasks:
     - name: check ansible version
       include_role:
