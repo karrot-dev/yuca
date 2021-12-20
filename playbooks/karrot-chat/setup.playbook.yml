@@ -6,9 +6,9 @@
     site: karrot-chat
     site_name: karrot chat
     server_name: chat.karrot.world
-    redirects: []
-    setup_html_vhost: True
+    redirects:
       - chat.foodsaving.world
+    setup_html_vhost: True
     karrot_chat__url: 'https://matrix.to/#/#karrot:matrix.org'
   tasks:
     - name: check ansible version
