@@ -43,6 +43,7 @@
       - "https://firebaseinstallations.googleapis.com"
       - "https://fcmregistrations.googleapis.com"
       - "https://sentry.io"
+      - "https://*.ingest.sentry.io"
     style-src:
       - "'self'"
       - "'unsafe-inline'"
