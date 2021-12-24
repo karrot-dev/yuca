@@ -82,6 +82,10 @@
         # put in secrets
         #geoipupdate__account_id: 
         #geoipupdate__license_key:
+        fcm_client_api_key: 'AIzaSyCnVQPaiROu23tQdl1tidgfonG2F8Hk_qQ'
+        fcm_client_messaging_sender_id: '819038505585'
+        fcm_client_project_id: 'karrot-dev'
+        fcm_client_app_id: '1:819038505585:web:d10d0cdff501724cc969d0'
       tags:
         - nginx
         - dependencies

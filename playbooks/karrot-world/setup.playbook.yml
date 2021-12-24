@@ -64,6 +64,10 @@
         borgbackup_server_user: tiltec
         borgbackup_client_backup_server: tor-relay.chandi.it
         # backup_password set by secrets.vars.yml
+        fcm_client_api_key: 'AIzaSyAJ9angP6Bd97XHVEj-EZqMDAt166dNV6Q'
+        fcm_client_messaging_sender_id: '169383571422'
+        fcm_client_project_id: 'karrot-9ab96'
+        fcm_client_app_id: '1:169383571422:web:6bc1130435e3d625ee374f'
       tags:
         - nginx
         - dependencies
