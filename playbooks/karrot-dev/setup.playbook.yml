@@ -22,13 +22,7 @@
       # long term
       - circleci-update-dependencies.dev.karrot.world
       # temporary
-      - place-page-redesign.dev.karrot.world
-      - change-improve-feedback-set-amount.dev.karrot.world
-      - change-use-geoip-for-group-edit.dev.karrot.world
-      - add-more-activity-statistics.dev.karrot.world
-      - change-defoodify.dev.karrot.world
-      - place-default-page.dev.karrot.world
-      - add-markdown-activity-description.dev.karrot.world
+      - change-use-more-config-api.dev.karrot.world
     postgresql_database: fstool-dev
     postgresql_user: fstool-dev
     sparkpost_relay_domain: replies.dev.karrot.world
