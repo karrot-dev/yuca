@@ -15,7 +15,7 @@ Prerequisites:
 Clone this repo:
 
 ```
-git clone git@github.com:yunity/yuca.git
+git clone git@github.com:karrot-dev/yuca.git
 cd yuca
 ```
 
