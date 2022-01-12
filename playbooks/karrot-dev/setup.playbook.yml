@@ -22,8 +22,7 @@
       # long term
       - circleci-update-dependencies.dev.karrot.world
       # temporary
-      - change-use-more-config-api.dev.karrot.world
-      - fix-places-navigation.dev.karrot.world
+      - add--mentions.dev.karrot.world
     postgresql_database: fstool-dev
     postgresql_user: fstool-dev
     sparkpost_relay_domain: replies.dev.karrot.world
