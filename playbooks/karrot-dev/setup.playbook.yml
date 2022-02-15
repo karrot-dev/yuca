@@ -52,6 +52,9 @@
     - name: postgresql-db
       include_role:
         name: postgresql-db
+      vars:
+        postgresql_extensions:
+          - btree_gist
 
     - name: karrot-backend
       include_role:

@@ -45,6 +45,8 @@
       include_role:
         name: postgresql-db
       vars:
+        postgresql_extensions:
+          - btree_gist
         # backup_host: tor-relay.chandi.it
         # backup_user: tiltec
         # backup_path: ~/backup/
