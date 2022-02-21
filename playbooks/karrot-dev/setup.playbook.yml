@@ -23,6 +23,7 @@
       - circleci-update-dependencies.dev.karrot.world
       # temporary
       - add--mentions.dev.karrot.world
+      - v9.0.0.dev.karrot.world
     postgresql_database: fstool-dev
     postgresql_user: fstool-dev
     sparkpost_relay_domain: replies.dev.karrot.world
