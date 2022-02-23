@@ -23,7 +23,15 @@
       - circleci-update-dependencies.dev.karrot.world
       # temporary
       - add--mentions.dev.karrot.world
+      # trying to narrow down an issue
+      # https://github.com/karrot-dev/karrot-frontend/issues/2502
       - v9.0.0.dev.karrot.world
+      - v9.1.0.dev.karrot.world
+      - v9.2.0.dev.karrot.world
+      - v9.3.0.dev.karrot.world
+      - v9.4.0.dev.karrot.world
+      - v9.5.0.dev.karrot.world
+      - v9.5.1.dev.karrot.world
     postgresql_database: fstool-dev
     postgresql_user: fstool-dev
     sparkpost_relay_domain: replies.dev.karrot.world
