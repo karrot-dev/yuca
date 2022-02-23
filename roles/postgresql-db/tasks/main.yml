@@ -86,6 +86,8 @@
   with_items: "{{ postgresql_extensions | default([]) }}"
   become: true
   become_user: postgres
+  tags:
+    - pg_extensions
 
 - name: adjust owner of schema public
   postgresql_schema:

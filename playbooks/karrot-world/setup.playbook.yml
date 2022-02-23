@@ -46,11 +46,14 @@
         name: postgresql-db
       vars:
         postgresql_extensions:
+          - citext
           - btree_gist
         # backup_host: tor-relay.chandi.it
         # backup_user: tiltec
         # backup_path: ~/backup/
         # backup_password set by secrets.vars.yml
+      tags:
+        - pg_extensions
 
     - name: karrot-backend
       include_role:

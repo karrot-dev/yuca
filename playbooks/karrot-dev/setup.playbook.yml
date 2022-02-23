@@ -63,7 +63,10 @@
         name: postgresql-db
       vars:
         postgresql_extensions:
+          - citext
           - btree_gist
+      tags:
+        - pg_extensions
 
     - name: karrot-backend
       include_role:
