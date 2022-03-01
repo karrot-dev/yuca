@@ -31,6 +31,11 @@
       - v9.3.0.dev.karrot.world
       - v9.4.0.dev.karrot.world
       - v9.5.0.dev.karrot.world
+      - v9.5.0-olddeps.dev.karrot.world
+      - v9.5.0-patch.dev.karrot.world
+      - v9.5.0-patchmask.dev.karrot.world
+      - v9.5.0-quasar1.15.21.dev.karrot.world
+      - v9.5.0-quasar1.15.22.dev.karrot.world
       - v9.5.1.dev.karrot.world
     postgresql_database: fstool-dev
     postgresql_user: fstool-dev
