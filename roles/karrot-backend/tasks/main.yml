@@ -36,6 +36,10 @@
   with_dict:
     default-src:
       - "'self'"
+    script-src:
+      - "'self'"
+      # see https://github.com/karrot-dev/karrot-frontend/issues/2522
+      - "'unsafe-eval'"
     connect-src:
       - "'self'"
       - "wss://{{ server_name }}"
