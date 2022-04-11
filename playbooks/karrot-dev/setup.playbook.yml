@@ -23,6 +23,7 @@
       - circleci-update-dependencies.dev.karrot.world
       # temporary
       - add--mentions.dev.karrot.world
+      - quasar-2-second-try.dev.karrot.world
       # trying to narrow down an issue
       # https://github.com/karrot-dev/karrot-frontend/issues/2502
       - v9.0.0.dev.karrot.world
