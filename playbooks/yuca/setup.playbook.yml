@@ -10,21 +10,18 @@
         name: restic-backup
       vars:
         name: yuca
-        restic_repo: sftp:yuca-backup@cashew.chandi.it:/repo
-        restic_password: "{{ restic_password_cashew }}"
+        restic_repo: "b2:karrot-backup:"
+        restic_password: "{{ restic_password_b2 }}"
+        restic_b2_account_id: "{{ restic_b2_account_id_yuca }}"
+        restic_b2_account_key: "{{ restic_b2_account_key_yuca }}"
         postgres_databases: 
           - foodsaving-community
-          - fstaiwan
           - karrot-world
           - fstool-dev
-          - kanthaus-nextcloud
         folders:
             - /etc
-            - /var/www/kanthaus-nextcloud/nextcloud_data
-            - /var/www/kanthaus-nextcloud/www
             - /var/www/karrot-dev/www/uploads
             - /var/www/karrot-world/www/uploads
-            - /var/www/foodsharing-taiwan/www/uploads
             - /var/www/foodsaving-community/docker/shared/web_only/uploads/default/original
 
     - name: prometheus node exporter
