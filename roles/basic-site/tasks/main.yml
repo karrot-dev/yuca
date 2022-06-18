@@ -55,7 +55,7 @@
 
 - name: generate list of DNS entries
   set_fact:
-    dns: "{{ redirects }} + {{ extra_dns | default([]) }} + ['{{ server_name }}']"
+    dns: "{{ redirects + extra_dns + [server_name] }}"
   tags:
     - cert
 
