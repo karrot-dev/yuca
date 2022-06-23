@@ -22,7 +22,7 @@
       # long term
       - circleci-update-dependencies.dev.karrot.world
       # temporary
-      - fix-upgrade-bugs.dev.karrot.world
+      - add-community-banners.dev.karrot.world
     postgresql_database: fstool-dev
     postgresql_user: fstool-dev
     sparkpost_relay_domain: replies.dev.karrot.world
