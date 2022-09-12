@@ -22,8 +22,7 @@
       # long term
       - circleci-update-dependencies.dev.karrot.world
       # temporary
-      - add-more-vue-query.dev.karrot.world
-      - add-improved-testing.dev.karrot.world
+      - add-place-type-edit.dev.karrot.world
     postgresql_database: fstool-dev
     postgresql_user: fstool-dev
     sparkpost_relay_domain: replies.dev.karrot.world
