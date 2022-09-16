@@ -23,7 +23,7 @@
       - circleci-update-dependencies.dev.karrot.world
       # temporary
       - improve-conflict.dev.karrot.world
-      - refine-place-display.dev.karrot.world
+      - refine-places-display.dev.karrot.world
       - streamline-activity-creation.dev.karrot.world
       - trust-for-role.dev.karrot.world
     postgresql_database: fstool-dev
