@@ -22,10 +22,7 @@
       # long term
       - circleci-update-dependencies.dev.karrot.world
       # temporary
-      - improve-conflict.dev.karrot.world
-      - refine-places-display.dev.karrot.world
-      - streamline-activity-creation.dev.karrot.world
-      - trust-for-role.dev.karrot.world
+      - fix-message-input-scrolling.dev.karrot.world
     postgresql_database: fstool-dev
     postgresql_user: fstool-dev
     sparkpost_relay_domain: replies.dev.karrot.world
