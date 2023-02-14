@@ -5,9 +5,7 @@
   vars:
     site: ukuvota
     static_root: /var/www/{{ site }}/production/frontend
-    server_name: ukuvota.world
-    redirects:
-      - www.ukuvota.world
+    server_name: legacy.ukuvota.world
 
   tasks:
     - name: check ansible version
