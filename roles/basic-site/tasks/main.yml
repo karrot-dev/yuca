@@ -31,6 +31,8 @@
     state: present
     key: "{{ public_key }}"
   when: public_key is defined
+  tags:
+    - public key
 
 - name: set home directory permissions
   file:
