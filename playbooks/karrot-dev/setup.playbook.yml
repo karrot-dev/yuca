@@ -73,7 +73,7 @@
         csrf_trusted_origins:
           - .karrot.world
           - .dev.karrot.world
-        deploy_public_key: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCeO66ZCc2jFyrT+h8yrx1GJg0ReCMh1zsbb2cXqN03xoo6GxmVm1b7Y+BFniYJnuJVYMddOby3A6iq+eCQZDS8lcRjJHINC8Va9qHZn4aYeTrC8c0KMyGoKudtlUupN8XVvaL9iC3XtD+6bdnTVH93D8v2ovGR5l9HAm+bLIiDQxVxb3mWua4+9v9YOIqjoWrNlVZiQmX7pcwB2XeIpvVVxjR9Zxf19d6gCZ+a97ffk+sb90oeq6ROuFD2In9L5I306O6gtx4WOMR1mhm6bDYLCiPsBJi/iyY+7LM59oMlolD9Lq5mPGJg5uUfYHOly3IjwNYOxd1W5G7E6bYAgTFrmgtTzHOURM5FHnmr5gRjdh8783Qid3pXCJpYVWKeO5lTpn/TzW9w3Yxo/LVA8kbBlyweu8ldFXrA5VkWOQY8x2nNlaTM9eL5D2clpTiVhT8Lzri4P5H7pOqVbgwCPY/DfoAp8BJzZ9fSdSbc7hTFOKInKRojt5XRZ+sEvfK+j6wicEQNUtkvFJDDUzBsJHIeE0B76EmkVuIndoY9WRpQdtFlszhaiE0qME2kYtyQGysVpNRAzyPxeGYm4ojSfroJ7PjeHcVtoyP66C19TSDh1whNHZBgbY4OVW41re/hgxUeqL020ur0XgmM4gQH0fp84yLUNdGtWdBLbntxOcKtIw== karrot deploy 2021-04-15"
+        deploy_public_key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPLa2nCA2AZsG8/ZYTRocmaxk07D7O9mGWr0RJf9nlfn karrot deploy 2023-03-17"
         karrot_branch_deployment_enabled: true
         karrot_branch_deployment_server_name: '~^(?<branch>.+)\.dev\.karrot\.world$'
         karrot_branch_deployment_root: '/home/deploy/karrot-frontend/branches/$branch'
@@ -91,6 +91,7 @@
         - dependencies
         - geoipupdate
         - django settings
+        - deploy public key
 
     - name: karrot-backend-deploy
       include_role:

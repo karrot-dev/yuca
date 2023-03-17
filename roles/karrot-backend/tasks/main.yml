@@ -254,6 +254,8 @@
     user: "{{ site }}-deploy"
     state: present
     key: "{{ deploy_public_key }}"
+  tags:
+    - deploy public key
 
 
 - name: make site directory readable by deploy user
