@@ -32,7 +32,7 @@ ansible-galaxy install -r galaxy-requirements.yml
 ```
 
 ### manage the vault password
-
+t
 The vault stores secrets for use on the server.
 
 I highly recommend using [pass](https://www.passwordstore.org/) as it works very nicely with the vault mechanism.
@@ -104,6 +104,19 @@ If you are only changing nginx related setup configuration you can do it very qu
 ```
 ansible-playbook playbooks/karrot-dev/setup.playbook.yml --tags nginx
 ```
+
+### karrot public ssh key
+
+If you are just changing the karrot public deploy key you can run:
+
+```
+ansible-playbook playbooks/karrot-dev/setup.playbook.yml --tags "deploy public key"
+ansible-playbook playbooks/karrot-world/setup.playbook.yml --tags "deploy public key"
+```
+
+Be sure to also add the private key to circleci for frontend and backend projects under the "Additional SSH Keys" section:
+- https://app.circleci.com/settings/project/github/karrot-dev/karrot-frontend/ssh
+- https://app.circleci.com/settings/project/github/karrot-dev/karrot-backend/ssh
 
 ## local testing with vagrant
 
