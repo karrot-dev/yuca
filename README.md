@@ -118,6 +118,12 @@ Be sure to also add the private key to circleci for frontend and backend project
 - https://app.circleci.com/settings/project/github/karrot-dev/karrot-frontend/ssh
 - https://app.circleci.com/settings/project/github/karrot-dev/karrot-backend/ssh
 
+Also change update the `public_key` in karrot-download playbook, then:
+
+```
+ansible-playbook playbooks/karrot-download/setup.playbook.yml --tags "public key"
+```
+
 ## local testing with vagrant
 
 You can run playbooks against a local vagrant vm.
