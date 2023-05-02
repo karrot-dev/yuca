@@ -6,12 +6,12 @@
 
 - name: add nodesource repository
   apt_repository:
-    repo: deb https://deb.nodesource.com/node_12.x buster main
+    repo: deb https://deb.nodesource.com/node_18.x bullseye main
     state: present
 
 - name: add nodesource src repository
   apt_repository:
-    repo: deb-src https://deb.nodesource.com/node_12.x buster main
+    repo: deb-src https://deb.nodesource.com/node_18.x bullseye main
     state: present
 
 - name: install nodejs
