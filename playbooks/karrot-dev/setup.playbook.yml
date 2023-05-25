@@ -68,11 +68,13 @@
         redis_db: 4
         influxdb_database: karrot-dev
         workers: 4
+        # https://docs.djangoproject.com/en/4.2/ref/settings/#allowed-hosts
         additional_allowed_hosts:
           - .dev.karrot.world
+        # https://docs.djangoproject.com/en/4.2/ref/settings/#csrf-trusted-origins
         csrf_trusted_origins:
-          - .karrot.world
-          - .dev.karrot.world
+          - "https://*.karrot.world"
+          - "https://*.dev.karrot.world"
         deploy_public_key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPLa2nCA2AZsG8/ZYTRocmaxk07D7O9mGWr0RJf9nlfn karrot deploy 2023-03-17"
         karrot_branch_deployment_enabled: true
         karrot_branch_deployment_server_name: '~^(?<branch>.+)\.dev\.karrot\.world$'
