@@ -38,7 +38,7 @@
 - name: allow md5 login via postgres socket
   when: postgresql_socket_auth
   postgresql_pg_hba:
-    dest: /etc/postgresql/11/main/pg_hba.conf
+    dest: /etc/postgresql/13/main/pg_hba.conf
     contype: local
     databases: "{{ postgresql_database }}"
     users: "{{ postgresql_user }}"
