@@ -11,7 +11,7 @@ User={{ site }}
 Group={{ site }}
 Environment=PYTHONUNBUFFERED=true
 Environment=LISTEN_SERVER=uvicorn
-Environment=LISTEN_FD=0
+Environment=LISTEN_FD=3
 EnvironmentFile=/var/www/{{ site }}/www/backend/.env
 WorkingDirectory=/var/www/{{ site }}/www/backend
 Sockets={{ site }}.socket
