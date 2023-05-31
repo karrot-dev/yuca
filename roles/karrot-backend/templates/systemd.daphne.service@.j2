@@ -1,7 +1,7 @@
 # This file is managed by ansible. It belongs to {{ role_path }}.
 # See https://github.com/karrot-dev/yuca to change.
 [Unit]
-Description={{ site }} | daphne %i
+Description={{ site }} %i
 After=network.target
 PartOf={{ site }}.target
 
@@ -10,7 +10,8 @@ Type=simple
 User={{ site }}
 Group={{ site }}
 Environment=PYTHONUNBUFFERED=true
-Environment=LISTEN_ENDPOINT=systemd:domain=UNIX:index=0
+Environment=LISTEN_SERVER=uvicorn
+Environment=LISTEN_FD=0
 EnvironmentFile=/var/www/{{ site }}/www/backend/.env
 WorkingDirectory=/var/www/{{ site }}/www/backend
 Sockets={{ site }}.socket
