@@ -21,6 +21,8 @@
       # ensures we unpack it into the same dir that it'll be run from
       # otherwise it'll get shiv-unpacked twice
       SHIV_ROOT: /var/www/{{ site }}/.shiv
+      # we handle the migrations here, so don't want to include the karrot ones
+      EXCLUDE_EXTENSION_MIGRATIONS: true
 
     # need to use 'sudo' to allow privileges just for this command
   - name: restart daphne
