@@ -58,6 +58,7 @@
       - "'self'"
       - "https:"
       - "data:"
+      - "blob:"
     report-uri:
       - "{{ csp_report_uri }}"
   when: csp_report_uri is defined
