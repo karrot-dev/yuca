@@ -200,6 +200,16 @@
     mode: "u+rwX"
     recurse: yes
 
+- name: create uploads tmp directory
+  # this is so tmp upload files get the correct acl permissions
+  file:
+    dest: /var/www/{{ site }}/www/{{ uploads_directory }}/tmp
+    state: directory
+    owner: "{{ site }}"
+    group: "{{ site }}"
+    mode: "u+rwX"
+    recurse: yes
+
 - name: make new uploads readable to www-data by default
   acl:
     path: "/var/www/{{ site }}/www/{{ uploads_directory }}"
