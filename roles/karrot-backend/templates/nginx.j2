@@ -100,6 +100,18 @@ server {
         expires max;
     }
 
+    # never serve up the tmp content
+    location /media/tmp/ {
+        deny all;
+        return 404;
+    }
+
+    # these are served via django
+    location ~ /media/conversation_message_attachment_(files|previews|thumbnails)/ {
+        deny all;
+        return 404;
+    }
+
     # support for X-Accel-Redirect
     location /uploads/ {
         internal;
