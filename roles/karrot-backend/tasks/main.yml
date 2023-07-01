@@ -48,6 +48,7 @@
       - "https://fcmregistrations.googleapis.com"
       - "https://sentry.io"
       - "https://*.ingest.sentry.io"
+      - "blob:"
     style-src:
       - "'self'"
       - "'unsafe-inline'"
