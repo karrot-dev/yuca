@@ -24,6 +24,7 @@
       # temporary
       - add-attachments.dev.karrot.world
       - sidenav-mobile.dev.karrot.world
+      - change-vite.dev.karrot.world
     postgresql_database: fstool-dev
     postgresql_user: fstool-dev
     sparkpost_relay_domain: replies.dev.karrot.world
