@@ -26,6 +26,10 @@ server {
     }
     {% endif %}
 
+    location /assets {
+      expires max;
+    }
+
     location /css {
       expires max;
     }
