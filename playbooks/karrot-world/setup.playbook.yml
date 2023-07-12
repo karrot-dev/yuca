@@ -73,6 +73,8 @@
         fcm_client_messaging_sender_id: '169383571422'
         fcm_client_project_id: 'karrot-9ab96'
         fcm_client_app_id: '1:169383571422:web:6bc1130435e3d625ee374f'
+        forum_banner_topic_id: '933'
+        forum_discussions_feed: 'latest.json'
       tags:
         - nginx
         - dependencies
