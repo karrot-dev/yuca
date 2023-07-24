@@ -24,12 +24,13 @@
     enabled: yes
 
 # set docker bridge to fixed ip for container->host access
-- name: set fixed bridge IP
+- name: set docker with fixed bridge IP and overlay2 storage
   copy:
     dest: "/etc/docker/daemon.json"
     content: |
       {
-        "bip": "192.168.1.1/24"
+        "bip": "192.168.1.1/24",
+        "storage-driver": "overlay2"
       }
   register: docker_configuration
 
