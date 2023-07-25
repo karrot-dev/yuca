@@ -79,7 +79,7 @@ server {
         {% endif %}
     }
 
-    location ~ ^\/(api(\-auth)?|docs|silk)\/ {
+    location ~ ^\/(api(\-auth)?|docs|silk|static)\/ {
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $remote_addr;
         proxy_set_header X-Forwarded-Proto $scheme;
@@ -93,10 +93,6 @@ server {
         proxy_set_header Sec-WebSocket-Key $http_sec_websocket_key;
         proxy_set_header Sec-WebSocket-Protocol $http_sec_websocket_protocol;
         proxy_set_header Sec-WebSocket-Version $http_sec_websocket_version;
-    }
-
-    location /static/ {
-        root /var/www/{{ site }}/www/;
     }
 
     location /media/ {
