@@ -45,6 +45,7 @@
       include_role:
         name: postgresql-db
       vars:
+        postgresql_socket_auth: true
         postgresql_extensions:
           - citext
           - btree_gist

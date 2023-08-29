@@ -43,6 +43,8 @@
     - name: server-base
       include_role:
         name: server-base
+      tags:
+        - redis_conf
 
     - name: basic-site
       include_role:
@@ -55,6 +57,7 @@
       include_role:
         name: postgresql-db
       vars:
+        postgresql_socket_auth: true
         postgresql_extensions:
           - citext
           - btree_gist
