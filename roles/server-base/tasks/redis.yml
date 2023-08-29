@@ -5,6 +5,22 @@
     state: present
     update_cache: true
 
+- name: let redis listen on unix socket
+  lineinfile:
+    path: /etc/redis/redis.conf
+    regexp: '^unixsocket '  # space at end is important!
+    line: "unixsocket /var/run/redis/redis-server.sock"
+  tags:
+    - redis_conf
+
+- name: redis unix socket permission
+  lineinfile:
+    path: /etc/redis/redis.conf
+    regexp: '^unixsocketperm'
+    line: "unixsocketperm 700"
+  tags:
+    - redis_conf
+
 - name: Start Redis and enable at boot
   systemd:
     name: redis-server
