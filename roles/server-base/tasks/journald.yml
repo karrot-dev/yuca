@@ -1,0 +1,10 @@
+---
+- name: configure persistent storage
+  lineinfile:
+    path: /etc/systemd/journald.conf
+    regexp: '^Storage='
+    line: "Storage=persistent"
+  notify:
+    - reload journald
+  tags:
+    - journald_conf

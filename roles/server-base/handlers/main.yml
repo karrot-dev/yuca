@@ -3,3 +3,11 @@
     name: nginx
     state: reloaded
     daemon_reload: yes
+
+- name: reload journald
+  systemd:
+    name: systemd-journald
+    # TODO: this fails, needs to be force reloaded
+    # can do it manually with "systemctl force-reload systemd-journald"
+    state: reloaded
+    daemon_reload: yes

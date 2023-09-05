@@ -5,6 +5,12 @@
   vars_files:
     - secrets.vars.yml
   tasks:
+    - name: server-base
+      include_role:
+        name: server-base
+      tags:
+        - journald_conf
+
     - name: restic-backup
       include_role:
         name: restic-backup
