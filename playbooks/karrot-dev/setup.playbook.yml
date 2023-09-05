@@ -22,9 +22,7 @@
       # long term
       - circleci-update-dependencies.dev.karrot.world
       # temporary
-      - sidenav-mobile.dev.karrot.world
-      - change-vite.dev.karrot.world
-      - fix-attachment-niggles.dev.karrot.world
+      - change-consolidated-feedback.dev.karrot.world
     postgresql_database: fstool-dev
     postgresql_user: fstool-dev
     sparkpost_relay_domain: replies.dev.karrot.world
