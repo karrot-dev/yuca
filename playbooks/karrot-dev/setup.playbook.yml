@@ -84,15 +84,13 @@
         karrot_branch_deployment_root: '/home/deploy/karrot-frontend/branches/$branch'
         # not ready yet, as currently have a bunch of things that haven't been deployed there...
         #karrot_branch_deployment_root: '/var/www/karrot-dev/www/frontend/$branch/current'
-        # put in secrets
-        #geoipupdate__account_id: 
-        #geoipupdate__license_key:
-        fcm_client_api_key: 'AIzaSyCnVQPaiROu23tQdl1tidgfonG2F8Hk_qQ'
-        fcm_client_messaging_sender_id: '819038505585'
-        fcm_client_project_id: 'karrot-dev'
-        fcm_client_app_id: '1:819038505585:web:d10d0cdff501724cc969d0'
+        #geoipupdate__account_id: <put in secrets.vars.yml>
+        #geoipupdate__license_key: <put in secrets.vars.yml>
         forum_banner_topic_id: '930'
         forum_discussions_feed: 'latest.json'
+        vapid_admin_email: "info@karrot.world"
+        vapid_public_key: "BMCBmm6SihKZV0rb4_YqMIzKpX-2YRWiP5Ro7pSGJD0flq9jyzNPaKXNDOfqY7ZUAIOtt9-cZdDcty4APp3isB8"
+        # vapid_private_key: <put in secrets.vars.yml>
       tags:
         - nginx
         - dependencies
