@@ -76,6 +76,9 @@
         fcm_client_app_id: '1:169383571422:web:6bc1130435e3d625ee374f'
         forum_banner_topic_id: '933'
         forum_discussions_feed: 'latest.json'
+        vapid_admin_email: "info@karrot.world"
+        vapid_public_key: "BMR0B6-eX1q1ehOcjJ1tGmeNsJwWFegDMqdGNdn0AHuPNMLvx9TAPgi577xRcNOMiaNQnOjvY0nVNhZNAWGLTBA"
+        # vapid_private_key: <put in secrets.vars.yml>
       tags:
         - nginx
         - dependencies
