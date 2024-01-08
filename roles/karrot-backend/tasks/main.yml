@@ -43,6 +43,7 @@
     connect-src:
       - "'self'"
       - "wss://{{ server_name }}"
+      - "{{ meet_livekit_endpoint }}"
       - "https://nominatim.openstreetmap.org"
       - "https://firebaseinstallations.googleapis.com"
       - "https://fcmregistrations.googleapis.com"
