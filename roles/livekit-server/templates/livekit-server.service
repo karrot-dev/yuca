@@ -1,0 +1,16 @@
+[Unit]
+Description="livekit-server"
+After=network.target remote-fs.target nss-lookup.target nginx.target
+StartLimitIntervalSec=400
+StartLimitBurst=15
+
+[Service]
+WorkingDirectory={{ livekit__root }}
+ExecStart={{ livekit__executable }} --config {{ livekit__configfile }}
+User={{ livekit__user }}
+Group={{ livekit__group }}
+Restart=always
+RestartSec=15
+
+[Install]
+WantedBy=multi-user.target

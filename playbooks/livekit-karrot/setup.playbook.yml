@@ -1,0 +1,35 @@
+---
+- name: livekit.karrot.world | setup
+  hosts: all
+  become: yes
+  vars_files:
+    - secrets.vars.yml
+  vars:
+    site: livekit-karrot
+    site_name: livekit.karrot.world
+    server_name: livekit.karrot.world
+    livekit__turn_server_name: livekit-turn.karrot.world
+
+  tasks:
+    - name: check ansible version
+      include_role:
+        name: check-ansible-version
+
+    - name: basic-site
+      include_role:
+        name: basic-site
+      vars:
+        redirects: []
+        extra_dns:
+          - '{{ livekit__turn_server_name }}'
+      tags:
+        - nginx
+        - cert
+
+    - name: livekit-server
+      include_role:
+        name: livekit-server
+      vars:
+        livekit__version: "1.5.1"
+      tags:
+        - livekit

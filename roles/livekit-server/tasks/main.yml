@@ -1,0 +1,117 @@
+---
+
+- become_user: "{{ site }}"
+  block:
+
+  - name: check version
+    ansible.builtin.shell:
+      cmd: "{{ livekit__executable }} --version | awk '{print $NF}'"
+    register: livekit_version_result
+    changed_when: False
+    tags:
+      - livekit
+
+  - name: check if changed
+    set_fact:
+      changed_version: '{{ livekit_version_result.stdout != livekit__version }}'
+    tags:
+      - livekit
+
+- become_user: "{{ site }}"
+  when: "changed_version"
+  block:
+
+  - name: download livekit-server
+    ansible.builtin.unarchive:
+      remote_src: true
+      src: '{{ livekit__download_url }}'
+      dest: '{{ livekit__root }}'
+      include: livekit-server
+    tags:
+      - livekit
+
+- name: livekit config
+  template:
+    src: config.yaml
+    dest: '{{ livekit__configfile }}'
+  notify:
+    - restart livekit
+  tags:
+    - livekit
+
+- name: livekit systemd service
+  template:
+    src: livekit-server.service
+    dest: "/etc/systemd/system/{{ livekit__service_name }}.service"
+  notify:
+    - restart livekit
+  tags:
+    - livekit
+
+- name: start/enable livekit
+  systemd:
+    name: "{{ livekit__service_name }}"
+    enabled: true
+    state: started
+    daemon_reload: yes
+  tags:
+    - livekit
+
+- name: nginx config
+  template:
+    src: nginx.j2
+    dest: /etc/nginx/sites-available/{{ site }}
+  notify:
+    - reload nginx
+  tags:
+    - nginx
+    - livekit
+
+- name: nginx sites-enabled symlink
+  file:
+    src: /etc/nginx/sites-available/{{ site }}
+    dest: /etc/nginx/sites-enabled/{{ site }}
+    state: link
+  notify:
+    - reload nginx
+  tags:
+    - nginx
+    - livekit
+
+- name: nginx turn config
+  template:
+    src: nginx-turn.j2
+    dest: /etc/nginx/sites-available/{{ site }}-turn
+  notify:
+    - reload nginx
+  tags:
+    - nginx
+    - livekit
+
+- name: nginx turn sites-enabled symlink
+  file:
+    src: /etc/nginx/sites-available/{{ site }}-turn
+    dest: /etc/nginx/sites-enabled/{{ site }}-turn
+    state: link
+  notify:
+    - reload nginx
+  tags:
+    - nginx
+    - livekit
+
+# TODO: should we set "direction" for UDP or TCP?
+- name: allow livekit UDP
+  community.general.ufw:
+    rule: allow
+    proto: udp
+    port: '{{ livekit__webrtc_port_range_start }}:{{ livekit__webrtc_port_range_end }}'
+  tags:
+    - livekit
+
+- name: allow livekit TCP
+  community.general.ufw:
+    rule: allow
+    proto: tcp
+    port: '{{ livekit__webrtc_tcp_port }}'
+  tags:
+    - livekit

@@ -1,0 +1,25 @@
+port: {{ livekit__port }}
+
+log_level: info
+
+rtc:
+  tcp_port: {{ livekit__webrtc_tcp_port }}
+  port_range_start: {{ livekit__webrtc_port_range_start }}
+  port_range_end: {{ livekit__webrtc_port_range_end }}
+  # the external IP is directly on the box
+  # would need to set this false for other environments
+  use_external_ip: false
+# only need redis if using a clustered setup, ok single node for now
+# redis:
+#   address: my-redis-server.name:6379
+
+# key value pairs
+# your_api_key: <api_secret>
+keys: {{ livekit__api_keys }}
+
+turn:
+  enabled: true
+  domain: '{{ livekit__turn_server_name }}'
+  tls_port: {{ livekit__turn_tls_port }}
+  external_tls: true
+  # TODO: enable TURN/UDP, see https://docs.livekit.io/realtime/self-hosting/deployment/#turn/udp
