@@ -31,5 +31,8 @@
         name: livekit-server
       vars:
         livekit__version: "1.5.1"
+        livekit__webhook_api_key: 'karrot-dev'
+        livekit__webhook_urls:
+          - 'https://dev.karrot.world/api/meet/webhook/'
       tags:
         - livekit

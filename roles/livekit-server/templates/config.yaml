@@ -23,3 +23,9 @@ turn:
   tls_port: {{ livekit__turn_tls_port }}
   external_tls: true
   # TODO: enable TURN/UDP, see https://docs.livekit.io/realtime/self-hosting/deployment/#turn/udp
+
+{% if livekit__webhook_api_key is defined %}
+webhook:
+  api_key: '{{ livekit__webhook_api_key }}'
+  urls: {{ livekit__webhook_urls }}
+{% endif %}

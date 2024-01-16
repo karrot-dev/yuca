@@ -13,3 +13,5 @@ livekit__webrtc_port_range_end: 60000
 livekit__turn_server_name: 'turn-{{ server_name }}'
 livekit__turn_tls_port: 5349
 livekit__api_keys: {}
+livekit__webhook_api_key: ''
+livekit__webhook_urls: []
