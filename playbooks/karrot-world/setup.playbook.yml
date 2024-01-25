@@ -79,6 +79,10 @@
         vapid_admin_email: "info@karrot.world"
         vapid_public_key: "BMR0B6-eX1q1ehOcjJ1tGmeNsJwWFegDMqdGNdn0AHuPNMLvx9TAPgi577xRcNOMiaNQnOjvY0nVNhZNAWGLTBA"
         # vapid_private_key: <put in secrets.vars.yml>
+        meet_livekit_endpoint: wss://livekit.karrot.world
+        # just borrowing the one for karrot-dev for now...
+        meet_livekit_api_key: karrot-dev
+        # meet_livekit_api_secret: <put in secrets.vars.yml>
       tags:
         - nginx
         - dependencies
