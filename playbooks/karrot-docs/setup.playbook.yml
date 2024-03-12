@@ -4,7 +4,7 @@
   become: yes
   vars:
     site: karrot-docs
-    server_name: docs-next.karrot.world
+    server_name: docs.karrot.world
     redirects: []
     setup_html_vhost: yes
     public_key: ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFvVqoR5BP+fMhf3ifIcpk4rErT1bV6MG6rxIKFfY+96 karrot-docs
