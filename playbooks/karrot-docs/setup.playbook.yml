@@ -1,0 +1,22 @@
+---
+- name: karrot-docs | setup
+  hosts: all
+  become: yes
+  vars:
+    site: karrot-docs
+    server_name: docs-next.karrot.world
+    redirects: []
+    setup_html_vhost: yes
+    public_key: ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFvVqoR5BP+fMhf3ifIcpk4rErT1bV6MG6rxIKFfY+96 karrot-docs
+  tasks:
+
+    - name: check ansible version
+      include_role:
+        name: check-ansible-version
+
+    - name: basic-site
+      include_role:
+        name: basic-site
+      tags:
+        - nginx
+        - cert
