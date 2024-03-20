@@ -1,10 +1,7 @@
 ---
-# the three variants types:
-# - production
-# - dev
-# - branch-<safe-branchname> <-- might still have dots in, so we clean those out too
-# you can set them when running it if you want something different :)
-karrot_frontend__variant: 'dev'
-karrot_frontend__download_filename: 'karrot-frontend-{{ karrot_frontend__variant }}.zip'
-karrot_frontend__download_url: 'https://download.karrot.world/{{ karrot_frontend__download_filename }}'
-karrot_frontend__deploy_to: "/var/www/{{ site }}/www/frontend/{{ karrot_frontend__variant | regex_replace('[^a-zA-Z0-9-]', '-') }}"
+# for branch deployments you can set karrot_frontend__dir to something else
+# we'll sanitize it too
+karrot_frontend__version: 'latest'
+karrot_frontend__dir: 'default'
+karrot_frontend__download_url: 'https://codeberg.org/api/packages/karrot/generic/karrot-frontend/{{ karrot_frontend__version }}/karrot-frontend.tar.gz'
+karrot_frontend__deploy_to: "/var/www/{{ site }}/www/frontend/{{ karrot_frontend__dir | regex_replace('[^a-zA-Z0-9-]', '-') }}"
