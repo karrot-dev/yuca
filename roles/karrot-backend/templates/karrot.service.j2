@@ -1,0 +1,31 @@
+# This file is managed by ansible. It belongs to {{ role_path }}.
+# See https://github.com/karrot-dev/yuca to change.
+[Unit]
+Description={{ site }}
+After=network.target
+
+[Service]
+Type=simple
+Sockets={{ site }}.socket
+EnvironmentFile=/var/www/{{ site }}/www/backend/service.env
+TimeoutStartSec=600
+ExecStartPre=/usr/bin/podman pull $KARROT_IMAGE
+ExecStart=/usr/bin/podman run \
+	--user {{ karrot__user_uid }} \
+	--network host \
+	--preserve-fds 1 \
+	--name {{ site }} \
+	--replace \
+	-v /var/www/{{ site }}/www/uploads:/var/www/{{ site }}/www/uploads \
+	-v /var/run/postgresql:/var/run/postgresql \
+	-v /var/run/redis:/var/run/redis \
+	-e MIGRATE=please \
+	--env-file /var/www/{{ site }}/www/backend/.env \
+	$KARROT_IMAGE \
+	server
+ExecReload=/usr/bin/podman kill --signal SIGHUP {{ site }}
+NonBlocking=true
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

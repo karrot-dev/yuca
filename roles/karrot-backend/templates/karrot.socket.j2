@@ -1,13 +1,13 @@
 # This file is managed by ansible. It belongs to {{ role_path }}.
 # See https://github.com/karrot-dev/yuca to change.
 [Unit]
-Description={{ site }} | daphne socket
+Description={{ site }} | karrot socket
 
 [Socket]
 ListenStream=/run/{{ site }}.socket
 SocketUser={{ site }}
 SocketGroup={{ site }}
-Service={{ site }}@1.service
+Service={{ site }}.service
 
 [Install]
 WantedBy=sockets.target

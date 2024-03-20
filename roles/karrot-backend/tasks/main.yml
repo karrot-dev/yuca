@@ -374,12 +374,24 @@
   tags:
     - django settings
 
-- name: allow user to restart workers
+- name: service env config
+  template:
+    src: service.env
+    dest: /var/www/{{ site }}/www/backend/service.env
+    owner: "{{ site }}"
+    group: "{{ site }}"
+    # group writable, so deploy user can update it
+    mode: "660"
+  notify:
+    - restart app
+
+- name: allow deploy user to restart workers
   copy:
     dest: "/etc/sudoers.d/deploy_{{ site }}"
     content: |
-      %{{ site }}-deploy ALL=(ALL) NOPASSWD: /bin/systemctl restart {{ site }}.target
-      %{{ site }}-deploy ALL=(ALL) NOPASSWD: /bin/systemctl restart {{ site }}-huey.service
+      %{{ site }}-deploy ALL=(ALL) NOPASSWD: /bin/systemctl restart {{ site }}.service
+      %{{ site }}-deploy ALL=(ALL) NOPASSWD: /bin/systemctl restart {{ site }}-worker.service
+      %{{ site }}-deploy ALL=(ALL) NOPASSWD: /usr/bin/podman pull {{ karrot__image_base }}\:*
 
 - import_tasks: influxdb.yml
   when: influxdb_database is defined
@@ -401,45 +413,50 @@
 #------------------------------------------------------------------
 # systemd services
 
-- name: systemd daphne socket
+- name: get karrot user uid
+  ansible.builtin.command: 'id -u {{ site }}'
+  register: uid_output
+
+- name: extract uid
+  ansible.builtin.set_fact:
+    karrot__user_uid: '{{ uid_output.stdout }}'
+
+- name: karrot socket
   template:
-    src: systemd.daphne.socket.j2
+    src: karrot.socket.j2
     dest: /etc/systemd/system/{{ site }}.socket
   notify:
-    - restart daphne
+    - restart karrot
 
-- name: systemd daphne service
+- name: karrot service
   template:
-    src: systemd.daphne.service@.j2
-    dest: /etc/systemd/system/{{ site }}@.service
+    src: karrot.service.j2
+    dest: /etc/systemd/system/{{ site }}.service
   notify:
-    - restart daphne
+    - restart karrot
 
-- name: systemd daphne target
+- name: karrot worker service
   template:
-    src: systemd.daphne.target.j2
-    dest: /etc/systemd/system/{{ site }}.target
+    src: karrot-worker.service.j2
+    dest: /etc/systemd/system/{{ site }}-worker.service
   notify:
-    - restart daphne
+    - restart karrot worker
 
-- name: systemd huey service
-  template:
-    src: systemd.huey.service.j2
-    dest: /etc/systemd/system/{{ site }}-huey.service
-  notify:
-    - restart huey
-
-- name: systemd enable daphne
+- name: enable karrot
   systemd:
-    name: "{{ site }}.target"
+    name: "{{ site }}.service"
     state: started
     enabled: yes
 
-- name: systemd enable huey
+- name: enable karrot worker
   systemd:
-    name: "{{ site }}-huey.service"
+    name: "{{ site }}-worker.service"
     state: started
     enabled: yes
+
+- name: pull image
+  containers.podman.podman_image:
+    name: '{{ karrot__image }}'
 
 #------------------------------------------------------------------
 # external email reply trimmer service

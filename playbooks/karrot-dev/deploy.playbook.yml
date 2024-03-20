@@ -13,4 +13,6 @@
         name: karrot-backend-deploy
       vars:
         site: karrot-dev
-        branch: master
+        # detirmines the image tag we use
+        # can use --extra-vars to pass a different value
+        karrot__version: latest

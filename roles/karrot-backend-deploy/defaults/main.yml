@@ -1,6 +1,6 @@
 ---
-# these are copied from karrot-backend role defaults :/
+# this is duplicated in between karrot-backend and karrot-backend-deploy :/
 # bonus points if you can refactor this to have them shared somewhere :)
-karrot__download_filename: "karrot-backend-{{ branch | regex_replace('[^a-zA-Z0-9.-]', '-') }}.pyz"
-karrot__download_url: 'https://download.karrot.world/{{ karrot__download_filename }}'
-karrot__executable: '/var/www/{{ site }}/www/backend/karrot-backend.pyz'
+karrot__image_base: 'codeberg.org/karrot/karrot-backend'
+karrot__version: 'latest'
+karrot__image: '{{ karrot__image_base }}:{{ karrot__version }}'

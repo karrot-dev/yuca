@@ -1,0 +1,11 @@
+---
+
+- name: restart karrot
+  listen: restart
+  shell: "sudo systemctl restart {{ site }}.service"
+  changed_when: False
+
+- name: restart karrot worker
+  listen: restart
+  shell: "sudo systemctl restart {{ site }}-worker.service"
+  changed_when: False

@@ -1,0 +1,26 @@
+# This file is managed by ansible. It belongs to {{ role_path }}.
+# See https://github.com/karrot-dev/yuca to change.
+[Unit]
+Description={{ site }} | karrot worker
+After=network.target
+
+[Service]
+Type=simple
+TimeoutStartSec=600
+ExecStartPre=/usr/bin/podman pull codeberg.org/karrot/karrot-backend:latest
+ExecStart=/usr/bin/podman run \
+        --user {{ karrot__user_uid }} \
+        --network host \
+        --name {{ site }}-worker \
+        --replace \
+        -v /var/www/{{ site }}/www/uploads:/var/www/{{ site }}/www/uploads \
+        -v /var/run/postgresql:/var/run/postgresql \
+        -v /var/run/redis:/var/run/redis \
+        --env-file /var/www/{{ site }}/www/backend/.env \
+        codeberg.org/karrot/karrot-backend:latest \
+        worker
+ExecReload=/usr/bin/podman kill --signal SIGHUP {{ site }}-worker
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

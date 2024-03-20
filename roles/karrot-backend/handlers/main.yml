@@ -1,16 +1,16 @@
 ---
 
-- name: restart daphne
+- name: restart karrot
   listen: restart app
   systemd:
-    name: "{{ site }}.target"
+    name: "{{ site }}.service"
     state: restarted
     daemon_reload: yes
 
-- name: restart huey
+- name: restart karrot worker
   listen: restart app
   systemd:
-    name: "{{ site }}-huey.service"
+    name: "{{ site }}-worker.service"
     state: restarted
     daemon_reload: yes
 

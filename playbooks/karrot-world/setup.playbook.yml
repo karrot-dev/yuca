@@ -64,7 +64,7 @@
         apk: /home/deploy/karrot-app/release/app.apk
         redis_db: 2
         influxdb_database: karrot-world
-        workers: 16
+        karrot__worker_count: 8
         deploy_public_key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPLa2nCA2AZsG8/ZYTRocmaxk07D7O9mGWr0RJf9nlfn karrot deploy 2023-03-17"
         # borgbackup remote repository is unused
         borgbackup_server_user: tiltec

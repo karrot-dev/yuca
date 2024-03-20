@@ -70,7 +70,7 @@
         apk: /home/deploy/karrot-app/master/app.apk
         redis_db: 4
         influxdb_database: karrot-dev
-        workers: 4
+        karrot__worker_count: 2
         # https://docs.djangoproject.com/en/4.2/ref/settings/#allowed-hosts
         additional_allowed_hosts:
           - .dev.karrot.world

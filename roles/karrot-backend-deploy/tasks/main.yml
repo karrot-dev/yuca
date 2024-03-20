@@ -3,32 +3,16 @@
 - become_user: "{{ site }}-deploy"
   block:
 
-  - name: download karrot-backend
-    get_url:
-      url: '{{ karrot__download_url }}'
-      dest: '{{ karrot__executable }}'
-      mode: "u+rwx,a+x"
-
-  - name: manage commands
-    command: "{{ karrot__executable }} --env .env manage {{ item }}"
-    args:
-      chdir: "/var/www/{{ site }}/www/backend"
-    with_items:
-      - check --deploy
-      - migrate
-    changed_when: False
-    environment:
-      # ensures we unpack it into the same dir that it'll be run from
-      # otherwise it'll get shiv-unpacked twice
-      SHIV_ROOT: /var/www/{{ site }}/.shiv
-      # we handle the migrations here, so don't want to include the karrot ones
-      EXCLUDE_EXTENSION_MIGRATIONS: true
-
-    # need to use 'sudo' to allow privileges just for this command
-  - name: restart daphne
-    shell: "sudo systemctl restart {{ site }}.target"
+  # need to use 'sudo' as we allow privileges just for this command
+  # this also ensures we fail if it does not exist
+  - name: pull image
+    shell: "sudo /usr/bin/podman pull {{ karrot__image }}"
     changed_when: False
 
-  - name: restart huey
-    shell: "sudo systemctl restart {{ site }}-huey.service"
-    changed_when: False
+  - name: update image
+    lineinfile:
+      path: /var/www/{{ site }}/www/backend/service.env
+      regexp: '^KARROT_IMAGE='
+      line: "KARROT_IMAGE={{ karrot__image }}"
+    notify:
+      - restart
