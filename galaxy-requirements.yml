@@ -1,4 +1,6 @@
-- src: ansistrano.deploy
-  version: 3.7.0
-- src: ansistrano.rollback
-  version: 3.0.0
+---
+roles:
+  - src: ansistrano.deploy
+    version: 3.7.0
+  - src: ansistrano.rollback
+    version: 3.0.0

@@ -19,16 +19,23 @@ git clone git@github.com:karrot-dev/yuca.git
 cd yuca
 ```
 
+Create a virtualenv and activate it
+```
+python -m venv env
+source env/bin/activate
+```
+
+Install the dependencies:
+```
+pip install -r requirements.txt
+ansible-galaxy install -r galaxy-requirements.yml
+```
+
 If needed, add your local configuration (e.g. your private ssh key):
 
 ```
 cp group_vars/all.yml.example group_vars/all.yml
 # edit contents of group_vars/all.yml
-```
-
-Some roles use ansible galaxy dependencies, you can install them with:
-```
-ansible-galaxy install -r galaxy-requirements.yml
 ```
 
 ### manage the vault password
