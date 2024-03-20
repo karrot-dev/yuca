@@ -26,6 +26,11 @@
     csp_report_only: false
 
   tasks:
+    - ansible.builtin.fail:
+        msg: Production site needs to be updated to use podman setup
+      tags:
+        - always
+
     - name: check ansible version
       include_role:
         name: check-ansible-version
