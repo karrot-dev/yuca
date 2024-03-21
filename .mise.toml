@@ -1,0 +1,4 @@
+[tools]
+python = "system"
+[env]
+_.python.venv = "env"
