@@ -13,3 +13,6 @@
         name: karrot-frontend-deploy
       vars:
         site: karrot-dev
+        # detirmines the image tag we use
+        # can use --extra-vars to pass a different value
+        karrot_frontend__version: latest
