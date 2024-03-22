@@ -6,8 +6,9 @@ After=network.target
 
 [Service]
 Type=simple
+EnvironmentFile=/var/www/{{ site }}/www/backend/service.env
 TimeoutStartSec=600
-ExecStartPre=/usr/bin/podman pull codeberg.org/karrot/karrot-backend:latest
+ExecStartPre=/usr/bin/podman pull $KARROT_IMAGE
 ExecStart=/usr/bin/podman run \
         --user {{ karrot__user_uid }} \
         --network host \
@@ -17,7 +18,7 @@ ExecStart=/usr/bin/podman run \
         -v /var/run/postgresql:/var/run/postgresql \
         -v /var/run/redis:/var/run/redis \
         --env-file /var/www/{{ site }}/www/backend/.env \
-        codeberg.org/karrot/karrot-backend:latest \
+        $KARROT_IMAGE \
         worker
 ExecReload=/usr/bin/podman kill --signal SIGHUP {{ site }}-worker
 Restart=always
