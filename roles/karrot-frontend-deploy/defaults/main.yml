@@ -5,3 +5,4 @@ karrot_frontend__version: 'latest'
 karrot_frontend__dir: 'default'
 karrot_frontend__download_url: 'https://codeberg.org/api/packages/karrot/generic/karrot-frontend/{{ karrot_frontend__version }}/karrot-frontend.tar.gz'
 karrot_frontend__deploy_to: "/var/www/{{ site }}/www/frontend/{{ karrot_frontend__dir | regex_replace('[^a-zA-Z0-9-]', '-') }}"
+ansistrano_release_version: '{{ "%Y%m%d%H%M%SZ" | strftime(ansible_date_time.epoch, true) }}@{{ karrot_frontend__version }}'
