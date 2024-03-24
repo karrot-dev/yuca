@@ -2,12 +2,9 @@
 - name: karrot.world | deploy
   hosts: all
   become: yes
+  vars_files:
+    - vars.yml
   tasks:
-    - ansible.builtin.fail:
-        msg: Production site needs to be updated to use podman setup
-      tags:
-        - always
-
     - name: check ansible version
       include_role:
         name: check-ansible-version
@@ -17,4 +14,3 @@
         name: karrot-backend-deploy
       vars:
         site: karrot-world
-        branch: production

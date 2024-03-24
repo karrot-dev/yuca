@@ -1,0 +1,4 @@
+# detirmines the image tag we use
+# can use --extra-vars to pass a different value
+karrot__version: latest
+karrot_frontend__version: '{{ karrot__version }}'
