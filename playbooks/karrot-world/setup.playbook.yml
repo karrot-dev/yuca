@@ -90,6 +90,7 @@
         - geoipupdate
         - django settings
         - deploy public key
+        - scripts
 
     - name: karrot-backend-deploy
       include_role:

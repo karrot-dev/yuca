@@ -459,6 +459,27 @@
     name: '{{ karrot__image }}'
 
 #------------------------------------------------------------------
+# scripts
+
+- name: create scripts dir
+  file:
+    path: "/var/www/{{ site }}/www/backend/scripts"
+    state: directory
+    mode: "u+rwx"
+    recurse: yes
+  tags:
+    - scripts
+
+- name: add karrot script
+  ansible.builtin.template:
+    src: scripts/karrot
+    dest: "/var/www/{{ site }}/www/backend/scripts/karrot"
+    mode: "u+rwx"
+  tags:
+    - scripts
+
+
+#------------------------------------------------------------------
 # external email reply trimmer service
 
 - import_tasks: email_reply_trimmer.yml

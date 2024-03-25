@@ -3,6 +3,7 @@
   hosts: all
   become: yes
   vars_files:
+    - vars.yml
     - secrets.vars.yml
   vars:
     site: karrot-dev
@@ -98,6 +99,7 @@
         - geoipupdate
         - django settings
         - deploy public key
+        - scripts
 
     - name: karrot-backend-deploy
       include_role:

@@ -1,0 +1,29 @@
+#!/bin/bash
+
+# Run karrot cli in podman with correct environment
+# Pass in command as first arg, e.g.
+# ./scripts/karrot shell
+
+set -eu -o pipefail
+
+# Load the service environment variables
+set -o allexport
+source /var/www/{{ site }}/www/backend/service.env
+set +o allexport
+
+# Support history if running the shell
+IPYTHONDIR="/var/www/{{ site }}/www/backend/.podman-ipythondir"
+mkdir -p "$IPYTHONDIR"
+chown -R {{ site }}:{{ site }} "$IPYTHONDIR"
+
+# Run it \o/
+podman run \
+  --rm -it \
+  --network host \
+  -e IPYTHONDIR=/app/.ipython \
+  -v $IPYTHONDIR:/app/.ipython \
+  --volumes-from {{ site }} \
+  --env-file /var/www/{{ site }}/www/backend/.env \
+  --user $(id -u {{ site }}) \
+  "$KARROT_IMAGE" \
+  "$@"
