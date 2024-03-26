@@ -9,10 +9,25 @@
     shell: "sudo /usr/bin/podman pull {{ karrot__image }}"
     changed_when: False
 
+  # if this changes in the file then it's easy to know we need
+  # to restart the service
   - name: update image
     lineinfile:
       path: /var/www/{{ site }}/www/backend/service.env
       regexp: '^KARROT_IMAGE='
       line: "KARROT_IMAGE={{ karrot__image }}"
+    notify:
+      - restart
+
+  # ... but if we're deploying "latest" tag, or a branch
+  # then the image might have updated from the pull
+  # and the container might be running the old one
+  # we don't have enough permissions to check, so we'll
+  # just always restart if it doesn't match a version tag pattern
+  - name: "trigger restart"
+    debug:
+      msg: "triggering restart as we are not a version tag"
+    when: 'karrot__image is not regex(":v[0-9]+")'
+    changed_when: True
     notify:
       - restart
