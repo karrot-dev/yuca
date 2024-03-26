@@ -1,16 +1,19 @@
 # This file is managed by ansible.
 # See https://github.com/karrot-dev/yuca to change.
 
-# based on https://github.com/grafana/grafana/blob/master/packaging/deb/systemd/grafana-server.service
+[Install]
+WantedBy=multi-user.target
+
 
 [Unit]
-Description={{ site }}
+Description=Grafana instance | {{ site }}
 Documentation=http://docs.grafana.org
 Wants=network-online.target
 After=network-online.target
-After=postgresql.service
+After=postgresql.service mariadb.service mysql.service influxdb.service
 
 [Service]
+EnvironmentFile=/etc/default/grafana-server
 User={{ site }}
 Group={{ site }}
 Type=simple
@@ -18,12 +21,35 @@ Restart=on-failure
 WorkingDirectory=/usr/share/grafana
 RuntimeDirectory=grafana
 RuntimeDirectoryMode=0750
-ExecStart=/usr/sbin/grafana-server                                                  \
-                            --config=/var/www/{{ site }}/grafana.ini                \
+ExecStart=/usr/share/grafana/bin/grafana server                                     \
+                            --config=/var/www/{{ site }}/grafana.ini            \
                             --pidfile=/var/www/{{ site }}/grafana-server.pid    \
+                            --packaging=deb
 
 LimitNOFILE=10000
 TimeoutStopSec=20
+CapabilityBoundingSet=
+DeviceAllow=
+LockPersonality=true
+MemoryDenyWriteExecute=false
+NoNewPrivileges=true
+PrivateDevices=true
+PrivateTmp=true
+ProtectClock=true
+ProtectControlGroups=true
+ProtectHome=true
+ProtectHostname=true
+ProtectKernelLogs=true
+ProtectKernelModules=true
+ProtectKernelTunables=true
+ProtectProc=invisible
+ProtectSystem=full
+RemoveIPC=true
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
+RestrictNamespaces=true
+RestrictRealtime=true
+RestrictSUIDSGID=true
+SystemCallArchitectures=native
 UMask=0027
 
 [Install]
